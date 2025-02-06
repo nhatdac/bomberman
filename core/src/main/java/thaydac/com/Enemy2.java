@@ -44,6 +44,39 @@ public class Enemy2 extends MyActor {
         super.act(delta);
         time += delta;
         textureRegion = animation.getKeyFrame(time);
+
+        // Lấy vị trí nhân vật chính
+        float playerX = Master.man.getX();
+        float playerY = Master.man.getY();
+
+        // Lấy vị trí của Enemy2
+        float enemyX = getX();
+        float enemyY = getY();
+        float distance = 0;
+
+        // Kiểm tra nếu Enemy2 "nhìn thấy" nhân vật chính
+        if(enemyX == playerX){
+            distance = Math.abs(enemyY - playerY);
+            if (distance < 150 && !isWallBetween(enemyX, enemyY, playerX, playerY, true)){
+                speedX = 0;
+                if (playerY > enemyY) {
+                    speedY = 1;
+                } else {
+                    speedY = -1;
+                }
+            }
+        } else if (enemyY == playerY) {
+            distance = Math.abs(enemyX - playerX);
+            if (distance < 150 && !isWallBetween(enemyX, enemyY, playerX, playerY, false)){
+                speedY = 0;
+                if (playerX > enemyX) {
+                    speedX = 1;
+                } else {
+                    speedX = -1;
+                }
+            }
+        }
+
         moveBy(speedX, speedY);
         for (MyActor wall: Master.walls) {
             if(wall.getBound().overlaps(getBound())){
@@ -78,5 +111,23 @@ public class Enemy2 extends MyActor {
                 }
             }
         }
+    }
+
+    private boolean isWallBetween(float x1, float y1, float x2, float y2, boolean isVertical) {
+        for (MyActor wall : Master.walls) {
+            float wallX = wall.getX();
+            float wallY = wall.getY();
+
+            if (isVertical) { // Kiểm tra theo cột
+                if ((wallX > x1 - 32 && wallX < x1 + 32) && ((wallY > y1 && wallY < y2) || (wallY < y1 && wallY > y2))) {
+                    return true; // Có tường chắn
+                }
+            } else { // Kiểm tra theo hàng
+                if ((wallY > y1 - 32 && wallY < y1 + 32) && ((wallX > x1 && wallX < x2) || (wallX < x1 && wallX > x2))) {
+                    return true; // Có tường chắn
+                }
+            }
+        }
+        return false; // Không có tường chắn
     }
 }

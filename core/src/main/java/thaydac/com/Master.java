@@ -29,7 +29,7 @@ public class Master extends ApplicationAdapter {
     Stage stage;
     private Background background;
     private Panel panel;
-    private Man man;
+    static Man man;
 
     static Array<MyActor> walls = new Array<>();
     static Array<Brick> briches = new Array<>();
