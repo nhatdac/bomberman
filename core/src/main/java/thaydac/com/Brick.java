@@ -50,7 +50,7 @@ public class Brick extends MyActor{
         if(animation.isAnimationFinished(time)){
             isFire = false;
             if(hasItem){
-                Item item = new Item(getX(), getY(), getStage());
+                Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
             } else if(hasDoor){
                 Door door = new Door(getX(), getY(), getStage());
             }

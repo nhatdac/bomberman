@@ -30,6 +30,7 @@ public class Master extends ApplicationAdapter {
     private Background background;
     private Panel panel;
     static Man man;
+    static Item item;
 
     static Array<MyActor> walls = new Array<>();
     static Array<Brick> briches = new Array<>();
@@ -38,6 +39,7 @@ public class Master extends ApplicationAdapter {
     Array<Bomb> bombs = new Array<>();
     Array<Explosion> explosions = new Array<>();
     Sound dieSound;
+    Sound collectSound;
 
     @Override
     public void create() {
@@ -59,7 +61,7 @@ public class Master extends ApplicationAdapter {
         fontGenerator.dispose();
 
         dieSound = Gdx.audio.newSound(Gdx.files.internal("die.mp3"));
-
+        collectSound = Gdx.audio.newSound(Gdx.files.internal("collect.mp3"));
     }
 
     @Override
@@ -81,13 +83,6 @@ public class Master extends ApplicationAdapter {
                 Bomb bomb = new Bomb(xMan,yMan, stage, bombs, explosions);
                 bombs.add(bomb);
                 man.bombNumber--;
-//                bomb.addAction(Actions.sequence(
-//                    Actions.delay(3), // Chờ 3 giây
-//                    Actions.run(() -> {
-//                        bomb.remove();
-//                        bombs.removeValue(bomb, true);
-//                    }) // Xóa quả bom khỏi Stage
-//                ));
             }
         }
 
@@ -104,6 +99,7 @@ public class Master extends ApplicationAdapter {
 
         stage.act();
         collisionWall();
+        collectItems();
         man.setZIndex(stage.getActors().size - 1);
         stage.draw();
 
@@ -121,6 +117,19 @@ public class Master extends ApplicationAdapter {
     @Override
     public void dispose() {
         batch.dispose();
+    }
+
+    public void collectItems(){
+        if(item != null && man.getBound().overlaps(item.getBound())){
+            if(item.type.equals(ItemType.BOMB_NUMBER)){
+                man.bombNumber++;
+            } else if (item.type.equals(ItemType.BOMB_POWER)) {
+                man.bombPower++;
+            }
+            item.remove();
+            item = null;
+            collectSound.play();
+        }
     }
 
     public void collisionWall(){
