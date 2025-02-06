@@ -9,7 +9,7 @@ public class Utils {
 
         // Mảng tạo khung bản đồ
         int[][] wallArray = new int[][] {
-            // 0: trống, 1: tường, 2: gạch
+            // 0: trống, 1: tường, 2: gạch, 3: địch
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -35,7 +35,7 @@ public class Utils {
                 if (wallArray[i][j] == 1) {
                     continue; // nếu vị trí đã có giá trị là 1 thì bỏ qua
                 } else if (wallArray[i][j] == 0) {
-                    wallArray[i][j] = rand.nextInt(3) < 2 ? 0 : 2; // Random 0 or 2
+                    wallArray[i][j] = rand.nextInt(3) < 2 ? 0 : rand.nextInt(3) < 2 ? 2 : 3; // Random 0 or 2
                 }
             }
         }

@@ -32,6 +32,7 @@ public class Master extends ApplicationAdapter {
 
     static Array<MyActor> walls = new Array<>();
     static Array<Brick> briches = new Array<>();
+    Array<Enemy1> enemy1s = new Array<>();
     Array<Bomb> bombs = new Array<>();
     Array<Explosion> explosions = new Array<>();
     Sound dieSound;
@@ -226,6 +227,7 @@ public class Master extends ApplicationAdapter {
         panel = new Panel(0, Gdx.graphics.getHeight() - 64, stage);
 
         int[][] wallArray = Utils.buildMap();
+        int enemyNumber = 5;
 
         int tileSize = 32; // Kích thước mỗi ô
         for (int row = 0; row < wallArray.length; row++) {
@@ -242,6 +244,14 @@ public class Master extends ApplicationAdapter {
                     briches.add(brick);
                     // cho cả gạch vào tuờng để kiểm tra va chạm dễ hơn
                     walls.add(brick);
+                } else if (cell == 3) {
+                    if(enemyNumber > 0){
+                        Enemy1 enemy1 = new Enemy1(x, y, stage);
+                        // Tạo enemy
+                        enemy1s.add(enemy1);
+                        enemyNumber--;
+                    }
+
                 }
             }
         }
