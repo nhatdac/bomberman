@@ -52,28 +52,28 @@ public class Enemy1 extends MyActor {
                 if(speedX == 1){
                     moveBy(-1, 0);
                     speedX = 0;
-                    speedY = MathUtils.random(0, 1) == 0 ? 0 : 1;
+                    speedY = MathUtils.random(-1, 1);
                     if(speedY == 0){
                         speedX = -1;
                     }
                 } else if (speedX == -1){
                     moveBy(1, 0);
                     speedX = 0;
-                    speedY = MathUtils.random(0, 1) == 0 ? 0 : 1;
+                    speedY = MathUtils.random(-1, 1);
                     if(speedY == 0){
                         speedX = 1;
                     }
                 } else if (speedY == 1){
                     moveBy(0, -1);
                     speedY = 0;
-                    speedX = MathUtils.random(0, 1) == 0 ? 0 : 1;
+                    speedX = MathUtils.random(-1, 1);
                     if(speedX == 0){
                         speedY = -1;
                     }
                 } else if (speedY == -1){
                     moveBy(0, 1);
                     speedY = 0;
-                    speedX = MathUtils.random(0, 1) == 0 ? 0 : 1;
+                    speedX = MathUtils.random(-1, 1);
                     if(speedX == 0){
                         speedY = 1;
                     }
