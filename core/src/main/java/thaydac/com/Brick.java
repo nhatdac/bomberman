@@ -10,6 +10,8 @@ public class Brick extends MyActor{
     Animation<TextureRegion> animation;
     float time;
     boolean isFire = false;
+    boolean hasItem = false;
+    boolean hasDoor = false;
 
     Brick(float x, float y, Stage s) {
         super(x, y, s);
@@ -47,6 +49,11 @@ public class Brick extends MyActor{
         }
         if(animation.isAnimationFinished(time)){
             isFire = false;
+            if(hasItem){
+                Item item = new Item(getX(), getY(), getStage());
+            } else if(hasDoor){
+                Door door = new Door(getX(), getY(), getStage());
+            }
             remove();
             Master.walls.removeValue(this, true);
         }

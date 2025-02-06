@@ -1,15 +1,13 @@
 package thaydac.com;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-// Balloon
-public class Enemy1 extends MyActor {
+// dumpling
+public class Enemy2 extends MyActor {
     Animation<TextureRegion> animation;
     Animation<TextureRegion> animationDie;
     float time;
@@ -17,13 +15,13 @@ public class Enemy1 extends MyActor {
     int speedX = 1;
     int speedY = 0;
 
-    Enemy1(float x, float y, Stage s) {
+    Enemy2(float x, float y, Stage s) {
         super(x, y, s);
         setSize(32, 32);
 
         int cot = 11;
         int hang = 1;
-        Texture texture = new Texture("enemy1.png");
+        Texture texture = new Texture("enemy2.png");
         TextureRegion[][] frameBuff = TextureRegion.split(texture, texture.getWidth() / cot, texture.getHeight() / hang);
         TextureRegion[] frames = new TextureRegion[cot * hang];
         int index = 0;
@@ -33,7 +31,7 @@ public class Enemy1 extends MyActor {
             }
         }
 
-        TextureRegion[] framesAlive = {frames[0], frames[1], frames[2], frames[3], frames[4], frames[5], frames[6]};
+        TextureRegion[] framesAlive = {frames[0], frames[1], frames[2], frames[3], frames[4], frames[5],  frames[6]};
 
         animation = new Animation<TextureRegion>(0.3f, framesAlive);
         animation.setPlayMode(Animation.PlayMode.LOOP);

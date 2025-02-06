@@ -27,7 +27,7 @@ public class Bomb extends MyActor {
     Sound explodeSound;
     Array<Bomb> bombs;
     Array<Explosion> explosions;
-    int power = 1;
+    int power = 5;
 
     Bomb(float x, float y, Stage s, Array<Bomb> _bombs, Array<Explosion> _explosions) {
         super(x, y, s);

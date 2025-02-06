@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Array;
@@ -33,6 +34,7 @@ public class Master extends ApplicationAdapter {
     static Array<MyActor> walls = new Array<>();
     static Array<Brick> briches = new Array<>();
     Array<Enemy1> enemy1s = new Array<>();
+    Array<Enemy2> enemy2s = new Array<>();
     Array<Bomb> bombs = new Array<>();
     Array<Explosion> explosions = new Array<>();
     Sound dieSound;
@@ -228,7 +230,8 @@ public class Master extends ApplicationAdapter {
         panel = new Panel(0, Gdx.graphics.getHeight() - 64, stage);
 
         int[][] wallArray = Utils.buildMap();
-        int enemyNumber = 5;
+        int enemy1Number = 5;
+        int enemy2Number = 3;
 
         int tileSize = 32; // Kích thước mỗi ô
         for (int row = 0; row < wallArray.length; row++) {
@@ -246,16 +249,30 @@ public class Master extends ApplicationAdapter {
                     // cho cả gạch vào tuờng để kiểm tra va chạm dễ hơn
                     walls.add(brick);
                 } else if (cell == 3) {
-                    if(enemyNumber > 0){
+                    if(enemy1Number > 0){
                         Enemy1 enemy1 = new Enemy1(x, y, stage);
                         // Tạo enemy
                         enemy1s.add(enemy1);
-                        enemyNumber--;
+                        enemy1Number--;
                     }
-
+                } else if (cell == 4) {
+                    if(enemy2Number > 0){
+                        Enemy2 enemy2 = new Enemy2(x, y, stage);
+                        // Tạo enemy
+                        enemy2s.add(enemy2);
+                        enemy2Number--;
+                    }
                 }
             }
         }
+        int itemPosition = MathUtils.random(0, briches.size - 1);
+        int doorPosition = MathUtils.random(0, briches.size - 1);
+
+        while (itemPosition == doorPosition){
+            doorPosition = MathUtils.random(0, briches.size - 1);
+        }
+        briches.get(itemPosition).hasItem = true;
+        briches.get(doorPosition).hasDoor = true;
     }
 
 

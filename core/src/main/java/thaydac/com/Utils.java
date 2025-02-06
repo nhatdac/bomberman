@@ -35,7 +35,7 @@ public class Utils {
                 if (wallArray[i][j] == 1) {
                     continue; // nếu vị trí đã có giá trị là 1 thì bỏ qua
                 } else if (wallArray[i][j] == 0) {
-                    wallArray[i][j] = rand.nextInt(3) < 2 ? 0 : rand.nextInt(3) < 2 ? 2 : 3; // Random 0 or 2
+                    wallArray[i][j] = rand.nextInt(3) < 2 ? 0 : rand.nextInt(3) < 2 ? 2 : rand.nextInt(3) < 2 ? 3 : 4; // Random 0 or 2
                 }
             }
         }
