@@ -27,7 +27,6 @@ public class Bomb extends MyActor {
     Sound explodeSound;
     Array<Bomb> bombs;
     Array<Explosion> explosions;
-    int power = 5;
 
     Bomb(float x, float y, Stage s, Array<Bomb> _bombs, Array<Explosion> _explosions) {
         super(x, y, s);
@@ -107,6 +106,7 @@ public class Bomb extends MyActor {
             createExplosions(); // Tạo hiệu ứng nổ lan
             remove();
             bombs.removeValue(this, true);
+            Master.man.bombNumber++;
         } else {
             textureRegion = animation.getKeyFrame(time);
         }
@@ -115,6 +115,7 @@ public class Bomb extends MyActor {
     private void createExplosions() {
         Stage stage = getStage();
         float size = 32; // Kích thước 1 ô
+        int power = Master.man.bombPower;
 
         Explosion explosionCenter = new Explosion(getX(), getY(), stage, explosionAnimation, explosions);
         explosions.add(explosionCenter);

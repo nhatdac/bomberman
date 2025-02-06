@@ -23,6 +23,8 @@ public class Man extends MyActor {
     float timeSound = 0;
     boolean isPlaying = false;
     boolean isDie = false;
+    int bombNumber = 1;
+    int bombPower = 1;
 
     Man(float x, float y, Stage s) {
         super(x, y, s);

@@ -70,16 +70,17 @@ public class Master extends ApplicationAdapter {
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
             int xMan = Math.round(man.getX()/32)*32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
             int yMan = Math.round(man.getY()/32)*32;
-            boolean ok = true;
+            boolean positionOK = true;
             for (Bomb b: bombs) {
                 if(b.getX() == xMan && b.getY() == yMan){
-                    ok = false;
+                    positionOK = false;
                     break;
                 }
             }
-            if(ok){
+            if(positionOK && man.bombNumber > 0){
                 Bomb bomb = new Bomb(xMan,yMan, stage, bombs, explosions);
                 bombs.add(bomb);
+                man.bombNumber--;
 //                bomb.addAction(Actions.sequence(
 //                    Actions.delay(3), // Chờ 3 giây
 //                    Actions.run(() -> {
