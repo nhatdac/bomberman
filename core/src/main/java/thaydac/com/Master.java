@@ -92,6 +92,7 @@ public class Master extends ApplicationAdapter {
             for (Explosion explosion: explosions) {
                 if(explosion.getBound().overlaps(man.getBound())){
                     man.isDie = true;
+                    man.time = 0;
                     dieSound.play();
                     break;
                 }
