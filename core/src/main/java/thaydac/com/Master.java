@@ -34,8 +34,7 @@ public class Master extends ApplicationAdapter {
 
     static Array<MyActor> walls = new Array<>();
     static Array<Brick> briches = new Array<>();
-    Array<Enemy1> enemy1s = new Array<>();
-    Array<Enemy2> enemy2s = new Array<>();
+    Array<MyActor> enemies = new Array<>();
     Array<Bomb> bombs = new Array<>();
     Array<Explosion> explosions = new Array<>();
     Sound dieSound;
@@ -89,6 +88,14 @@ public class Master extends ApplicationAdapter {
         if(!man.isDie){
             for (Explosion explosion: explosions) {
                 if(explosion.getBound().overlaps(man.getBound())){
+                    man.isDie = true;
+                    man.time = 0;
+                    dieSound.play();
+                    break;
+                }
+            }
+            for (MyActor enemy: enemies) {
+                if(enemy.getBound().overlaps(man.getBound())){
                     man.isDie = true;
                     man.time = 0;
                     dieSound.play();
@@ -262,14 +269,14 @@ public class Master extends ApplicationAdapter {
                     if(enemy1Number > 0){
                         Enemy1 enemy1 = new Enemy1(x, y, stage);
                         // Tạo enemy
-                        enemy1s.add(enemy1);
+                        enemies.add(enemy1);
                         enemy1Number--;
                     }
                 } else if (cell == 4) {
                     if(enemy2Number > 0){
                         Enemy2 enemy2 = new Enemy2(x, y, stage);
                         // Tạo enemy
-                        enemy2s.add(enemy2);
+                        enemies.add(enemy2);
                         enemy2Number--;
                     }
                 }

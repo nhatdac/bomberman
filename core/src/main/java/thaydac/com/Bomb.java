@@ -27,6 +27,7 @@ public class Bomb extends MyActor {
     Sound explodeSound;
     Array<Bomb> bombs;
     Array<Explosion> explosions;
+    boolean isJustPlaced = false;
 
     Bomb(float x, float y, Stage s, Array<Bomb> _bombs, Array<Explosion> _explosions) {
         super(x, y, s);
@@ -61,6 +62,7 @@ public class Bomb extends MyActor {
         setSize(32, 32);
 
         time = 0;
+        isJustPlaced = true;
         textureRegion = animation.getKeyFrame(time);
 
         setSound = Gdx.audio.newSound(Gdx.files.internal("set.mp3"));
@@ -86,6 +88,11 @@ public class Bomb extends MyActor {
     @Override
     public void act(float delta) {
         super.act(delta);
+        if(isJustPlaced && !getBound().overlaps(Master.man.getBound())){
+            isJustPlaced = false;
+            Master.walls.add(this);
+        }
+
         time += delta;
 
         if (!isExploded && time >= 3) {
@@ -106,6 +113,7 @@ public class Bomb extends MyActor {
             createExplosions(); // Tạo hiệu ứng nổ lan
             remove();
             bombs.removeValue(this, true);
+            Master.walls.removeValue(this, true);
             Master.man.bombNumber++;
         } else {
             textureRegion = animation.getKeyFrame(time);
