@@ -26,6 +26,7 @@ public class Master implements Screen {
     private Panel panel;
     static Man man;
     static Item item;
+    static Door door;
 
     static Array<MyActor> walls = new Array<>();
     static Array<Brick> briches = new Array<>();

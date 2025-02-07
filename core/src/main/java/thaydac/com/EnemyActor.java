@@ -60,5 +60,12 @@ public class EnemyActor extends MyActor{
                 Master.enemies.removeValue(this, true);
             }
         }
+
+        if(Master.item != null && getBound().overlaps(Master.item.getBound())){
+            checkAndUpdateZIndex(this, Master.item);
+        }
+        if(Master.door != null && getBound().overlaps(Master.door.getBound())){
+            checkAndUpdateZIndex(this, Master.door);
+        }
     }
 }

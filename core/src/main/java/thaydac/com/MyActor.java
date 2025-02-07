@@ -29,4 +29,10 @@ public class MyActor extends Actor {
     public Rectangle getBound(){
         return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
+
+    public void checkAndUpdateZIndex(Actor actor1, Actor actor2) {
+        if (actor1.getZIndex() <= actor2.getZIndex()) {
+            actor1.toFront(); // Đưa actor1 lên trên
+        }
+    }
 }

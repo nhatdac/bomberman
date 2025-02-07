@@ -52,7 +52,7 @@ public class Brick extends MyActor{
             if(hasItem){
                 Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
             } else if(hasDoor){
-                Door door = new Door(getX(), getY(), getStage());
+                Master.door = new Door(getX(), getY(), getStage());
             }
             remove();
             Master.walls.removeValue(this, true);
