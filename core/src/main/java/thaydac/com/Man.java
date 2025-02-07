@@ -22,7 +22,7 @@ public class Man extends MyActor {
     Sound walking2;
     float timeSound = 0;
     boolean isPlaying = false;
-    boolean isDie = false;
+    boolean isAlive = true;
     int bombNumber = 1;
     int bombPower = 1;
 
@@ -70,7 +70,7 @@ public class Man extends MyActor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if(!isDie) {
+        if(isAlive) {
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 direction = "L";
                 moveBy(-2, 0);
@@ -101,7 +101,7 @@ public class Man extends MyActor {
             textureRegion = animationDie.getKeyFrame(time);
             if(animationDie.isAnimationFinished(time)){
                 setPosition(32, Gdx.graphics.getHeight() - 32*4);
-                isDie = false;
+                isAlive = true;
                 time = 0;
                 textureRegion = animationRight.getKeyFrame(time);
             }

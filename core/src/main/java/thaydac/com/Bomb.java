@@ -90,7 +90,6 @@ public class Bomb extends MyActor {
         super.act(delta);
         if(isJustPlaced && !getBound().overlaps(Master.man.getBound())){
             isJustPlaced = false;
-            Master.walls.add(this);
         }
 
         time += delta;

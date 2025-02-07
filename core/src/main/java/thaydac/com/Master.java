@@ -34,9 +34,9 @@ public class Master extends ApplicationAdapter {
 
     static Array<MyActor> walls = new Array<>();
     static Array<Brick> briches = new Array<>();
-    Array<MyActor> enemies = new Array<>();
+    static Array<MyActor> enemies = new Array<>();
     Array<Bomb> bombs = new Array<>();
-    Array<Explosion> explosions = new Array<>();
+    static Array<Explosion> explosions = new Array<>();
     Sound dieSound;
     Sound collectSound;
 
@@ -68,7 +68,7 @@ public class Master extends ApplicationAdapter {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+        if(man.isAlive && Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
             int xMan = Math.round(man.getX()/32)*32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
             int yMan = Math.round(man.getY()/32)*32;
             boolean positionOK = true;
@@ -81,14 +81,15 @@ public class Master extends ApplicationAdapter {
             if(positionOK && man.bombNumber > 0){
                 Bomb bomb = new Bomb(xMan,yMan, stage, bombs, explosions);
                 bombs.add(bomb);
+                walls.add(bomb);
                 man.bombNumber--;
             }
         }
 
-        if(!man.isDie){
+        if(man.isAlive){
             for (Explosion explosion: explosions) {
                 if(explosion.getBound().overlaps(man.getBound())){
-                    man.isDie = true;
+                    man.isAlive = false;
                     man.time = 0;
                     dieSound.play();
                     break;
@@ -96,7 +97,7 @@ public class Master extends ApplicationAdapter {
             }
             for (MyActor enemy: enemies) {
                 if(enemy.getBound().overlaps(man.getBound())){
-                    man.isDie = true;
+                    man.isAlive = false;
                     man.time = 0;
                     dieSound.play();
                     break;
@@ -293,7 +294,11 @@ public class Master extends ApplicationAdapter {
     }
 
 
+    // _actor1: wall, _actor2: man
     boolean checkCollision(MyActor _actor1, MyActor _actor2){
+        if(_actor1 instanceof Bomb && ((Bomb) _actor1).isJustPlaced){
+            return  false;
+        }
         return _actor1.getBound().overlaps(_actor2.getBound());
     }
 }
