@@ -98,14 +98,6 @@ public class Bomb extends MyActor {
             isExploded = true;
         }
 
-        if(!isExploded) {
-            for (Explosion explosion : explosions) {
-                if (explosion.getBound().overlaps(getBound())) {
-                    isExploded = true;
-                }
-            }
-        }
-
         if (isExploded) {
             time = 0;
             explodeSound.play();
@@ -175,6 +167,10 @@ public class Bomb extends MyActor {
                 if(obstacle instanceof Brick){
                     Brick brick = (Brick) obstacle;
                     brick.isFire = true;
+                }
+                if(obstacle instanceof Bomb){
+                    Bomb bomb = (Bomb) obstacle;
+                    bomb.isExploded = true;
                 }
                 return true; // Có vật cản tại vị trí này
             }

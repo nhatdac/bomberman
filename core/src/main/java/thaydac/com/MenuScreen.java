@@ -37,7 +37,7 @@ public class MenuScreen implements Screen {
             }
         } else if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
             if(playY == 145){
-                game.setScreen(new Master(game));
+                game.setScreen(new StageScreen(game));
             }
         }
     }

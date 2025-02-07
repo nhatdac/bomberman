@@ -1,18 +1,17 @@
 package thaydac.com;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+
+import java.lang.reflect.Type;
 
 public class Master implements Screen {
     StartGame game;
@@ -20,6 +19,8 @@ public class Master implements Screen {
     int count = 0;
     int score = 0;
     int left = 3;
+    int timingChangeLevel;
+    static boolean isFinished;
 
     Stage stage;
     private Background background;
@@ -27,21 +28,38 @@ public class Master implements Screen {
     static Man man;
     static Item item;
     static Door door;
+    static int level = 1;
 
-    static Array<MyActor> walls = new Array<>();
-    static Array<Brick> briches = new Array<>();
-    static Array<MyActor> enemies = new Array<>();
-    Array<Bomb> bombs = new Array<>();
-    static Array<Explosion> explosions = new Array<>();
+    static Array<MyActor> walls;
+    static Array<Brick> briches;
+    static Array<MyActor> enemies;
+    Array<Bomb> bombs;
+    static Array<Explosion> explosions;
     Sound dieSound;
     Sound collectSound;
+
+    // vẽ đ thử
+    ShapeRenderer shapeRenderer = new ShapeRenderer();
+    Rectangle itemRec = new Rectangle();
+    Rectangle doorRec = new Rectangle();
 
     public Master(StartGame game) {
         this.game = game;
         stage = new Stage();
-        generateMap();
 
-        man = new Man(32, Gdx.graphics.getHeight() - 32 * 4, stage);
+        walls = new Array<>();
+        briches = new Array<>();
+        enemies = new Array<>();
+        bombs = new Array<>();
+        explosions = new Array<>();
+
+        generateMap();
+        if(man == null) { // lúc mới vào game nó chưa được khơỉ tạp
+            man = new Man(32, Gdx.graphics.getHeight() - 32 * 4, stage);
+        } else { // khi vào ván mới chỉ cần đặt vị trí và add vào stage, vì stage đã khởi tạo lại
+            man.setPosition(32, Gdx.graphics.getHeight() - 32 * 4);
+            stage.addActor(man);
+        }
 
         dieSound = Gdx.audio.newSound(Gdx.files.internal("die.mp3"));
         collectSound = Gdx.audio.newSound(Gdx.files.internal("collect.mp3"));
@@ -49,7 +67,8 @@ public class Master implements Screen {
 
     @Override
     public void show() {
-
+        isFinished = false;
+        timingChangeLevel = 120;
     }
 
     @Override
@@ -97,7 +116,8 @@ public class Master implements Screen {
         stage.act();
         collisionWall();
         collectItems();
-        man.setZIndex(stage.getActors().size - 1);
+        collisionDoor();
+        man.toFront();
         stage.draw();
 
         count++;
@@ -109,31 +129,20 @@ public class Master implements Screen {
         game.font.draw(game.batch, score < 10 ? "0" + score : "" + score, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - 16);
         game.font.draw(game.batch, "LEFT: " + left, Gdx.graphics.getWidth() - 128, Gdx.graphics.getHeight() - 16);
         game.batch.end();
-    }
 
-    @Override
-    public void resize(int i, int i1) {
+        if (isFinished){
+            timingChangeLevel--;
+            if(timingChangeLevel < 1){
+                level++;
+                game.setScreen(new StageScreen(game));
+            }
+        }
 
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.rect(itemRec.getX(), itemRec.getY(), itemRec.width, itemRec.height);
+        shapeRenderer.rect(doorRec.getX(), doorRec.getY(), doorRec.width, doorRec.height);
+        shapeRenderer.end();
     }
 
     public void collectItems() {
@@ -145,6 +154,17 @@ public class Master implements Screen {
             }
             item.remove();
             item = null;
+            collectSound.play();
+        }
+    }
+
+    public void collisionDoor(){
+        if (door != null
+            && !isFinished
+            && enemies.isEmpty()
+            && man.getX() == door.getX()
+            && man.getY() == door.getY()) { // lúc vào cửa trùng hoàn toàn vị trí cho đẹp
+            isFinished = true;
             collectSound.play();
         }
     }
@@ -235,11 +255,13 @@ public class Master implements Screen {
                         enemy1Number--;
                     }
                 } else if (cell == 4) {
-                    if (enemy2Number > 0) {
-                        Enemy2 enemy2 = new Enemy2(x, y, stage);
-                        // Tạo enemy
-                        enemies.add(enemy2);
-                        enemy2Number--;
+                    if(level > 1){
+                        if (enemy2Number > 0) {
+                            Enemy2 enemy2 = new Enemy2(x, y, stage);
+                            // Tạo enemy
+                            enemies.add(enemy2);
+                            enemy2Number--;
+                        }
                     }
                 }
             }
@@ -252,6 +274,8 @@ public class Master implements Screen {
         }
         briches.get(itemPosition).hasItem = true;
         briches.get(doorPosition).hasDoor = true;
+        itemRec = briches.get(itemPosition).getBound();
+        doorRec = briches.get(doorPosition).getBound();
     }
 
 
@@ -261,5 +285,30 @@ public class Master implements Screen {
             return false;
         }
         return _actor1.getBound().overlaps(_actor2.getBound());
+    }
+
+    @Override
+    public void resize(int i, int i1) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+
     }
 }

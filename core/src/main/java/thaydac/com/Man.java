@@ -70,40 +70,42 @@ public class Man extends MyActor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if(isAlive) {
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                direction = "L";
-                moveBy(-2, 0);
+        if(!Master.isFinished) {
+            if (isAlive) {
+                if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                    direction = "L";
+                    moveBy(-2, 0);
+                    time += delta;
+                    textureRegion = animationLeft.getKeyFrame(time);
+                    playSoundWalking(1, delta);
+                } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                    direction = "R";
+                    moveBy(2, 0);
+                    time += delta;
+                    textureRegion = animationRight.getKeyFrame(time);
+                    playSoundWalking(1, delta);
+                } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                    direction = "D";
+                    moveBy(0, -2);
+                    time += delta;
+                    textureRegion = animationDown.getKeyFrame(time);
+                    playSoundWalking(2, delta);
+                } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                    direction = "U";
+                    moveBy(0, 2);
+                    time += delta;
+                    textureRegion = animationUp.getKeyFrame(time);
+                    playSoundWalking(2, delta);
+                }
+            } else {
                 time += delta;
-                textureRegion = animationLeft.getKeyFrame(time);
-                playSoundWalking(1, delta);
-            } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-                direction = "R";
-                moveBy(2, 0);
-                time += delta;
-                textureRegion = animationRight.getKeyFrame(time);
-                playSoundWalking(1, delta);
-            } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                direction = "D";
-                moveBy(0, -2);
-                time += delta;
-                textureRegion = animationDown.getKeyFrame(time);
-                playSoundWalking(2, delta);
-            } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                direction = "U";
-                moveBy(0, 2);
-                time += delta;
-                textureRegion = animationUp.getKeyFrame(time);
-                playSoundWalking(2, delta);
-            }
-        } else {
-            time += delta;
-            textureRegion = animationDie.getKeyFrame(time);
-            if(animationDie.isAnimationFinished(time)){
-                setPosition(32, Gdx.graphics.getHeight() - 32*4);
-                isAlive = true;
-                time = 0;
-                textureRegion = animationRight.getKeyFrame(time);
+                textureRegion = animationDie.getKeyFrame(time);
+                if (animationDie.isAnimationFinished(time)) {
+                    setPosition(32, Gdx.graphics.getHeight() - 32 * 4);
+                    isAlive = true;
+                    time = 0;
+                    textureRegion = animationRight.getKeyFrame(time);
+                }
             }
         }
     }
