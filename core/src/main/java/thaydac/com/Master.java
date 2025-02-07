@@ -3,6 +3,7 @@ package thaydac.com;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,16 +12,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.Timer;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class Master extends ApplicationAdapter {
-    private SpriteBatch batch;
-    OrthographicCamera camera;
-    BitmapFont font;
+public class Master implements Screen {
+    StartGame game;
     int time = 150;
     int count = 0;
     int score = 0;
@@ -40,63 +35,56 @@ public class Master extends ApplicationAdapter {
     Sound dieSound;
     Sound collectSound;
 
-    @Override
-    public void create() {
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch = new SpriteBatch();
+    public Master(StartGame game) {
+        this.game = game;
         stage = new Stage();
-
-      //  buildMap();
         generateMap();
 
-        man = new Man(32, Gdx.graphics.getHeight() - 32*4, stage);
-
-        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("Lonely Cake.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        fontParameter.size = 32;
-        fontParameter.color = Color.WHITE;
-        font = fontGenerator.generateFont(fontParameter);
-        fontGenerator.dispose();
+        man = new Man(32, Gdx.graphics.getHeight() - 32 * 4, stage);
 
         dieSound = Gdx.audio.newSound(Gdx.files.internal("die.mp3"));
         collectSound = Gdx.audio.newSound(Gdx.files.internal("collect.mp3"));
     }
 
     @Override
-    public void render() {
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
+    public void show() {
 
-        if(man.isAlive && Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-            int xMan = Math.round(man.getX()/32)*32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
-            int yMan = Math.round(man.getY()/32)*32;
+    }
+
+    @Override
+    public void render(float v) {
+        game.camera.update();
+        game.batch.setProjectionMatrix(game.camera.combined);
+
+        if (man.isAlive && Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
+            int yMan = Math.round(man.getY() / 32) * 32;
             boolean positionOK = true;
-            for (Bomb b: bombs) {
-                if(b.getX() == xMan && b.getY() == yMan){
+            for (Bomb b : bombs) {
+                if (b.getX() == xMan && b.getY() == yMan) {
                     positionOK = false;
                     break;
                 }
             }
-            if(positionOK && man.bombNumber > 0){
-                Bomb bomb = new Bomb(xMan,yMan, stage, bombs, explosions);
+            if (positionOK && man.bombNumber > 0) {
+                Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions);
                 bombs.add(bomb);
                 walls.add(bomb);
                 man.bombNumber--;
             }
         }
 
-        if(man.isAlive){
-            for (Explosion explosion: explosions) {
-                if(explosion.getBound().overlaps(man.getBound())){
+        if (man.isAlive) {
+            for (Explosion explosion : explosions) {
+                if (explosion.getBound().overlaps(man.getBound())) {
                     man.isAlive = false;
                     man.time = 0;
                     dieSound.play();
                     break;
                 }
             }
-            for (MyActor enemy: enemies) {
-                if(enemy.getBound().overlaps(man.getBound())){
+            for (MyActor enemy : enemies) {
+                if (enemy.getBound().overlaps(man.getBound())) {
                     man.isAlive = false;
                     man.time = 0;
                     dieSound.play();
@@ -111,25 +99,45 @@ public class Master extends ApplicationAdapter {
         man.setZIndex(stage.getActors().size - 1);
         stage.draw();
 
-        count ++;
-        if(count%60 == 0){
+        count++;
+        if (count % 60 == 0) {
             time--;
         }
-        batch.begin();
-        font.draw(batch, "TIME: " + time, 32, Gdx.graphics.getHeight() - 16);
-        font.draw(batch, score < 10 ? "0" + score: "" + score, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight() - 16);
-        font.draw(batch, "LEFT: " + left, Gdx.graphics.getWidth() - 128, Gdx.graphics.getHeight() - 16);
-        batch.end();
+        game.batch.begin();
+        game.font.draw(game.batch, "TIME: " + time, 32, Gdx.graphics.getHeight() - 16);
+        game.font.draw(game.batch, score < 10 ? "0" + score : "" + score, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - 16);
+        game.font.draw(game.batch, "LEFT: " + left, Gdx.graphics.getWidth() - 128, Gdx.graphics.getHeight() - 16);
+        game.batch.end();
+    }
+
+    @Override
+    public void resize(int i, int i1) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
     }
 
     @Override
     public void dispose() {
-        batch.dispose();
+
     }
 
-    public void collectItems(){
-        if(item != null && man.getBound().overlaps(item.getBound())){
-            if(item.type.equals(ItemType.BOMB_NUMBER)){
+    public void collectItems() {
+        if (item != null && man.getBound().overlaps(item.getBound())) {
+            if (item.type.equals(ItemType.BOMB_NUMBER)) {
                 man.bombNumber++;
             } else if (item.type.equals(ItemType.BOMB_POWER)) {
                 man.bombPower++;
@@ -140,31 +148,31 @@ public class Master extends ApplicationAdapter {
         }
     }
 
-    public void collisionWall(){
-        for (MyActor wall: walls) {
-           if(checkCollision(wall, man)){
-                if(man.direction.equalsIgnoreCase("L")){
+    public void collisionWall() {
+        for (MyActor wall : walls) {
+            if (checkCollision(wall, man)) {
+                if (man.direction.equalsIgnoreCase("L")) {
                     man.moveBy(2, 0);
                     float diff = diffirentYCor(man, wall);
-                    if(Math.abs(diff) < 10){
+                    if (Math.abs(diff) < 10) {
                         man.moveBy(0, diff);
                     }
-                } else if(man.direction.equalsIgnoreCase("R")){
+                } else if (man.direction.equalsIgnoreCase("R")) {
                     man.moveBy(-2, 0);
                     float diff = diffirentYCor(man, wall);
-                    if(Math.abs(diff) < 10){
+                    if (Math.abs(diff) < 10) {
                         man.moveBy(0, diff);
                     }
-                } else if(man.direction.equalsIgnoreCase("U")){
+                } else if (man.direction.equalsIgnoreCase("U")) {
                     man.moveBy(0, -2);
                     float diff = diffirentXCor(man, wall);
-                    if(Math.abs(diff) < 10){
+                    if (Math.abs(diff) < 10) {
                         man.moveBy(diff, 0);
                     }
-                } else if(man.direction.equalsIgnoreCase("D")){
+                } else if (man.direction.equalsIgnoreCase("D")) {
                     man.moveBy(0, 2);
                     float diff = diffirentXCor(man, wall);
-                    if(Math.abs(diff) < 10){
+                    if (Math.abs(diff) < 10) {
                         man.moveBy(diff, 0);
                     }
                 }
@@ -173,74 +181,26 @@ public class Master extends ApplicationAdapter {
         }
     }
 
-    public float diffirentYCor(MyActor _man, MyActor _wall){
+    public float diffirentYCor(MyActor _man, MyActor _wall) {
         float diff;
-        if(_man.getY() > _wall.getY()){
+        if (_man.getY() > _wall.getY()) {
             diff = _wall.getY() + _wall.getHeight() - _man.getY();
         } else {
             diff = -1 * (_man.getY() + _man.getHeight() - _wall.getY());
         }
 
-        return  diff;
+        return diff;
     }
 
-    public float diffirentXCor(MyActor _man, MyActor _wall){
+    public float diffirentXCor(MyActor _man, MyActor _wall) {
         float diff;
-        if(_man.getX() > _wall.getX()){
+        if (_man.getX() > _wall.getX()) {
             diff = _wall.getX() + _wall.getWidth() - _man.getX();
         } else {
             diff = -1 * (_man.getX() + _man.getWidth() - _wall.getX());
         }
 
-        return  diff;
-    }
-
-    public void buildMap(){
-        background = new Background(0, 0, stage);
-        panel = new Panel(0, Gdx.graphics.getHeight() - 32, stage);
-
-        int xWall = 0;
-        int yWall = 0;
-        for(int i = 0; i < 31; i++){
-            Wall wall = new Wall(xWall, yWall, stage);
-            walls.add(wall);
-            xWall += 32;
-        }
-        xWall = 0;
-        yWall = Gdx.graphics.getHeight() - 32*2;
-        for(int i = 0; i < 31; i++){
-            Wall wall = new Wall(xWall, yWall, stage);
-            walls.add(wall);
-            xWall += 32;
-        }
-        xWall = 0;
-        yWall = 32;
-        for(int i = 0; i < 13; i++){
-            Wall wall = new Wall(xWall, yWall, stage);
-            walls.add(wall);
-            yWall += 32;
-        }
-        xWall = Gdx.graphics.getWidth() - 32;
-        yWall = 32;
-        for(int i = 0; i < 13; i++){
-            Wall wall = new Wall(xWall, yWall, stage);
-            walls.add(wall);
-            yWall += 32;
-        }
-        xWall = 32 * 2;
-        yWall = 32 * 2;
-        for (int k = 0; k < 15; k++) {
-            for (int i = 0; i < 6; i++) {
-                Wall wall = new Wall(xWall, yWall, stage);
-                walls.add(wall);
-                yWall += 32 * 2;
-            }
-            xWall += 32*2;
-            yWall -= 6*32*2;
-        }
-
-        Brick brick = new Brick(32, 32, stage);
-        briches.add(brick);
+        return diff;
     }
 
     public void generateMap() {
@@ -267,14 +227,14 @@ public class Master extends ApplicationAdapter {
                     // cho cả gạch vào tuờng để kiểm tra va chạm dễ hơn
                     walls.add(brick);
                 } else if (cell == 3) {
-                    if(enemy1Number > 0){
+                    if (enemy1Number > 0) {
                         Enemy1 enemy1 = new Enemy1(x, y, stage);
                         // Tạo enemy
                         enemies.add(enemy1);
                         enemy1Number--;
                     }
                 } else if (cell == 4) {
-                    if(enemy2Number > 0){
+                    if (enemy2Number > 0) {
                         Enemy2 enemy2 = new Enemy2(x, y, stage);
                         // Tạo enemy
                         enemies.add(enemy2);
@@ -286,7 +246,7 @@ public class Master extends ApplicationAdapter {
         int itemPosition = MathUtils.random(0, briches.size - 1);
         int doorPosition = MathUtils.random(0, briches.size - 1);
 
-        while (itemPosition == doorPosition){
+        while (itemPosition == doorPosition) {
             doorPosition = MathUtils.random(0, briches.size - 1);
         }
         briches.get(itemPosition).hasItem = true;
@@ -295,9 +255,9 @@ public class Master extends ApplicationAdapter {
 
 
     // _actor1: wall, _actor2: man
-    boolean checkCollision(MyActor _actor1, MyActor _actor2){
-        if(_actor1 instanceof Bomb && ((Bomb) _actor1).isJustPlaced){
-            return  false;
+    boolean checkCollision(MyActor _actor1, MyActor _actor2) {
+        if (_actor1 instanceof Bomb && ((Bomb) _actor1).isJustPlaced) {
+            return false;
         }
         return _actor1.getBound().overlaps(_actor2.getBound());
     }
