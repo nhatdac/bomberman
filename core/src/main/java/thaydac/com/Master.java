@@ -58,6 +58,9 @@ public class Master implements Screen {
             man = new Man(32, Gdx.graphics.getHeight() - 32 * 4, stage);
         } else { // khi vào ván mới chỉ cần đặt vị trí và add vào stage, vì stage đã khởi tạo lại
             man.setPosition(32, Gdx.graphics.getHeight() - 32 * 4);
+            man.time = 0;
+            man.isAlive = true;
+            man.textureRegion = man.animationRight.getKeyFrame(time);
             stage.addActor(man);
         }
 
@@ -136,6 +139,8 @@ public class Master implements Screen {
                 level++;
                 game.setScreen(new StageScreen(game));
             }
+        } else if (!man.isAlive && man.animationDie.isAnimationFinished(man.time)) {
+            game.setScreen(new StageScreen(game));
         }
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);

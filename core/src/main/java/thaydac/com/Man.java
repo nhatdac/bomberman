@@ -100,12 +100,6 @@ public class Man extends MyActor {
             } else {
                 time += delta;
                 textureRegion = animationDie.getKeyFrame(time);
-                if (animationDie.isAnimationFinished(time)) {
-                    setPosition(32, Gdx.graphics.getHeight() - 32 * 4);
-                    isAlive = true;
-                    time = 0;
-                    textureRegion = animationRight.getKeyFrame(time);
-                }
             }
         }
     }
