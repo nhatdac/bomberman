@@ -11,9 +11,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
-
-import java.lang.reflect.Type;
+import thaydac.com.enemies.Enemy1;
+import thaydac.com.enemies.Enemy2;
+import thaydac.com.enemies.EnemyFast;
 
 public class Master implements Screen {
     StartGame game;
@@ -26,18 +26,18 @@ public class Master implements Screen {
     Stage stage;
     private Background background;
     private Panel panel;
-    static Man man;
-    static Item item;
-    static Door door;
+    public static Man man;
+    public static Item item;
+    public static Door door;
     static int level = 1;
 
     int[][] wallArray;
 
-    static Array<MyActor> walls;
-    static Array<Brick> briches;
-    static Array<MyActor> enemies;
-    Array<Bomb> bombs;
-    static Array<Explosion> explosions;
+    public static Array<MyActor> walls;
+    public static Array<Brick> briches;
+    public static Array<MyActor> enemies;
+    public Array<Bomb> bombs;
+    public static Array<Explosion> explosions;
     Music dieSound;
     Music dieMusic;
     Music finishMusic;

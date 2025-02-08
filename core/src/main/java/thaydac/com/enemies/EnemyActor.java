@@ -1,11 +1,14 @@
-package thaydac.com;
+package thaydac.com.enemies;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import thaydac.com.Explosion;
+import thaydac.com.Master;
+import thaydac.com.MyActor;
 
-public class EnemyActor extends MyActor{
+public class EnemyActor extends MyActor {
     Animation<TextureRegion> animation;
     Animation<TextureRegion> animationDie;
     float time;
@@ -14,7 +17,7 @@ public class EnemyActor extends MyActor{
     int speedY = 0;
     boolean isAlive = true;
 
-    EnemyActor(float x, float y, Stage s) {
+    public EnemyActor(float x, float y, Stage s) {
         super(x, y, s);
         setSize(32, 32);
     }

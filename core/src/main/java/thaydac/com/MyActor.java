@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class MyActor extends Actor {
-    TextureRegion textureRegion;
-    MyActor(float x, float y , Stage s){
+    public TextureRegion textureRegion;
+    public MyActor(float x, float y , Stage s){
         setPosition(x, y);
         s.addActor(this);
     }
