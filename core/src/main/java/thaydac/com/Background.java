@@ -11,6 +11,6 @@ public class Background extends MyActor{
         super(x, y, s);
         TextureRegion tRegion = new TextureRegion(new Texture("background.png"));
         textureRegion = tRegion;
-        setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        setSize(31*32, Gdx.graphics.getHeight());
     }
 }

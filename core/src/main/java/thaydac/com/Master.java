@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.lang.reflect.Type;
 
@@ -112,13 +113,17 @@ public class Master implements Screen {
     @Override
     public void show() {
         isFinished = false;
-        timing = 20;
+        timing = 150;
     }
 
     @Override
     public void render(float v) {
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
+
+        if(man.getX() > Gdx.graphics.getWidth()/2 && man.getX() < 31*32 - Gdx.graphics.getWidth()/2){
+            stage.getCamera().position.x = man.getX();
+        }
 
         if (man.isAlive) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {

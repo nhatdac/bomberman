@@ -11,6 +11,6 @@ public class Panel extends MyActor{
         // lấy khoảng giữa của viên đá để làm phần panel
         TextureRegion tRegion = new TextureRegion(new Texture("wall.png"), 5, 5, 5, 5);
         textureRegion = tRegion;
-        setSize(Gdx.graphics.getWidth(), 64);
+        setSize(31*32, 64);
     }
 }
