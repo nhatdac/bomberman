@@ -22,6 +22,7 @@ public class Master implements Screen {
     int score = 0;
     int left = 3;
     static boolean isFinished;
+    boolean isEnemiesAllDie = false;
 
     Stage stage;
     private Background background;
@@ -43,6 +44,7 @@ public class Master implements Screen {
     Music finishMusic;
     Music backgroundMusic;
     Music timeupMusic;
+    Music enemiesalldieMusic;
     Sound collectSound;
 
     // vẽ đ thử
@@ -76,6 +78,7 @@ public class Master implements Screen {
         finishMusic = Gdx.audio.newMusic(Gdx.files.internal("finishMusic.mp3"));
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("background.mp3"));
         timeupMusic = Gdx.audio.newMusic(Gdx.files.internal("timeup.mp3"));
+        enemiesalldieMusic = Gdx.audio.newMusic(Gdx.files.internal("enemiesalldie.mp3"));
         collectSound = Gdx.audio.newSound(Gdx.files.internal("collect.mp3"));
 
         backgroundMusic.play();
@@ -169,6 +172,11 @@ public class Master implements Screen {
             if(!man.isAlive){
                 man.time = 0;
             }
+        }
+
+        if(!isEnemiesAllDie && enemies.isEmpty()){
+            enemiesalldieMusic.play();
+            isEnemiesAllDie = true;
         }
 
 
