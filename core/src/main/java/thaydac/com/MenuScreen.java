@@ -3,6 +3,7 @@ package thaydac.com;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 
 public class MenuScreen implements Screen {
@@ -12,8 +13,11 @@ public class MenuScreen implements Screen {
     int playX;
     int playY;
 
+    Music welcomeMusic;
+
     MenuScreen(StartGame game){
         this.game = game;
+        welcomeMusic = Gdx.audio.newMusic(Gdx.files.internal("welcome.mp3"));
     }
     @Override
     public void show() {
@@ -21,6 +25,7 @@ public class MenuScreen implements Screen {
         playTexture = new Texture("play.png");
         playX = 250;
         playY = 110;
+        welcomeMusic.play();
     }
 
     @Override
@@ -59,7 +64,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void hide() {
-
+        welcomeMusic.stop();
     }
 
     @Override

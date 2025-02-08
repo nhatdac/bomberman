@@ -3,6 +3,7 @@ package thaydac.com;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -15,11 +16,10 @@ import java.lang.reflect.Type;
 
 public class Master implements Screen {
     StartGame game;
-    int time = 150;
+    int timing = 0;
     int count = 0;
     int score = 0;
     int left = 3;
-    int timingChangeLevel;
     static boolean isFinished;
 
     Stage stage;
@@ -30,12 +30,18 @@ public class Master implements Screen {
     static Door door;
     static int level = 1;
 
+    int[][] wallArray;
+
     static Array<MyActor> walls;
     static Array<Brick> briches;
     static Array<MyActor> enemies;
     Array<Bomb> bombs;
     static Array<Explosion> explosions;
-    Sound dieSound;
+    Music dieSound;
+    Music dieMusic;
+    Music finishMusic;
+    Music backgroundMusic;
+    Music timeupMusic;
     Sound collectSound;
 
     // vẽ đ thử
@@ -60,18 +66,53 @@ public class Master implements Screen {
             man.setPosition(32, Gdx.graphics.getHeight() - 32 * 4);
             man.time = 0;
             man.isAlive = true;
-            man.textureRegion = man.animationRight.getKeyFrame(time);
+            man.textureRegion = man.animationRight.getKeyFrame(timing);
             stage.addActor(man);
         }
 
-        dieSound = Gdx.audio.newSound(Gdx.files.internal("die.mp3"));
+        dieSound = Gdx.audio.newMusic(Gdx.files.internal("die.mp3"));
+        dieMusic = Gdx.audio.newMusic(Gdx.files.internal("dieMusic.mp3"));
+        finishMusic = Gdx.audio.newMusic(Gdx.files.internal("finishMusic.mp3"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("background.mp3"));
+        timeupMusic = Gdx.audio.newMusic(Gdx.files.internal("timeup.mp3"));
         collectSound = Gdx.audio.newSound(Gdx.files.internal("collect.mp3"));
+
+        backgroundMusic.play();
+
+        dieSound.setOnCompletionListener(new Music.OnCompletionListener() {
+            @Override
+            public void onCompletion(Music music) {
+                dieMusic.play();
+            }
+        });
+
+        dieMusic.setOnCompletionListener(new Music.OnCompletionListener() {
+            @Override
+            public void onCompletion(Music music) {
+                game.setScreen(new StageScreen(game));
+            }
+        });
+
+        finishMusic.setOnCompletionListener(new Music.OnCompletionListener() {
+            @Override
+            public void onCompletion(Music music) {
+                level++;
+                game.setScreen(new StageScreen(game));
+            }
+        });
+
+        timeupMusic.setOnCompletionListener(new Music.OnCompletionListener() {
+            @Override
+            public void onCompletion(Music music) {
+                spawnEnemyFast();
+            }
+        });
     }
 
     @Override
     public void show() {
         isFinished = false;
-        timingChangeLevel = 120;
+        timing = 20;
     }
 
     @Override
@@ -79,29 +120,27 @@ public class Master implements Screen {
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
 
-        if (man.isAlive && Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
-            int yMan = Math.round(man.getY() / 32) * 32;
-            boolean positionOK = true;
-            for (Bomb b : bombs) {
-                if (b.getX() == xMan && b.getY() == yMan) {
-                    positionOK = false;
-                    break;
+        if (man.isAlive) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+                int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
+                int yMan = Math.round(man.getY() / 32) * 32;
+                boolean positionOK = true;
+                for (Bomb b : bombs) {
+                    if (b.getX() == xMan && b.getY() == yMan) {
+                        positionOK = false;
+                        break;
+                    }
+                }
+                if (positionOK && man.bombNumber > 0) {
+                    Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions);
+                    bombs.add(bomb);
+                    walls.add(bomb);
+                    man.bombNumber--;
                 }
             }
-            if (positionOK && man.bombNumber > 0) {
-                Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions);
-                bombs.add(bomb);
-                walls.add(bomb);
-                man.bombNumber--;
-            }
-        }
-
-        if (man.isAlive) {
             for (Explosion explosion : explosions) {
                 if (explosion.getBound().overlaps(man.getBound())) {
                     man.isAlive = false;
-                    man.time = 0;
                     dieSound.play();
                     break;
                 }
@@ -109,12 +148,24 @@ public class Master implements Screen {
             for (MyActor enemy : enemies) {
                 if (enemy.getBound().overlaps(man.getBound())) {
                     man.isAlive = false;
-                    man.time = 0;
                     dieSound.play();
                     break;
                 }
             }
+            count++;
+            if (count % 60 == 0) {
+                if(timing > 0) {
+                    timing--;
+                    if (timing == 0) {
+                        timeupMusic.play();
+                    }
+                }
+            }
+            if(!man.isAlive){
+                man.time = 0;
+            }
         }
+
 
         stage.act();
         collisionWall();
@@ -123,25 +174,11 @@ public class Master implements Screen {
         man.toFront();
         stage.draw();
 
-        count++;
-        if (count % 60 == 0) {
-            time--;
-        }
         game.batch.begin();
-        game.font.draw(game.batch, "TIME: " + time, 32, Gdx.graphics.getHeight() - 16);
+        game.font.draw(game.batch, "TIME: " + timing, 32, Gdx.graphics.getHeight() - 16);
         game.font.draw(game.batch, score < 10 ? "0" + score : "" + score, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - 16);
         game.font.draw(game.batch, "LEFT: " + left, Gdx.graphics.getWidth() - 128, Gdx.graphics.getHeight() - 16);
         game.batch.end();
-
-        if (isFinished){
-            timingChangeLevel--;
-            if(timingChangeLevel < 1){
-                level++;
-                game.setScreen(new StageScreen(game));
-            }
-        } else if (!man.isAlive && man.animationDie.isAnimationFinished(man.time)) {
-            game.setScreen(new StageScreen(game));
-        }
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
@@ -170,7 +207,7 @@ public class Master implements Screen {
             && man.getX() == door.getX()
             && man.getY() == door.getY()) { // lúc vào cửa trùng hoàn toàn vị trí cho đẹp
             isFinished = true;
-            collectSound.play();
+            finishMusic.play();
         }
     }
 
@@ -233,7 +270,7 @@ public class Master implements Screen {
         background = new Background(0, 0, stage);
         panel = new Panel(0, Gdx.graphics.getHeight() - 64, stage);
 
-        int[][] wallArray = Utils.buildMap();
+        wallArray = Utils.buildMap();
         int enemy1Number = 5;
         int enemy2Number = 3;
 
@@ -292,6 +329,27 @@ public class Master implements Screen {
         return _actor1.getBound().overlaps(_actor2.getBound());
     }
 
+    public void spawnEnemyFast() {
+        int enemyFastNumber = 15;
+
+        int tileSize = 32; // Kích thước mỗi ô
+        for (int row = 3; row < wallArray.length; row++) {
+            for (int col = 0; col < wallArray[row].length; col++) {
+                int cell = wallArray[row][col];
+                int x = col * tileSize;
+                int y = (wallArray.length - 1 - row) * tileSize; // Lật trục y
+                if (cell == 0) {
+                    if (enemyFastNumber > 0 && MathUtils.random(1, 3) == 1) {
+                        EnemyFast enemyFast = new EnemyFast(x, y, stage);
+                        // Tạo enemy fast
+                        enemies.add(enemyFast);
+                        enemyFastNumber--;
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void resize(int i, int i1) {
 
@@ -309,7 +367,7 @@ public class Master implements Screen {
 
     @Override
     public void hide() {
-
+        backgroundMusic.stop();
     }
 
     @Override

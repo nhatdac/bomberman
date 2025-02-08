@@ -19,7 +19,7 @@ public class EnemyActor extends MyActor{
         setSize(32, 32);
     }
 
-    public void setAnimation(Texture texture, int cot, int hang){
+    public void setAnimation(Texture texture, int cot, int hang, float frameDuration){
 
         TextureRegion[][] frameBuff = TextureRegion.split(texture, texture.getWidth() / cot, texture.getHeight() / hang);
         TextureRegion[] frames = new TextureRegion[cot * hang];
@@ -33,8 +33,8 @@ public class EnemyActor extends MyActor{
         TextureRegion[] framesAlive = {frames[0], frames[1], frames[2], frames[3], frames[4], frames[5], frames[6]};
         TextureRegion[] framesDie = {frames[7], frames[8], frames[9], frames[10]};
 
-        animation = new Animation<TextureRegion>(0.3f, framesAlive);
-        animationDie = new Animation<TextureRegion>(0.3f, framesDie);
+        animation = new Animation<TextureRegion>(frameDuration, framesAlive);
+        animationDie = new Animation<TextureRegion>(frameDuration, framesDie);
         animation.setPlayMode(Animation.PlayMode.LOOP);
 
         time = 0;

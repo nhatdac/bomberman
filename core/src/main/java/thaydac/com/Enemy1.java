@@ -15,7 +15,7 @@ public class Enemy1 extends EnemyActor {
     Enemy1(float x, float y, Stage s) {
         super(x, y, s);
         Texture texture = new Texture("enemy1.png");
-        setAnimation(texture, 11, 1);
+        setAnimation(texture, 11, 1, 0.3f);
     }
 
     @Override
