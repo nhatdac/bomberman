@@ -19,8 +19,6 @@ public class Master implements Screen {
     StartGame game;
     int timing = 0;
     int count = 0;
-    int score = 0;
-    int left = 3;
     static boolean isFinished;
     boolean isEnemiesAllDie = false;
 
@@ -30,7 +28,6 @@ public class Master implements Screen {
     public static Man man;
     public static Item item;
     public static Door door;
-    static int level = 1;
 
     int[][] wallArray;
 
@@ -100,7 +97,8 @@ public class Master implements Screen {
         finishMusic.setOnCompletionListener(new Music.OnCompletionListener() {
             @Override
             public void onCompletion(Music music) {
-                level++;
+                GameState.level++;
+                Utils.saveGame();
                 game.setScreen(new StageScreen(game));
             }
         });
@@ -117,6 +115,7 @@ public class Master implements Screen {
     public void show() {
         isFinished = false;
         timing = 150;
+        System.out.println("" + GameState.score);
     }
 
     @Override
@@ -139,11 +138,11 @@ public class Master implements Screen {
                         break;
                     }
                 }
-                if (positionOK && man.bombNumber > 0) {
+                if (positionOK && GameState.bombNumber > 0) {
                     Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions);
                     bombs.add(bomb);
                     walls.add(bomb);
-                    man.bombNumber--;
+                    GameState.bombNumber--;
                 }
             }
             for (Explosion explosion : explosions) {
@@ -170,6 +169,7 @@ public class Master implements Screen {
                 }
             }
             if(!man.isAlive){
+                GameState.left--;
                 man.time = 0;
             }
         }
@@ -189,8 +189,8 @@ public class Master implements Screen {
 
         game.batch.begin();
         game.font.draw(game.batch, "TIME: " + timing, 32, Gdx.graphics.getHeight() - 16);
-        game.font.draw(game.batch, score < 10 ? "0" + score : "" + score, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - 16);
-        game.font.draw(game.batch, "LEFT: " + left, Gdx.graphics.getWidth() - 128, Gdx.graphics.getHeight() - 16);
+        game.font.draw(game.batch, GameState.score < 10 ? "0" + GameState.score : "" + GameState.score, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - 16);
+        game.font.draw(game.batch, "LEFT: " + GameState.left, Gdx.graphics.getWidth() - 128, Gdx.graphics.getHeight() - 16);
         game.batch.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -203,9 +203,9 @@ public class Master implements Screen {
     public void collectItems() {
         if (item != null && man.getBound().overlaps(item.getBound())) {
             if (item.type.equals(ItemType.BOMB_NUMBER)) {
-                man.bombNumber++;
+                GameState.bombNumber++;
             } else if (item.type.equals(ItemType.BOMB_POWER)) {
-                man.bombPower++;
+                GameState.bombPower++;
             }
             item.remove();
             item = null;
@@ -310,7 +310,7 @@ public class Master implements Screen {
                         enemy1Number--;
                     }
                 } else if (cell == 4) {
-                    if(level > 1){
+                    if(GameState.level > 1){
                         if (enemy2Number > 0) {
                             Enemy2 enemy2 = new Enemy2(x, y, stage);
                             // Tạo enemy
