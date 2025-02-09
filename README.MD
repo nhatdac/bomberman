@@ -6,16 +6,16 @@ Người chơi sẽ điều khiển Bomberman leo lên 50 tầng nhà máy ngầ
 
 Có tám kẻ thù khác nhau trong nhà máy ngầm, mỗi kẻ có đặc điểm riêng. Chúng di chuyển với nhiều tốc độ khác nhau, trong đó những con quái nhanh có thể vượt qua Bomberman khi chạy hết tốc lực. Mức độ thông minh của chúng cũng khác nhau: một số lang thang vô định, trong khi số khác bám theo bạn khi bạn cố chạy trốn. Ba trong số chúng có thể đi xuyên tường một cách dễ dàng, khiến chúng khó bị tiêu diệt hơn. Tuy nhiên, nếu bạn phá hủy bức tường mà chúng đang ở bên trong, chúng sẽ bị tiêu diệt theo.
 
-| Enemy  | Name     | Points | Speed       | Smart    | Wallpass | Appearance (First - Last) |
-|--------|---------|--------|------------|---------|----------|--------------------------|
-| 1      | Balloom  | 100    | 2 (Slow)   | 1 (Low) | No       | 01 - 27                  |
-| 2      | Oneal    | 200    | 3 (Normal) | 2 (Normal) | No    | 02 - 32                  |
-| 3      | Doll     | 400    | 3 (Normal) | 1 (Low) | No       | 03 - 41                  |
-| 4      | Minvo    | 800    | 4 (Fast)   | 2 (Normal) | No    | 04 - 44                  |
-| 5      | Kondoria | 1000   | 1 (Slowest) | 3 (High) | Yes     | 07 - 50                  |
-| 6      | Ovapi    | 2000   | 2 (Slow)   | 2 (Normal) | Yes    | 10 - 50                  |
-| 7      | Pass     | 4000   | 4 (Fast)   | 3 (High) | No      | 14 - 50                  |
-| 8      | Pontan   | 8000   | 4 (Fast)   | 3 (High) | Yes     | 48 - 50                  |
+| Enemy | Name     | Points | Speed       | Smart    | Wallpass | Appearance (First - Last) (Xuất hiện từ - đến) |
+|-------|---------|--------|------------|---------|----------|------------------------------------------------|
+| ![](https://cdn.wikimg.net/en/strategywiki/images/6/61/Bomberman_Balloom.png) | Balloom  | 100    | 2 (Slow)   | 1 (Low) | No       | 01 - 27                                        |
+| ![](https://cdn.wikimg.net/en/strategywiki/images/8/85/Bomberman_Oneal.png) | Oneal    | 200    | 3 (Normal) | 2 (Normal) | No    | 02 - 32                                        |
+| ![](https://cdn.wikimg.net/en/strategywiki/images/f/f0/Bomberman_Doll.png) | Doll     | 400    | 3 (Normal) | 1 (Low) | No       | 03 - 41                                        |
+| ![](https://cdn.wikimg.net/en/strategywiki/images/f/fe/Bomberman_Minvo.png) | Minvo    | 800    | 4 (Fast)   | 2 (Normal) | No    | 04 - 44                                        |
+| ![](https://cdn.wikimg.net/en/strategywiki/images/3/3e/Bomberman_Kondoria.png) | Kondoria | 1000   | 1 (Slowest) | 3 (High) | Yes     | 07 - 50                                        |
+| ![](https://cdn.wikimg.net/en/strategywiki/images/e/eb/Bomberman_Ovapi.png) | Ovapi    | 2000   | 2 (Slow)   | 2 (Normal) | Yes    | 10 - 50                                        |
+| ![](https://cdn.wikimg.net/en/strategywiki/images/4/44/Bomberman_Pass.png) | Pass     | 4000   | 4 (Fast)   | 3 (High) | No      | 14 - 50                                        |
+| ![](https://cdn.wikimg.net/en/strategywiki/images/f/fb/Bomberman_Pontan.png) | Pontan   | 8000   | 4 (Fast)   | 3 (High) | Yes     | 48 - 50                                        |
 
 ## Vật phẩm tăng sức mạnh
 Có tám loại vật phẩm tăng sức mạnh khác nhau. Trong đó có vài thứ hiếm và xịn, nhưng tốt nhất người nên tìm ra vật phẩm đặc biệt ẩn trong mỗi màn chơi. Bỏ lỡ một vật phẩm có thể khiến Bomberman gặp bất lợi. Nếu bị nổ hoặc chạm vào kẻ thù, bạn sẽ mất tất cả vật phẩm tăng sức mạnh, ngoại trừ "Bombs" và "Flames", vì chúng là vĩnh viễn.
