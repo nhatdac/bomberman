@@ -1,9 +1,19 @@
 package thaydac.com;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.Random;
 
 public class Utils {
+    public static final String PREF_NAME = "game_prefs";
+    public static final String BOMB_NUMBER = "bombNumber";
+    public static final String BOMB_POWER = "bombPower";
+    public static final String LEVEL = "level";
+    public static final String SCORE = "score";
+    public static final String LEFT = "left";
+
+
     public static int[][] buildMap() {
         Random rand = new Random();
 
@@ -59,5 +69,26 @@ public class Utils {
         System.out.println("};");
 
         return wallArray;
+    }
+
+    public static void saveGame(){
+        Preferences preferences = Gdx.app.getPreferences(PREF_NAME);
+        preferences.putInteger(LEVEL, GameState.level);
+        preferences.putInteger(SCORE, GameState.score);
+        preferences.putInteger(LEFT, GameState.left);
+        preferences.putInteger(BOMB_NUMBER, GameState.bombNumber);
+        preferences.putInteger(BOMB_POWER, GameState.bombPower);
+
+        preferences.flush();
+    }
+    public static void loadGame(){
+        Preferences preferences = Gdx.app.getPreferences(PREF_NAME);
+        GameState.level = preferences.getInteger(LEVEL, 1);
+        GameState.score = preferences.getInteger(SCORE, 0);
+        GameState.left = preferences.getInteger(LEFT, 3);
+        GameState.bombNumber = preferences.getInteger(BOMB_NUMBER, 1);
+        GameState.bombPower = preferences.getInteger(BOMB_POWER, 1);
+
+        System.out.println("Saved Data: " + preferences.get());
     }
 }

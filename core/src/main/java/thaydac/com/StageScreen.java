@@ -18,7 +18,12 @@ public class StageScreen implements Screen {
     }
     @Override
     public void show() {
-        layout.setText(game.font,"STAGE " + Master.level);
+        // Hết mạng rồi thì chơi lại từ đầu
+        if(GameState.left < 1){
+            GameState.reset();
+        }
+
+        layout.setText(game.font,"STAGE " + GameState.level);
         stageMusic.play();
         stageMusic.setOnCompletionListener(new Music.OnCompletionListener() {
             @Override

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import thaydac.com.Explosion;
+import thaydac.com.GameState;
 import thaydac.com.Master;
 import thaydac.com.MyActor;
 
@@ -59,6 +60,7 @@ public class EnemyActor extends MyActor {
         } else {
             textureRegion = animationDie.getKeyFrame(time);
             if(animationDie.isAnimationFinished(time)){
+                GameState.score += 200;
                 remove();
                 Master.enemies.removeValue(this, true);
             }

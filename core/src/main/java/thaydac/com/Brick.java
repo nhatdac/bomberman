@@ -50,9 +50,9 @@ public class Brick extends MyActor{
         if(animation.isAnimationFinished(time)){
             isFire = false;
             if(hasItem){
-                if(Master.level == 1){
+                if(GameState.level == 1){
                     Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
-                } else if(Master.level == 2){
+                } else if(GameState.level == 2){
                     Master.item = new Item(getX(), getY(), ItemType.BOMB_POWER, getStage());
                 }
 
