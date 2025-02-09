@@ -1,4 +1,6 @@
 package thaydac.com;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.Random;
@@ -59,5 +61,20 @@ public class Utils {
         System.out.println("};");
 
         return wallArray;
+    }
+    public static void saveGame(){
+        Preferences preferences = Gdx.app.getPreferences("game_pref");
+        preferences.putInteger("level", GameStage.level);
+        preferences.putInteger("score",GameStage.score);
+        preferences.putInteger("bombNumber",GameStage.bomNumber);
+        preferences.putInteger("bombPower",GameStage.bombPower);
+        preferences.flush();
+    }
+    public static void loadGame(){
+        Preferences preferences = Gdx.app.getPreferences("game_pref");
+        GameStage.level = preferences.getInteger("level",0);
+        GameStage.score = preferences.getInteger("score",0);
+        GameStage.bomNumber = preferences.getInteger("bombPower",1);
+        GameStage.bomNumber = preferences.getInteger("bombNumber",1);
     }
 }

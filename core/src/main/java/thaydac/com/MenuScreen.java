@@ -44,6 +44,10 @@ public class MenuScreen implements Screen {
             if(playY == 145){
                 game.setScreen(new StageScreen(game));
             }
+            if(playY == 110){
+                Utils.loadGame();
+                game.setScreen(new StageScreen(game));
+            }
         }
     }
 

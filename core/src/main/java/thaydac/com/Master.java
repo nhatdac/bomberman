@@ -129,6 +129,28 @@ public class Master implements Screen {
         }
 
         if (man.isAlive) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+                int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
+                int yMan = Math.round(man.getY() / 32) * 32;
+                boolean positionOK = true;
+                for (Bomb b : bombs) {
+                    if (b.getX() == xMan && b.getY() == yMan) {
+                        positionOK = false;
+                        break;
+                    }
+                }
+                if (positionOK && man.bombNumber > 0) {
+                    for(int j = 0;j < 10*32;j += 32){
+                        for(int i = 0;i < 10*32;i += 32){
+                            Bomb bomb = new Bomb(xMan + i, yMan, stage, bombs, explosions);
+                            bombs.add(bomb);
+                            walls.add(bomb);
+                        }
+                        yMan -= 32;
+                    }
+                    man.bombNumber--;
+                }
+            }
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                 int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
                 int yMan = Math.round(man.getY() / 32) * 32;
