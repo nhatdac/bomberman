@@ -4,10 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import thaydac.com.Explosion;
-import thaydac.com.GameState;
-import thaydac.com.Master;
-import thaydac.com.MyActor;
+import thaydac.com.*;
 
 public class EnemyActor extends MyActor {
     Animation<TextureRegion> animation;
@@ -17,6 +14,8 @@ public class EnemyActor extends MyActor {
     int speedX = 1;
     int speedY = 0;
     boolean isAlive = true;
+
+    int type = Utils.ENEMY_TYPE1; // mặc địch là loại 1, con bóng bay
 
     public EnemyActor(float x, float y, Stage s) {
         super(x, y, s);
@@ -60,7 +59,15 @@ public class EnemyActor extends MyActor {
         } else {
             textureRegion = animationDie.getKeyFrame(time);
             if(animationDie.isAnimationFinished(time)){
-                GameState.score += 200;
+                int score = switch (type){
+                    case Utils.ENEMY_TYPE1 -> 100;
+                    case Utils.ENEMY_TYPE2 -> 200;
+                    case Utils.ENEMY_TYPE3 -> 400;
+                    default -> 100;
+                };
+                FloatingScore scoreEffect = new FloatingScore(getX(), getY(), score);
+                getStage().addActor(scoreEffect);
+                GameState.score += score;
                 remove();
                 Master.enemies.removeValue(this, true);
             }

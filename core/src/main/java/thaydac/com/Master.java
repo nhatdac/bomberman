@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import thaydac.com.enemies.Enemy1;
 import thaydac.com.enemies.Enemy2;
+import thaydac.com.enemies.Enemy3;
 import thaydac.com.enemies.EnemyFast;
 
 public class Master implements Screen {
@@ -284,8 +285,6 @@ public class Master implements Screen {
         panel = new Panel(0, Gdx.graphics.getHeight() - 64, stage);
 
         wallArray = Utils.buildMap();
-        int enemy1Number = 5;
-        int enemy2Number = 3;
 
         int tileSize = 32; // Kích thước mỗi ô
         for (int row = 0; row < wallArray.length; row++) {
@@ -302,22 +301,17 @@ public class Master implements Screen {
                     briches.add(brick);
                     // cho cả gạch vào tuờng để kiểm tra va chạm dễ hơn
                     walls.add(brick);
-                } else if (cell == 3) {
-                    if (enemy1Number > 0) {
-                        Enemy1 enemy1 = new Enemy1(x, y, stage);
-                        // Tạo enemy
-                        enemies.add(enemy1);
-                        enemy1Number--;
-                    }
-                } else if (cell == 4) {
-                    if(GameState.level > 1){
-                        if (enemy2Number > 0) {
-                            Enemy2 enemy2 = new Enemy2(x, y, stage);
-                            // Tạo enemy
-                            enemies.add(enemy2);
-                            enemy2Number--;
-                        }
-                    }
+                } else if (cell == Utils.ENEMY_TYPE1) {
+                    // Tạo enemy
+                    Enemy1 enemy1 = new Enemy1(x, y, stage);
+                    // thêm vào danh sách các enemies
+                    enemies.add(enemy1);
+                } else if (cell == Utils.ENEMY_TYPE2) {
+                    Enemy2 enemy2 = new Enemy2(x, y, stage);
+                    enemies.add(enemy2);
+                } else if (cell == Utils.ENEMY_TYPE3) {
+                    Enemy3 enemy3 = new Enemy3(x, y, stage);
+                    enemies.add(enemy3);
                 }
             }
         }
