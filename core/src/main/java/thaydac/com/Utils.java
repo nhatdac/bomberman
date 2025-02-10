@@ -13,6 +13,8 @@ public class Utils {
     public static final String SCORE = "score";
     public static final String LEFT = "left";
 
+    public static final int MAN_SPEED = 2;
+
     public static final int EMPTY_TYPE = 0;
     public static final int WALL_TYPE = 1;
     public static final int BRICK_TYPE = 2;

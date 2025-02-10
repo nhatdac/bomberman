@@ -229,25 +229,25 @@ public class Master implements Screen {
         for (MyActor wall : walls) {
             if (checkCollision(wall, man)) {
                 if (man.direction.equalsIgnoreCase("L")) {
-                    man.moveBy(2, 0);
+                    man.moveBy(Utils.MAN_SPEED, 0);
                     float diff = diffirentYCor(man, wall);
                     if (Math.abs(diff) < 10) {
                         man.moveBy(0, diff);
                     }
                 } else if (man.direction.equalsIgnoreCase("R")) {
-                    man.moveBy(-2, 0);
+                    man.moveBy(-Utils.MAN_SPEED, 0);
                     float diff = diffirentYCor(man, wall);
                     if (Math.abs(diff) < 10) {
                         man.moveBy(0, diff);
                     }
                 } else if (man.direction.equalsIgnoreCase("U")) {
-                    man.moveBy(0, -2);
+                    man.moveBy(0, -Utils.MAN_SPEED);
                     float diff = diffirentXCor(man, wall);
                     if (Math.abs(diff) < 10) {
                         man.moveBy(diff, 0);
                     }
                 } else if (man.direction.equalsIgnoreCase("D")) {
-                    man.moveBy(0, 2);
+                    man.moveBy(0, Utils.MAN_SPEED);
                     float diff = diffirentXCor(man, wall);
                     if (Math.abs(diff) < 10) {
                         man.moveBy(diff, 0);
