@@ -9,6 +9,7 @@ public class Utils {
     public static final String PREF_NAME = "game_prefs";
     public static final String BOMB_NUMBER = "bombNumber";
     public static final String BOMB_POWER = "bombPower";
+    public static final String DECORATOR = "decorator";
     public static final String LEVEL = "level";
     public static final String SCORE = "score";
     public static final String LEFT = "left";
@@ -124,6 +125,7 @@ public class Utils {
         preferences.putInteger(LEFT, GameState.left);
         preferences.putInteger(BOMB_NUMBER, GameState.bombNumber);
         preferences.putInteger(BOMB_POWER, GameState.bombPower);
+        preferences.putBoolean(DECORATOR, GameState.decorator);
 
         preferences.flush();
     }
@@ -134,6 +136,7 @@ public class Utils {
         GameState.left = preferences.getInteger(LEFT, 3);
         GameState.bombNumber = preferences.getInteger(BOMB_NUMBER, 1);
         GameState.bombPower = preferences.getInteger(BOMB_POWER, 1);
+        GameState.decorator = preferences.getBoolean(DECORATOR, false);
 
         System.out.println("Saved Data: " + preferences.get());
     }

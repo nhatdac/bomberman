@@ -146,6 +146,12 @@ public class Master implements Screen {
                     GameState.bombNumber--;
                 }
             }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.B) && GameState.decorator) {
+                // kích nổ qủa đầu tiên
+                bombs.get(0).isExploded = true;
+            }
+
             for (Explosion explosion : explosions) {
                 if (explosion.getBound().overlaps(man.getBound())) {
                     man.isAlive = false;
@@ -171,6 +177,7 @@ public class Master implements Screen {
             }
             if(!man.isAlive){
                 GameState.left--;
+                GameState.decorator = false;
                 man.time = 0;
             }
         }
@@ -207,6 +214,8 @@ public class Master implements Screen {
                 GameState.bombNumber++;
             } else if (item.type.equals(ItemType.BOMB_POWER)) {
                 GameState.bombPower++;
+            } else if (item.type.equals(ItemType.DETONATOR)) {
+                GameState.decorator = true;
             }
             item.remove();
             item = null;

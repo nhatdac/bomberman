@@ -3,6 +3,7 @@ package thaydac.com.enemies;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import thaydac.com.*;
 
@@ -11,8 +12,9 @@ public class EnemyActor extends MyActor {
     Animation<TextureRegion> animationDie;
     float time;
     String direction = "R";
-    int speedX = 1;
-    int speedY = 0;
+    float speed = 0;
+    float speedX = 0;
+    float speedY = 0;
     boolean isAlive = true;
 
     int type = Utils.ENEMY_TYPE1; // mặc địch là loại 1, con bóng bay
@@ -48,6 +50,41 @@ public class EnemyActor extends MyActor {
         super.act(delta);
         time += delta;
         if(isAlive) {
+            moveBy(speedX, speedY);
+            for (MyActor wall : Master.walls) {
+                if (wall.getBound().overlaps(getBound())) {
+                    if (speedX == speed) {
+                        moveBy(-speed, 0);
+                        speedX = 0;
+                        speedY = MathUtils.random(-1, 1) * speed;
+                        if (speedY == 0) {
+                            speedX = -speed;
+                        }
+                    } else if (speedX == -speed) {
+                        moveBy(speed, 0);
+                        speedX = 0;
+                        speedY = MathUtils.random(-1, 1) * speed;
+                        if (speedY == 0) {
+                            speedX = speed;
+                        }
+                    } else if (speedY == speed) {
+                        moveBy(0, -speed);
+                        speedY = 0;
+                        speedX = MathUtils.random(-1, 1) * speed;
+                        if (speedX == 0) {
+                            speedY = -speed;
+                        }
+                    } else if (speedY == -speed) {
+                        moveBy(0, speed);
+                        speedY = 0;
+                        speedX = MathUtils.random(-1, 1) * speed;
+                        if (speedX == 0) {
+                            speedY = speed;
+                        }
+                    }
+                }
+            }
+
             textureRegion = animation.getKeyFrame(time);
             for (Explosion explosion : Master.explosions) {
                 if (getBound().overlaps(explosion.getBound())) {
