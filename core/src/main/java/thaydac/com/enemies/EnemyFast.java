@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import thaydac.com.Master;
 import thaydac.com.MyActor;
+import thaydac.com.Utils;
 
 // Pontan
 public class EnemyFast extends EnemyActor {
@@ -13,7 +14,8 @@ public class EnemyFast extends EnemyActor {
         super(x, y, s);
         Texture texture = new Texture("enemyfast.png");
         setAnimation(texture, 11, 1, 0.05f);
-        speedX = 3;
-        speedY = 0;
+        type = Utils.ENEMY_TYPE_FAST;
+        speed = 3;
+        speedX = 0;
     }
 }
