@@ -16,46 +16,8 @@ public class Enemy1 extends EnemyActor {
         Texture texture = new Texture("enemy1.png");
         setAnimation(texture, 11, 1, 0.3f);
         type = Utils.ENEMY_TYPE1;
-    }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-        if(isAlive) {
-            moveBy(speedX, speedY);
-            for (MyActor wall : Master.walls) {
-                if (wall.getBound().overlaps(getBound())) {
-                    if (speedX == 1) {
-                        moveBy(-1, 0);
-                        speedX = 0;
-                        speedY = MathUtils.random(-1, 1);
-                        if (speedY == 0) {
-                            speedX = -1;
-                        }
-                    } else if (speedX == -1) {
-                        moveBy(1, 0);
-                        speedX = 0;
-                        speedY = MathUtils.random(-1, 1);
-                        if (speedY == 0) {
-                            speedX = 1;
-                        }
-                    } else if (speedY == 1) {
-                        moveBy(0, -1);
-                        speedY = 0;
-                        speedX = MathUtils.random(-1, 1);
-                        if (speedX == 0) {
-                            speedY = -1;
-                        }
-                    } else if (speedY == -1) {
-                        moveBy(0, 1);
-                        speedY = 0;
-                        speedX = MathUtils.random(-1, 1);
-                        if (speedX == 0) {
-                            speedY = 1;
-                        }
-                    }
-                }
-            }
-        }
+        speed = 0.5f;
+        speedX = speed;
     }
 }

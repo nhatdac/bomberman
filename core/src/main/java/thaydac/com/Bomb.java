@@ -94,7 +94,7 @@ public class Bomb extends MyActor {
 
         time += delta;
 
-        if (!isExploded && time >= 3) {
+        if (!isExploded && !GameState.decorator && time >= 3) {
             isExploded = true;
         }
 
