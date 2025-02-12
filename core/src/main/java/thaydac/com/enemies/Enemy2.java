@@ -16,7 +16,7 @@ public class Enemy2 extends EnemyActor {
         setAnimation(texture, 11, 1, 0.3f);
         type = Utils.ENEMY_TYPE2;
 
-        speed = 1;
+        speed = 1.5f;
         speedX = speed;
     }
 

@@ -16,7 +16,7 @@ public class Enemy3 extends EnemyActor {
         Texture texture = new Texture("enemy3.png");
         setAnimation(texture, 11, 1, 0.3f);
         type = Utils.ENEMY_TYPE3;
-        speed = 2;
+        speed = 1.5f;
         speedX = speed;
     }
 }

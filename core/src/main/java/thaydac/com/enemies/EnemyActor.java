@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import thaydac.com.*;
 
+import java.util.Random;
+
 public class EnemyActor extends MyActor {
     Animation<TextureRegion> animation;
     Animation<TextureRegion> animationDie;
@@ -51,35 +53,37 @@ public class EnemyActor extends MyActor {
         time += delta;
         if(isAlive) {
             moveBy(speedX, speedY);
-            for (MyActor wall : Master.walls) {
-                if (wall.getBound().overlaps(getBound())) {
-                    if (speedX == speed) {
-                        moveBy(-speed, 0);
-                        speedX = 0;
-                        speedY = MathUtils.random(-1, 1) * speed;
-                        if (speedY == 0) {
-                            speedX = -speed;
-                        }
-                    } else if (speedX == -speed) {
-                        moveBy(speed, 0);
-                        speedX = 0;
-                        speedY = MathUtils.random(-1, 1) * speed;
-                        if (speedY == 0) {
-                            speedX = speed;
-                        }
-                    } else if (speedY == speed) {
-                        moveBy(0, -speed);
-                        speedY = 0;
-                        speedX = MathUtils.random(-1, 1) * speed;
-                        if (speedX == 0) {
-                            speedY = -speed;
-                        }
-                    } else if (speedY == -speed) {
-                        moveBy(0, speed);
-                        speedY = 0;
-                        speedX = MathUtils.random(-1, 1) * speed;
-                        if (speedX == 0) {
-                            speedY = speed;
+            if(type != Utils.ENEMY_TYPE5){
+                for (MyActor wall : Master.walls) {
+                    if (wall.getBound().overlaps(getBound())) {
+                        if (speedX == speed) {
+                            moveBy(-speed, 0);
+                            speedX = 0;
+                            speedY = MathUtils.random(-1, 1) * speed;
+                            if (speedY == 0) {
+                                speedX = -speed;
+                            }
+                        } else if (speedX == -speed) {
+                            moveBy(speed, 0);
+                            speedX = 0;
+                            speedY = MathUtils.random(-1, 1) * speed;
+                            if (speedY == 0) {
+                                speedX = speed;
+                            }
+                        } else if (speedY == speed) {
+                            moveBy(0, -speed);
+                            speedY = 0;
+                            speedX = MathUtils.random(-1, 1) * speed;
+                            if (speedX == 0) {
+                                speedY = -speed;
+                            }
+                        } else if (speedY == -speed) {
+                            moveBy(0, speed);
+                            speedY = 0;
+                            speedX = MathUtils.random(-1, 1) * speed;
+                            if (speedX == 0) {
+                                speedY = speed;
+                            }
                         }
                     }
                 }

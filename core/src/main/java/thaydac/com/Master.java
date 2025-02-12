@@ -95,7 +95,7 @@ public class Master implements Screen {
         finishMusic.setOnCompletionListener(new Music.OnCompletionListener() {
             @Override
             public void onCompletion(Music music) {
-                GameState.level++;
+                GameState.level ++;
                 Utils.saveGame();
                 game.setScreen(new StageScreen(game));
             }
