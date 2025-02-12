@@ -94,7 +94,7 @@ public class Bomb extends MyActor {
 
         time += delta;
 
-        if (!isExploded && time >= 3) {
+        if (!isExploded && !GameState.decorator && time >= 3) {
             isExploded = true;
         }
 
@@ -105,7 +105,7 @@ public class Bomb extends MyActor {
             remove();
             bombs.removeValue(this, true);
             Master.walls.removeValue(this, true);
-            Master.man.bombNumber++;
+            GameState.bombNumber++;
         } else {
             textureRegion = animation.getKeyFrame(time);
         }
@@ -114,7 +114,7 @@ public class Bomb extends MyActor {
     private void createExplosions() {
         Stage stage = getStage();
         float size = 32; // Kích thước 1 ô
-        int power = Master.man.bombPower;
+        int power = GameState.bombPower;
 
         Explosion explosionCenter = new Explosion(getX(), getY(), stage, explosionAnimation, explosions);
         explosions.add(explosionCenter);

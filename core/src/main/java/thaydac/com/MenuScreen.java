@@ -23,7 +23,7 @@ public class MenuScreen implements Screen {
     public void show() {
         background = new Texture("about.png");
         playTexture = new Texture("play.png");
-        playX = 250;
+        playX = 200;
         playY = 110;
         welcomeMusic.play();
     }
@@ -41,13 +41,10 @@ public class MenuScreen implements Screen {
                 playY = 110;
             }
         } else if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
-            if(playY == 145){
-                game.setScreen(new StageScreen(game));
-            }
-            if(playY == 110){
+            if (playY == 110){
                 Utils.loadGame();
-                game.setScreen(new StageScreen(game));
             }
+            game.setScreen(new StageScreen(game));
         }
     }
 

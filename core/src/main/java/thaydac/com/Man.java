@@ -23,8 +23,6 @@ public class Man extends MyActor {
     float timeSound = 0;
     boolean isPlaying = false;
     boolean isAlive = true;
-    int bombNumber = 1;
-    int bombPower = 1;
 
     Man(float x, float y, Stage s) {
         super(x, y, s);
@@ -74,25 +72,25 @@ public class Man extends MyActor {
             if (isAlive) {
                 if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                     direction = "L";
-                    moveBy(-2, 0);
+                    moveBy(-Utils.MAN_SPEED, 0);
                     time += delta;
                     textureRegion = animationLeft.getKeyFrame(time);
                     playSoundWalking(1, delta);
                 } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                     direction = "R";
-                    moveBy(2, 0);
+                    moveBy(Utils.MAN_SPEED, 0);
                     time += delta;
                     textureRegion = animationRight.getKeyFrame(time);
                     playSoundWalking(1, delta);
                 } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
                     direction = "D";
-                    moveBy(0, -2);
+                    moveBy(0, -Utils.MAN_SPEED);
                     time += delta;
                     textureRegion = animationDown.getKeyFrame(time);
                     playSoundWalking(2, delta);
                 } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
                     direction = "U";
-                    moveBy(0, 2);
+                    moveBy(0, Utils.MAN_SPEED);
                     time += delta;
                     textureRegion = animationUp.getKeyFrame(time);
                     playSoundWalking(2, delta);

@@ -8,16 +8,15 @@ import thaydac.com.MyActor;
 import thaydac.com.Utils;
 
 // Balloon
-public class Enemy1 extends EnemyActor {
+public class Enemy4 extends EnemyActor {
 
 
-    public Enemy1(float x, float y, Stage s) {
+    public Enemy4(float x, float y, Stage s) {
         super(x, y, s);
-        Texture texture = new Texture("enemy1.png");
+        Texture texture = new Texture("enemy4.png");
         setAnimation(texture, 11, 1, 0.3f);
-        type = Utils.ENEMY_TYPE1;
-
-        speed = 0.5f;
+        type = Utils.ENEMY_TYPE4;
+        speed = 1;
         speedX = speed;
     }
 }
