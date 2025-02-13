@@ -59,6 +59,7 @@ public class Utils {
         enemyConfig.put(1, Map.of(ENEMY_TYPE1, 6)); // Level 1 có 6 enemy1, gọi là loại 3, bởi vì số 0, 1, 2 đã dùng cho ô trống, tường, gạch rồi.
         enemyConfig.put(2, Map.of(ENEMY_TYPE1, 3, ENEMY_TYPE2, 3)); // Level 2 có 3 enemy1 và 3 enemy2
         enemyConfig.put(3, Map.of(ENEMY_TYPE1, 2, ENEMY_TYPE2, 2, ENEMY_TYPE3, 2)); // Level 2 có 3 enemy1 và 3 enemy2
+        enemyConfig.put(8,Map.of(ENEMY_TYPE2, 1, ENEMY_TYPE3 , 2, ENEMY_TYPE4, 4));
         // ... thêm các level tiếp theo...
 
         List<int[]> emptyPositions = new ArrayList<>();

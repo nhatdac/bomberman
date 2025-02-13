@@ -11,10 +11,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import thaydac.com.enemies.Enemy1;
-import thaydac.com.enemies.Enemy2;
-import thaydac.com.enemies.Enemy3;
-import thaydac.com.enemies.EnemyFast;
+import thaydac.com.enemies.*;
 
 public class Master implements Screen {
     StartGame game;
@@ -154,16 +151,16 @@ public class Master implements Screen {
 
             for (Explosion explosion : explosions) {
                 if (explosion.getBound().overlaps(man.getBound())) {
-                    man.isAlive = false;
-                    dieSound.play();
-                    break;
+//                    man.isAlive = false;
+//                    dieSound.play();
+//                    break;
                 }
             }
             for (MyActor enemy : enemies) {
                 if (enemy.getBound().overlaps(man.getBound())) {
-                    man.isAlive = false;
-                    dieSound.play();
-                    break;
+//                    man.isAlive = false;
+//                    dieSound.play();
+//                    break;
                 }
             }
             count++;
@@ -321,6 +318,9 @@ public class Master implements Screen {
                 } else if (cell == Utils.ENEMY_TYPE3) {
                     Enemy3 enemy3 = new Enemy3(x, y, stage);
                     enemies.add(enemy3);
+                } else if(cell == Utils.ENEMY_TYPE4){
+                    Enemy4 enemy4 = new Enemy4(x, y, stage);
+                    enemies.add(enemy4);
                 }
             }
         }
