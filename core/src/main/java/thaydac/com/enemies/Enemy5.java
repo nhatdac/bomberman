@@ -14,7 +14,7 @@ public class Enemy5 extends EnemyActor {
         Texture texture = new Texture("enemy5.png");
         setAnimation(texture, 11, 1, 0.3f);
         type = Utils.ENEMY_TYPE5;
-        speed = 1f;
+        speed = 0.5f;
         speedY = speed;
     }
 
@@ -78,7 +78,7 @@ public class Enemy5 extends EnemyActor {
             for(Bomb b : Master.bombs){
                 if (getX() == b.getX()) {
                     distance = Math.abs(getY() - b.getY());
-                    if (distance < 150 && !isWallBetween(getX(), getY() , b.getX() , b.getY(), true)) {
+                    if (distance < 32*GameState.bombPower+64 && !isWallBetween(getX(), getY() , b.getX() , b.getY(), true)) {
                         speedX = 0;
                         if (b.getY() < getY()) {
                             speedY = speed;
@@ -88,7 +88,7 @@ public class Enemy5 extends EnemyActor {
                     }
                 } else if (getY() == b.getY()) {
                     distance = Math.abs(getX() - b.getX());
-                    if (distance < 150 && !isWallBetween(getX(), getY() , b.getX(), b.getY(), false)) {
+                    if (distance < 32*GameState.bombPower+64 && !isWallBetween(getX(), getY() , b.getX(), b.getY(), false)) {
                         speedY = 0;
                         if (b.getX() < getX()) {
                             speedX = speed;

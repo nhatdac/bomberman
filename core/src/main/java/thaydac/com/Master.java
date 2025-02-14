@@ -164,6 +164,7 @@ public class Master implements Screen {
                         bombs.add(bomb3);
                         Bomb bomb4 = new Bomb(e.getX(), e.getY()+32, stage, bombs, explosions);
                         bombs.add(bomb4);
+                        GameState.bombNumber -= 4;
                     }
                     Bomb bomb = new Bomb(doorRec .getX() - 32, doorRec.getY(), stage, bombs, explosions);
                     bombs.add(bomb);
@@ -185,7 +186,7 @@ public class Master implements Screen {
                         Bomb bomb = new Bomb(xMan + i*32 , yMan, stage, bombs, explosions);
                         bombs.add(bomb);
                     }
-                    for(int i = 1;i < 22;i += 2){
+                    for(int i = 1;i < 21;i += 2){
                         Bomb bomb = new Bomb(xMan + i*32 , yMan-32, stage, bombs, explosions);
                         bombs.add(bomb);
                     }
@@ -193,7 +194,7 @@ public class Master implements Screen {
                         Bomb bomb = new Bomb(xMan + i*32 , yMan-64, stage, bombs, explosions);
                         bombs.add(bomb);
                     }
-                    GameState.bombNumber--;
+                    GameState.bombNumber-=30;
                 }
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
@@ -243,7 +244,7 @@ public class Master implements Screen {
                         Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
                         bombs.add(bomb);
                     }
-                    GameState.bombNumber--;
+                    GameState.bombNumber-=32;
                 }
             }
 

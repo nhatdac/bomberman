@@ -7,6 +7,8 @@ import thaydac.com.Master;
 import thaydac.com.MyActor;
 import thaydac.com.Utils;
 
+import java.util.Random;
+
 // Oneal
 public class Enemy2 extends EnemyActor {
 
@@ -16,7 +18,7 @@ public class Enemy2 extends EnemyActor {
         setAnimation(texture, 11, 1, 0.3f);
         type = Utils.ENEMY_TYPE2;
 
-        speed = 1.5f;
+        speed = 1f;
         speedX = speed;
     }
 
