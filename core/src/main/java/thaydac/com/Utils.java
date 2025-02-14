@@ -38,7 +38,6 @@ public class Utils {
     private static boolean tracking = false; // Đánh dấu bắt đầu tính toán vòng
     private static Vector2 lastPosition = null; // Lưu vị trí trước đó
 
-
     public static int[][] buildMap() {
         Random rand = new Random();
 
@@ -69,6 +68,7 @@ public class Utils {
         enemyConfig.put(1, Map.of(ENEMY_TYPE1, 6)); // Level 1 có 6 enemy1, gọi là loại 3, bởi vì số 0, 1, 2 đã dùng cho ô trống, tường, gạch rồi.
         enemyConfig.put(2, Map.of(ENEMY_TYPE1, 3, ENEMY_TYPE2, 3)); // Level 2 có 3 enemy1 và 3 enemy2
         enemyConfig.put(3, Map.of(ENEMY_TYPE1, 2, ENEMY_TYPE2, 2, ENEMY_TYPE3, 2)); // Level 2 có 3 enemy1 và 3 enemy2
+        enemyConfig.put(9, Map.of(ENEMY_TYPE2, 1, ENEMY_TYPE3, 1, ENEMY_TYPE4, 4,ENEMY_TYPE5, 1)); // Level 2 có 3 enemy1 và 3 enemy2
         // ... thêm các level tiếp theo...
 
         List<int[]> emptyPositions = new ArrayList<>();
@@ -127,7 +127,6 @@ public class Utils {
 
         return wallArray;
     }
-
     public static void saveGame(){
         Preferences preferences = Gdx.app.getPreferences(PREF_NAME);
         preferences.putInteger(LEVEL, GameState.level);
@@ -150,7 +149,6 @@ public class Utils {
 
         System.out.println("Saved Data: " + preferences.get());
     }
-
     // Tạo danh sách các vị trí trên biên theo vòng kim đồng hồ
     public static List<Vector2> getClockwiseBoundary(Vector2 playerPos) {
         if(boundaryPositions.isEmpty()) {
@@ -218,7 +216,7 @@ public class Utils {
             // Nếu nhân vật đi đúng thứ tự, cập nhật chỉ mục
             visitedIndex = index;
             lastPosition = playerPos;
-           // System.out.println("Tiến trình: " + visitedIndex + "/" + boundaryPositions.size() + "/" + playerPos);
+            // System.out.println("Tiến trình: " + visitedIndex + "/" + boundaryPositions.size() + "/" + playerPos);
 
             // Đi đủ 1 vòng
             if (visitedIndex == boundaryPositions.size() - 1) {
@@ -240,6 +238,4 @@ public class Utils {
         tracking = false;
         lastPosition = null;
     }
-
 }
-

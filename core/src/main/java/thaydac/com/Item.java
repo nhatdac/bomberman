@@ -15,9 +15,11 @@ public class Item extends MyActor{
             tRegion.setRegion(0, 0, 16, 16);
         } else if(this.type.equals(ItemType.BOMB_POWER)){
             tRegion.setRegion(16, 0, 16, 16);
-        } else if(this.type.equals(ItemType.DETONATOR)){
+        }else if(this.type.equals(ItemType.DETONATOR)){
             tRegion.setRegion(16 * 4, 0, 16, 16);
-        } else if(this.type.equals(ItemType.GODDESS_MASK)){
+        }else if(this.type.equals(ItemType.BOMB_PASS)){
+            tRegion.setRegion(16 * 5, 0, 16, 16);
+        }else if(this.type.equals(ItemType.GODDESS_MASK)){
             tRegion.setRegion(16 * 9, 0, 16, 16);
         }
         textureRegion = tRegion;

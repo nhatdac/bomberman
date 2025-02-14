@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import thaydac.com.*;
 
+import java.util.Random;
+
 public class EnemyActor extends MyActor {
     Animation<TextureRegion> animation;
     Animation<TextureRegion> animationDie;
@@ -51,8 +53,44 @@ public class EnemyActor extends MyActor {
         time += delta;
         if(isAlive) {
             moveBy(speedX, speedY);
-            for (MyActor wall : Master.walls) {
-                if (wall.getBound().overlaps(getBound())) {
+                for (MyActor wall : Master.walls) {
+                    if (!(wall instanceof Brick && type == Utils.ENEMY_TYPE5) && wall.getBound().overlaps(getBound())) {
+                        if (speedX == speed) {
+                            moveBy(-speed, 0);
+                            speedX = 0;
+                            speedY = MathUtils.random(-1, 1) * speed;
+                            if (speedY == 0) {
+                                speedX = -speed;
+                            }
+                        } else if (speedX == -speed) {
+                            moveBy(speed, 0);
+                            speedX = 0;
+                            speedY = MathUtils.random(-1, 1) * speed;
+                            if (speedY == 0) {
+                                speedX = speed;
+                            }
+                        } else if (speedY == speed) {
+                            moveBy(0, -speed);
+                            speedY = 0;
+                            speedX = MathUtils.random(-1, 1) * speed;
+                            if (speedX == 0) {
+                                speedY = -speed;
+                            }
+                        } else if (speedY == -speed) {
+                            moveBy(0, speed);
+                            speedY = 0;
+                            speedX = MathUtils.random(-1, 1) * speed;
+                            if (speedX == 0) {
+                                speedY = speed;
+                            }
+                        }
+                    }
+                    if(type == Utils.ENEMY_TYPE5 && wall instanceof Brick){
+                        checkAndUpdateZIndex(this, wall);
+                    }
+                }
+            for (Bomb b : Master.bombs) {
+                if (b.getBound().overlaps(getBound())) {
                     if (speedX == speed) {
                         moveBy(-speed, 0);
                         speedX = 0;
@@ -100,6 +138,11 @@ public class EnemyActor extends MyActor {
                     case Utils.ENEMY_TYPE1 -> 100;
                     case Utils.ENEMY_TYPE2 -> 200;
                     case Utils.ENEMY_TYPE3 -> 400;
+                    case Utils.ENEMY_TYPE4 ->  800;
+                    case Utils.ENEMY_TYPE5 ->  1000;
+                    case Utils.ENEMY_TYPE6 ->  2000;
+                    case Utils.ENEMY_TYPE7 ->  4000;
+                    case Utils.ENEMY_TYPE_FAST ->  8000;
                     default -> 100;
                 };
                 FloatingScore scoreEffect = new FloatingScore(getX(), getY(), score);
