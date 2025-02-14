@@ -27,52 +27,73 @@ public class Enemy5 extends EnemyActor {
             float playerX = Master.man.getX();
             float playerY = Master.man.getY();
 
-            // Lấy vị trí của Enemy2
-            float enemyX = getX();
-            float enemyY = getY();
+            // Lấy vị trí của Enemy5
             float distance = 0;
 
-            // Kiểm tra nếu Enemy5 "nhìn thấy" nhân vật chính
-            if (enemyX == playerX) {
-                distance = Math.abs(enemyY - playerY);
-                if (distance < 1000) {
-                    speedX = 0;
-                    if (playerY > enemyY) {
-                        speedY = speed;
+                // Kiểm tra nếu Enemy5 nhin thay NVC
+                    if (getX() == playerX && !isWallBetween(getX(),getY(), Master.man.getX(), Master.man.getY(),true)) {
+                        distance = Math.abs(getY() - playerY);
+                        if (distance < 1000) {
+                            speedX = 0;
+                            if (playerY > getY()) {
+                                speedY = speed;
+                            } else {
+                                speedY = -speed;
+                            }
+                        }
+                    } else if (getY() == playerY && !isWallBetween(getX(),getY(), Master.man.getX(), Master.man.getY(),false)) {
+                        distance = Math.abs(getX() - playerX);
+                        if (distance < 1000) {
+                            speedY = 0;
+                            if (playerX > getX()) {
+                                speedX = speed;
+                            } else {
+                                speedX = -speed;
+                            }
+                        }
                     } else {
-                        speedY = -speed;
-                    }
-                }
-            } else if (enemyY == playerY) {
-                distance = Math.abs(enemyX - playerX);
-                if (distance < 1000) {
-                    speedY = 0;
-                    if (playerX > enemyX) {
-                        speedX = speed;
-                    } else {
-                        speedX = -speed;
-                    }
-                }
-            } else {
-                float distanceX = Math.abs(enemyX - playerX);
-                ;
-                float distanceY = Math.abs(enemyY - playerY);
-                if (distanceX < distanceY ) {
-                    if(!isWallBetween(getX(),getY(), Master.man.getX(), getY(),false)){
-                        speedY = 0;
-                        if (playerX > enemyX ) {
-                            speedX = speed;
-                        } else {
-                            speedX = -speed;
+                        float distanceX = Math.abs(getX() - playerX);
+                        float distanceY = Math.abs(getY() - playerY);
+                        if (distanceX < distanceY ) {
+                            if(!isWallBetween(getX(),getY(), Master.man.getX(), getY(),false) && distanceX > 32){
+                                speedY = 0;
+                                if (playerX > getX() ) {
+                                    speedX = speed;
+                                } else {
+                                    speedX = -speed;
+                                }
+                            }
+                        }else{
+                            if(!isWallBetween(getX(),getY(), getX(), Master.man.getY(),true) && distanceY > 32){
+                                speedX = 0;
+                                if (playerY > getX()) {
+                                    speedY = speed;
+                                } else {
+                                    speedY = -speed;
+                                }
+                            }
                         }
                     }
-                }else{
-                    if(!isWallBetween(getX(),getY(), getX(), Master.man.getY(),true)){
+            // Kiểm tra nếu Enemy5 "nhìn thấy" bomb
+            for(Bomb b : Master.bombs){
+                if (getX() == b.getX()) {
+                    distance = Math.abs(getY() - b.getY());
+                    if (distance < 150 && !isWallBetween(getX(), getY() , b.getX() , b.getY(), true)) {
                         speedX = 0;
-                        if (playerY > enemyY) {
+                        if (b.getY() < getY()) {
                             speedY = speed;
                         } else {
                             speedY = -speed;
+                        }
+                    }
+                } else if (getY() == b.getY()) {
+                    distance = Math.abs(getX() - b.getX());
+                    if (distance < 150 && !isWallBetween(getX(), getY() , b.getX(), b.getY(), false)) {
+                        speedY = 0;
+                        if (b.getX() < getX()) {
+                            speedX = speed;
+                        } else {
+                            speedX = -speed;
                         }
                     }
                 }
