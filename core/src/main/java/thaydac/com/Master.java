@@ -43,7 +43,6 @@ public class Master implements Screen {
     Music timeupMusic;
     Music enemiesalldieMusic;
     Sound collectSound;
-    public static Item itemBonus;
 
     // vẽ đ thử
     ShapeRenderer shapeRenderer = new ShapeRenderer();
