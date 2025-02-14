@@ -1,6 +1,7 @@
 package thaydac.com;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.*;
@@ -10,7 +11,6 @@ public class Utils {
     public static final String BOMB_NUMBER = "bombNumber";
     public static final String BOMB_POWER = "bombPower";
     public static final String DECORATOR = "decorator";
-    public static final String BOMB_PASS = "bombPass";
     public static final String LEVEL = "level";
     public static final String SCORE = "score";
     public static final String LEFT = "left";
@@ -29,6 +29,14 @@ public class Utils {
     public static final int ENEMY_TYPE6 = 8;
     public static final int ENEMY_TYPE7 = 9;
     public static final int ENEMY_TYPE_FAST = 10;
+
+    public static boolean isShownGoddess = false;
+    public static boolean isCollectedItemBonus = false;
+
+    private static List<Vector2> boundaryPositions = new ArrayList<>();
+    private static int visitedIndex = -1; // Chỉ mục đã đi qua
+    private static boolean tracking = false; // Đánh dấu bắt đầu tính toán vòng
+    private static Vector2 lastPosition = null; // Lưu vị trí trước đó
 
     public static int[][] buildMap() {
         Random rand = new Random();
@@ -140,5 +148,94 @@ public class Utils {
         GameState.decorator = preferences.getBoolean(DECORATOR, false);
 
         System.out.println("Saved Data: " + preferences.get());
+    }
+    // Tạo danh sách các vị trí trên biên theo vòng kim đồng hồ
+    public static List<Vector2> getClockwiseBoundary(Vector2 playerPos) {
+        if(boundaryPositions.isEmpty()) {
+            int count = 0;
+
+            // Hàng trên (trái -> phải)
+            for (int x = 32; x <= 31 * 32 - 32 * 2; x += MAN_SPEED) {
+                Vector2 v = new Vector2(x, 17 * 32 - 4 * 32);
+                boundaryPositions.add(v);
+                count ++;
+            }
+            // Cột phải (trên -> dưới)
+            for (int y = 17 * 32 - 4 * 32 - MAN_SPEED; y >= 32; y -= MAN_SPEED) {
+                Vector2 v= new Vector2(31 * 32 - 32 * 2, y);
+                boundaryPositions.add(v);
+                count ++;
+            }
+            // Hàng dưới (phải -> trái)
+            for (int x = 31 * 32 - 2 * 32 - MAN_SPEED; x >= 32; x -= MAN_SPEED) {
+                boundaryPositions.add(new Vector2(x, 32));
+                count ++;
+            }
+            // Cột trái (dưới -> trên)
+            for (int y = 32 * 1 + MAN_SPEED; y <= 17 * 32 - 4 * 32 - MAN_SPEED; y += MAN_SPEED) {
+                boundaryPositions.add(new Vector2(32, y));
+                count ++;
+            }
+        }
+
+        // Tìm vị trí của player trong danh sách
+        int index = boundaryPositions.indexOf(playerPos);
+
+        // Nếu tìm thấy, đưa vị trí đó lên đầu danh sách
+        if (index != -1) {
+            Collections.rotate(boundaryPositions, -index);
+        }
+
+        return boundaryPositions;
+    }
+    // Cập nhật vị trí nhân vật và kiểm tra vòng đi
+    public static void updatePlayerPosition(Vector2 playerPos) {
+        if (playerPos.equals(lastPosition)) {
+            // Nếu nhân vật đứng yên, không làm gì cả, giữ nguyên tiến trình
+            return;
+        }
+
+        // Nếu chưa bắt đầu theo dõi, đặt index hiện tại làm mốc
+        if (!tracking) {
+            getClockwiseBoundary(playerPos);
+            visitedIndex = 0;
+            tracking = true;
+            lastPosition = playerPos;
+            return;
+        }
+
+        int index = boundaryPositions.indexOf(playerPos);
+
+        if (index == -1) {
+            // Nếu nhân vật rời khỏi biên, hủy việc theo dõi
+            resetTracking();
+            return;
+        }
+
+        if (index == (visitedIndex + 1) % boundaryPositions.size()) {
+            // Nếu nhân vật đi đúng thứ tự, cập nhật chỉ mục
+            visitedIndex = index;
+            lastPosition = playerPos;
+            // System.out.println("Tiến trình: " + visitedIndex + "/" + boundaryPositions.size() + "/" + playerPos);
+
+            // Đi đủ 1 vòng
+            if (visitedIndex == boundaryPositions.size() - 1) {
+                isShownGoddess = true;
+                resetTracking();
+            }
+        } else if (index == (visitedIndex - 1 + boundaryPositions.size()) % boundaryPositions.size()) {
+            // Nếu đi ngược lại, reset tiến trình
+            resetTracking();
+        } else {
+            // Nếu nhân vật đi không theo thứ tự, reset tiến trình
+            resetTracking();
+        }
+    }
+
+    // Reset lại quá trình theo dõi
+    private static void resetTracking() {
+        visitedIndex = -1;
+        tracking = false;
+        lastPosition = null;
     }
 }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import thaydac.com.enemies.*;
@@ -41,6 +42,7 @@ public class Master implements Screen {
     Music timeupMusic;
     Music enemiesalldieMusic;
     Sound collectSound;
+    public static Item itemBonus;
 
     // vẽ đ thử
     ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -285,9 +287,19 @@ public class Master implements Screen {
             }
         }
 
-        if(!isEnemiesAllDie && enemies.isEmpty()){
-            enemiesalldieMusic.play();
-            isEnemiesAllDie = true;
+        if(enemies.isEmpty()){
+            if(!isEnemiesAllDie) {
+                enemiesalldieMusic.play();
+                isEnemiesAllDie = true;
+            }
+            if(GameState.level == 1 || GameState.level == 9) {
+                if(itemBonus == null && Utils.isShownGoddess && !Utils.isCollectedItemBonus){
+                    itemBonus = new Item(32, 32, ItemType.GODDESS_MASK, stage);
+                    System.out.println("item bonus");
+                } else {
+                    Utils.updatePlayerPosition(new Vector2(man.getX(), man.getY()));
+                }
+            }
         }
 
 
@@ -324,6 +336,15 @@ public class Master implements Screen {
             }
             item.remove();
             item = null;
+            collectSound.play();
+        }
+        if(itemBonus != null && man.getBound().overlaps(itemBonus.getBound())){
+            if (itemBonus.type.equals(ItemType.GODDESS_MASK)) {
+                GameState.score += 20000;
+                Utils.isCollectedItemBonus = true;
+            }
+            itemBonus.remove();
+            itemBonus = null;
             collectSound.play();
         }
     }
