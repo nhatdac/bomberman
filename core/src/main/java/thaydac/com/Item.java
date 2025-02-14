@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class Item extends MyActor{
     ItemType type;
+
     Item(float x, float y, ItemType type, Stage s) {
         super(x, y, s);
         TextureRegion tRegion = new TextureRegion(new Texture("items.png"));

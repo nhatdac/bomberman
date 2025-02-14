@@ -26,6 +26,7 @@ public class Master implements Screen {
     private Panel panel;
     public static Man man;
     public static Item item;
+    public static Item itemBonus;
     public static Door door;
 
     int[][] wallArray;
@@ -97,7 +98,7 @@ public class Master implements Screen {
         finishMusic.setOnCompletionListener(new Music.OnCompletionListener() {
             @Override
             public void onCompletion(Music music) {
-                GameState.level ++;
+                GameState.level++;
                 Utils.saveGame();
                 game.setScreen(new StageScreen(game));
             }
@@ -114,7 +115,7 @@ public class Master implements Screen {
     @Override
     public void show() {
         isFinished = false;
-        timing = 150;
+        timing = 300;
         System.out.println("" + GameState.score);
     }
 
@@ -302,7 +303,6 @@ public class Master implements Screen {
                 }
             }
         }
-
 
         stage.act();
         collisionWall();
