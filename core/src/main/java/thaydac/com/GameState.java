@@ -1,12 +1,12 @@
 package thaydac.com;
 
 public class GameState {
-    public static int level = 1;
+    public static int level = 7;
     public static int score = 0;
-    public static int bombNumber = 1;
-    public static int bombPower = 1;
+    public static int bombNumber = 3;
+    public static int bombPower = 3;
     public static int left = 1000;
-    public static boolean decorator = false;
+    public static boolean decorator = true;
     public static boolean goddessMask = false;
     public static boolean bombPass = false;
 
