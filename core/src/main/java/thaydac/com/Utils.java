@@ -68,7 +68,9 @@ public class Utils {
         Map<Integer, Map<Integer, Integer>> enemyConfig = new HashMap<>();
         enemyConfig.put(1, Map.of(ENEMY_TYPE1, 6)); // Level 1 có 6 enemy1, gọi là loại 3, bởi vì số 0, 1, 2 đã dùng cho ô trống, tường, gạch rồi.
         enemyConfig.put(2, Map.of(ENEMY_TYPE1, 3, ENEMY_TYPE2, 3)); // Level 2 có 3 enemy1 và 3 enemy2
-        enemyConfig.put(3, Map.of(ENEMY_TYPE1, 2, ENEMY_TYPE2, 2, ENEMY_TYPE3, 2)); // Level 2 có 3 enemy1 và 3 enemy2
+        enemyConfig.put(3, Map.of(ENEMY_TYPE1, 2, ENEMY_TYPE2, 2, ENEMY_TYPE3, 2));
+        enemyConfig.put(6, Map.of(ENEMY_TYPE1, 0, ENEMY_TYPE2, 2, ENEMY_TYPE3, 3,ENEMY_TYPE4,2));
+        //đây là lv 6^
         // ... thêm các level tiếp theo...
 
         List<int[]> emptyPositions = new ArrayList<>();
@@ -141,7 +143,7 @@ public class Utils {
     }
     public static void loadGame(){
         Preferences preferences = Gdx.app.getPreferences(PREF_NAME);
-        GameState.level = preferences.getInteger(LEVEL, 1);
+        GameState.level = preferences.getInteger(LEVEL, 6);
         GameState.score = preferences.getInteger(SCORE, 0);
         GameState.left = preferences.getInteger(LEFT, 3);
         GameState.bombNumber = preferences.getInteger(BOMB_NUMBER, 1);

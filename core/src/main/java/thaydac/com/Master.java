@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Array;
 import thaydac.com.enemies.Enemy1;
 import thaydac.com.enemies.Enemy2;
 import thaydac.com.enemies.Enemy3;
+import thaydac.com.enemies.Enemy4;
 import thaydac.com.enemies.EnemyFast;
 
 public class Master implements Screen {
@@ -341,6 +342,9 @@ public class Master implements Screen {
                 } else if (cell == Utils.ENEMY_TYPE3) {
                     Enemy3 enemy3 = new Enemy3(x, y, stage);
                     enemies.add(enemy3);
+                }else if (cell == Utils.ENEMY_TYPE4) {
+                    Enemy4 enemy4 = new Enemy4(x, y, stage);
+                    enemies.add(enemy4);
                 }
             }
         }

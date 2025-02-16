@@ -100,6 +100,7 @@ public class EnemyActor extends MyActor {
                     case Utils.ENEMY_TYPE1 -> 100;
                     case Utils.ENEMY_TYPE2 -> 200;
                     case Utils.ENEMY_TYPE3 -> 400;
+                    case Utils.ENEMY_TYPE4 -> 800;
                     default -> 100;
                 };
                 FloatingScore scoreEffect = new FloatingScore(getX(), getY(), score);
