@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import thaydac.com.enemies.*;
 
+import java.util.Random;
+
 public class Master implements Screen {
     StartGame game;
     int timing = 0;
@@ -49,6 +51,7 @@ public class Master implements Screen {
     Rectangle itemRec = new Rectangle();
     Rectangle doorRec = new Rectangle();
 
+    int time = 0;
     public Master(StartGame game) {
         this.game = game;
         stage = new Stage();
@@ -253,25 +256,29 @@ public class Master implements Screen {
                 bombs.get(0).isExploded = true;
             }
 
-            for (Explosion explosion : explosions) {
-                if (explosion.getBound().overlaps(man.getBound())) {
-                    man.isAlive = false;
-                    dieSound.play();
-                    break;
-                }
-                for (Bomb b : bombs) {
-                    if (explosion.getBound().overlaps(b.getBound())) {
-                        b.isExploded = true;
-                    }
-                }
-            }
-            for (MyActor enemy : enemies) {
-                if (enemy.getBound().overlaps(man.getBound())) {
-                    man.isAlive = false;
-                    dieSound.play();
-                    break;
-                }
-            }
+           if(GameState.mystery = false){
+
+               for (Explosion explosion : explosions) {
+                   if (!GameState.flamepass && explosion.getBound().overlaps(man.getBound())) {
+//                    man.isAlive = false;
+//                    dieSound.play();
+//                    break;
+                   }
+                   for (Bomb b : bombs) {
+                       if (explosion.getBound().overlaps(b.getBound())) {
+                           b.isExploded = true;
+                       }
+                   }
+               }
+               for (MyActor enemy : enemies) {
+                   if (enemy.getBound().overlaps(man.getBound())) {
+//                    man.isAlive = false;
+//                    dieSound.play();
+//                    break;
+                   }
+               }
+           }
+
             count++;
             if (count % 60 == 0) {
                 if(timing > 0) {
@@ -333,6 +340,15 @@ public class Master implements Screen {
                 GameState.decorator = true;
             }else if (item.type.equals(ItemType.BOMB_PASS)) {
                 GameState.bombPass = true;
+            } else if(item.type.equals(ItemType.MYSTERY)){
+                time = MathUtils.random(600,1800);
+                GameState.mystery = true;
+                time -= 1;
+                if(time <= 0) {
+                    GameState.mystery = false;
+                }
+            } else if(item.type.equals(ItemType.FLAME_PASS)){
+
             }
             item.remove();
             item = null;
@@ -485,6 +501,12 @@ public class Master implements Screen {
                 }else if (cell == Utils.ENEMY_TYPE5) {
                     Enemy5 enemy5 = new Enemy5(x, y, stage);
                     enemies.add(enemy5);
+                } else if(cell == Utils.ENEMY_TYPE6){
+                    Enemy6 enemy6 = new Enemy6(x,y,stage);
+                    enemies.add(enemy6);
+                } else if (cell == Utils.ENEMY_TYPE7){
+                    Enemy7 enemy7 = new Enemy7(x,y,stage);
+                    enemies.add(enemy7);
                 }
             }
         }

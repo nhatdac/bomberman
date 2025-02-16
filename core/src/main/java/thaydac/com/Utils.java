@@ -69,6 +69,13 @@ public class Utils {
         enemyConfig.put(2, Map.of(ENEMY_TYPE1, 3, ENEMY_TYPE2, 3)); // Level 2 có 3 enemy1 và 3 enemy2
         enemyConfig.put(3, Map.of(ENEMY_TYPE1, 2, ENEMY_TYPE2, 2, ENEMY_TYPE3, 2)); // Level 2 có 3 enemy1 và 3 enemy2
         enemyConfig.put(9, Map.of(ENEMY_TYPE2, 1, ENEMY_TYPE3, 1, ENEMY_TYPE4, 4,ENEMY_TYPE5, 1)); // Level 2 có 3 enemy1 và 3 enemy2
+        enemyConfig.put(24,Map.of(ENEMY_TYPE3, 1, ENEMY_TYPE4, 1,ENEMY_TYPE5,4,ENEMY_TYPE6,2,ENEMY_TYPE7,1));
+        enemyConfig.put(25,Map.of(ENEMY_TYPE2,2 ,ENEMY_TYPE3,1,ENEMY_TYPE4,1,ENEMY_TYPE5,2,ENEMY_TYPE6,2,ENEMY_TYPE7,1));
+        enemyConfig.put(26,Map.of(ENEMY_TYPE1,1,ENEMY_TYPE2,1,ENEMY_TYPE3,1,ENEMY_TYPE4,1,ENEMY_TYPE5,2,ENEMY_TYPE6,1,ENEMY_TYPE7,1));
+        enemyConfig.put(27,Map.of(ENEMY_TYPE1,1,ENEMY_TYPE2,1,ENEMY_TYPE5,5,ENEMY_TYPE6,1,ENEMY_TYPE7,1));
+        enemyConfig.put(28,Map.of(ENEMY_TYPE2,1,ENEMY_TYPE3,3,ENEMY_TYPE4,3,ENEMY_TYPE5,1,ENEMY_TYPE7,1));
+        enemyConfig.put(29,Map.of(ENEMY_TYPE5,2,ENEMY_TYPE6,5,ENEMY_TYPE7,2));
+        enemyConfig.put(30,Map.of(ENEMY_TYPE3,3,ENEMY_TYPE4,2,ENEMY_TYPE5,1,ENEMY_TYPE6,2,ENEMY_TYPE7,1));
         // ... thêm các level tiếp theo...
 
         List<int[]> emptyPositions = new ArrayList<>();
