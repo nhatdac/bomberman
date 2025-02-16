@@ -52,13 +52,39 @@ public class Brick extends MyActor{
             if(hasItem){
                 if(GameState.level == 1){
                     Master.item = new Item(getX(), getY(), ItemType.BOMB_POWER, getStage());
+
                 } else if(GameState.level == 2){
                     Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
+
                 } else if(GameState.level == 3){
                     Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
-                }
-                else if(GameState.level == 9){
+
+                } else if(GameState.level == 5) {
+                    Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
+
+                } else if(GameState.level == 9){
                     Master.item = new Item(getX(), getY(), ItemType.BOMB_PASS, getStage());
+
+                } else if(GameState.level == 38){
+                    Master.item = new Item(getX(), getY(), ItemType.BOMB_POWER, getStage());
+
+                } else if(GameState.level == 39){
+                    Master.item = new Item(getX(), getY(), ItemType.WALL_PASS, getStage());
+
+                } else if(GameState.level == 40){
+                    Master.item = new Item(getX(), getY(), ItemType.MYSTERY, getStage());
+
+                } else if(GameState.level == 41){
+                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
+
+                } else if(GameState.level == 42){
+                    Master.item = new Item(getX(), getY(), ItemType.WALL_PASS, getStage());
+
+                } else if(GameState.level == 43){
+                    Master.item = new Item(getX(), getY(), ItemType.BOMB_PASS, getStage());
+
+                } else if(GameState.level == 44){
+                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
                 }
 
             } else if(hasDoor){

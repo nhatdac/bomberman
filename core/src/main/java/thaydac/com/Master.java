@@ -248,13 +248,13 @@ public class Master implements Screen {
                 }
             }
 
-            if (Gdx.input.isKeyJustPressed(Input.Keys.B) && GameState.decorator) {
+            if (bombs.size > 0 && Gdx.input.isKeyJustPressed(Input.Keys.B) && GameState.decorator) {
                 // kích nổ qủa đầu tiên
                 bombs.get(0).isExploded = true;
             }
 
             for (Explosion explosion : explosions) {
-                if (explosion.getBound().overlaps(man.getBound())) {
+                if (GameState.level != 108 && explosion.getBound().overlaps(man.getBound())) {
                     man.isAlive = false;
                     dieSound.play();
                     break;
@@ -266,7 +266,7 @@ public class Master implements Screen {
                 }
             }
             for (MyActor enemy : enemies) {
-                if (enemy.getBound().overlaps(man.getBound())) {
+                if (GameState.level != 108 && enemy.getBound().overlaps(man.getBound())) {
                     man.isAlive = false;
                     dieSound.play();
                     break;
@@ -485,6 +485,15 @@ public class Master implements Screen {
                 }else if (cell == Utils.ENEMY_TYPE5) {
                     Enemy5 enemy5 = new Enemy5(x, y, stage);
                     enemies.add(enemy5);
+                }else if (cell == Utils.ENEMY_TYPE6) {
+                    Enemy6 enemy6 = new Enemy6(x, y, stage);
+                    enemies.add(enemy6);
+                }else if (cell == Utils.ENEMY_TYPE7) {
+                    Enemy7 enemy7 = new Enemy7(x, y, stage);
+                    enemies.add(enemy7);
+                }else if (cell == Utils.ENEMY_TYPE_FAST) {
+                    EnemyFast enemyFast = new EnemyFast(x, y, stage);
+                    enemies.add(enemyFast);
                 }
             }
         }

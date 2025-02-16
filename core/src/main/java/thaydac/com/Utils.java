@@ -68,7 +68,16 @@ public class Utils {
         enemyConfig.put(1, Map.of(ENEMY_TYPE1, 6)); // Level 1 có 6 enemy1, gọi là loại 3, bởi vì số 0, 1, 2 đã dùng cho ô trống, tường, gạch rồi.
         enemyConfig.put(2, Map.of(ENEMY_TYPE1, 3, ENEMY_TYPE2, 3)); // Level 2 có 3 enemy1 và 3 enemy2
         enemyConfig.put(3, Map.of(ENEMY_TYPE1, 2, ENEMY_TYPE2, 2, ENEMY_TYPE3, 2)); // Level 2 có 3 enemy1 và 3 enemy2
+        enemyConfig.put(5, Map.of( ENEMY_TYPE2, 4, ENEMY_TYPE3, 3));
         enemyConfig.put(9, Map.of(ENEMY_TYPE2, 1, ENEMY_TYPE3, 1, ENEMY_TYPE4, 4,ENEMY_TYPE5, 1)); // Level 2 có 3 enemy1 và 3 enemy2
+        enemyConfig.put(38, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 2, ENEMY_TYPE5, 3,ENEMY_TYPE7, 3));
+        enemyConfig.put(39, Map.of(ENEMY_TYPE3, 1, ENEMY_TYPE4, 1, ENEMY_TYPE5, 2,ENEMY_TYPE6, 2,ENEMY_TYPE7, 4));
+        enemyConfig.put(40, Map.of(ENEMY_TYPE3, 1, ENEMY_TYPE4, 2, ENEMY_TYPE5, 3,ENEMY_TYPE7, 4));
+        enemyConfig.put(41, Map.of(ENEMY_TYPE3, 1, ENEMY_TYPE4, 1, ENEMY_TYPE5, 3,ENEMY_TYPE6, 1,ENEMY_TYPE7, 4));
+        enemyConfig.put(42, Map.of(ENEMY_TYPE4, 1, ENEMY_TYPE5, 3,  ENEMY_TYPE6,1,ENEMY_TYPE7, 5));
+        enemyConfig.put(43, Map.of(ENEMY_TYPE4, 1, ENEMY_TYPE5, 2,  ENEMY_TYPE6,1,ENEMY_TYPE7, 6));
+        enemyConfig.put(44, Map.of(ENEMY_TYPE4, 1, ENEMY_TYPE5, 2,  ENEMY_TYPE6,1,ENEMY_TYPE7, 6));
+        enemyConfig.put(108, Map.of(ENEMY_TYPE_FAST,100));
         // ... thêm các level tiếp theo...
 
         List<int[]> emptyPositions = new ArrayList<>();

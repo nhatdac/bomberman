@@ -5,5 +5,10 @@ public enum ItemType {
     BOMB_POWER,
     BOMB_PASS,
     DETONATOR,
-    GODDESS_MASK
+    GODDESS_MASK,
+    MYSTERY,
+    SPEED,
+    FLAME_PASS,
+    WALL_PASS
+
 }
