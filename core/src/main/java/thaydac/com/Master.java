@@ -9,18 +9,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import thaydac.com.enemies.Enemy1;
-import thaydac.com.enemies.Enemy2;
-import thaydac.com.enemies.EnemyFast;
+import thaydac.com.enemies.*;
 
 public class Master implements Screen {
     StartGame game;
     int timing = 0;
     int count = 0;
-    int score = 0;
-    int left = 3;
     static boolean isFinished;
     boolean isEnemiesAllDie = false;
 
@@ -29,15 +26,15 @@ public class Master implements Screen {
     private Panel panel;
     public static Man man;
     public static Item item;
+    public static Item itemBonus;
     public static Door door;
-    static int level = 1;
 
     int[][] wallArray;
 
     public static Array<MyActor> walls;
     public static Array<Brick> briches;
     public static Array<MyActor> enemies;
-    public Array<Bomb> bombs;
+    public static Array<Bomb> bombs;
     public static Array<Explosion> explosions;
     Music dieSound;
     Music dieMusic;
@@ -46,6 +43,7 @@ public class Master implements Screen {
     Music timeupMusic;
     Music enemiesalldieMusic;
     Sound collectSound;
+
 
     // vẽ đ thử
     ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -81,6 +79,7 @@ public class Master implements Screen {
         enemiesalldieMusic = Gdx.audio.newMusic(Gdx.files.internal("enemiesalldie.mp3"));
         collectSound = Gdx.audio.newSound(Gdx.files.internal("collect.mp3"));
 
+
         backgroundMusic.play();
 
         dieSound.setOnCompletionListener(new Music.OnCompletionListener() {
@@ -89,6 +88,7 @@ public class Master implements Screen {
                 dieMusic.play();
             }
         });
+
 
         dieMusic.setOnCompletionListener(new Music.OnCompletionListener() {
             @Override
@@ -100,7 +100,8 @@ public class Master implements Screen {
         finishMusic.setOnCompletionListener(new Music.OnCompletionListener() {
             @Override
             public void onCompletion(Music music) {
-                level++;
+                GameState.level++;
+                Utils.saveGame();
                 game.setScreen(new StageScreen(game));
             }
         });
@@ -116,13 +117,18 @@ public class Master implements Screen {
     @Override
     public void show() {
         isFinished = false;
-        timing = 150;
+        timing = 300;
+        System.out.println("" + GameState.score);
+
     }
 
     @Override
     public void render(float v) {
+
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
+
+
 
         if(man.getX() > Gdx.graphics.getWidth()/2 && man.getX() < 31*32 - Gdx.graphics.getWidth()/2){
             stage.getCamera().position.x = man.getX();
@@ -139,18 +145,131 @@ public class Master implements Screen {
                         break;
                     }
                 }
-                if (positionOK && man.bombNumber > 0) {
+                if (positionOK && GameState.bombNumber > 0) {
                     Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions);
                     bombs.add(bomb);
-                    walls.add(bomb);
-                    man.bombNumber--;
+                    GameState.bombNumber--;
                 }
             }
+            if (Gdx.input.isKeyPressed(Input.Keys.B) && Gdx.input.isKeyPressed(Input.Keys.A) && Gdx.input.isKeyJustPressed(Input.Keys.V)) {//BAV = BuiAnhVu
+                int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
+                int yMan = Math.round(man.getY() / 32) * 32;
+                boolean positionOK = true;
+                for (Bomb b : bombs) {
+                    if (b.getX() == xMan && b.getY() == yMan) {
+                        positionOK = false;
+                        break;
+                    }
+                }
+                if (positionOK && GameState.bombNumber > 0) {
+                    for(MyActor e : enemies){
+                        Bomb bomb = new Bomb(e.getX() - 32, e.getY(), stage, bombs, explosions);
+                        bombs.add(bomb);
+                        Bomb bomb2 = new Bomb(e.getX() + 32, e.getY(), stage, bombs, explosions);
+                        bombs.add(bomb2);
+                        Bomb bomb3 = new Bomb(e.getX(), e.getY()-32, stage, bombs, explosions);
+                        bombs.add(bomb3);
+                        Bomb bomb4 = new Bomb(e.getX(), e.getY()+32, stage, bombs, explosions);
+                        bombs.add(bomb4);
+                        GameState.bombNumber -= 4;
+                    }
+                    Bomb bomb = new Bomb(doorRec .getX() - 32, doorRec.getY(), stage, bombs, explosions);
+                    bombs.add(bomb);
+                    GameState.bombNumber--;
+                }
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+                int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
+                int yMan = Math.round(man.getY() / 32) * 32;
+                boolean positionOK = true;
+                for (Bomb b : bombs) {
+                    if (b.getX() == xMan && b.getY() == yMan) {
+                        positionOK = false;
+                        break;
+                    }
+                }
+                if (positionOK && GameState.bombNumber > 0) {
+                    for(int i = 0;i < 20;i += 2){
+                        Bomb bomb = new Bomb(xMan + i*32 , yMan, stage, bombs, explosions);
+                        bombs.add(bomb);
+                    }
+                    for(int i = 1;i < 21;i += 2){
+                        Bomb bomb = new Bomb(xMan + i*32 , yMan-32, stage, bombs, explosions);
+                        bombs.add(bomb);
+                    }
+                    for(int i = 0;i < 20;i += 2){
+                        Bomb bomb = new Bomb(xMan + i*32 , yMan-64, stage, bombs, explosions);
+                        bombs.add(bomb);
+                    }
+                    GameState.bombNumber-=30;
+                }
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+                int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
+                int yMan = Math.round(man.getY() / 32) * 32;
+                boolean positionOK = true;
+                for (Bomb b : bombs) {
+                    if (b.getX() == xMan && b.getY() == yMan) {
+                        positionOK = false;
+                        break;
+                    }
+                }
+                if (positionOK && GameState.bombNumber > 0) {
+                    int i = 0;
+                    int j = 0;
+                    for(;i < 6;i += 2){
+                        j++;
+                        Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
+                        bombs.add(bomb);
+                        Bomb bomb2 = new Bomb(xMan + j*32 , yMan - i*32 - 32, stage, bombs, explosions);
+                        bombs.add(bomb2);
+                    }
+                    for(; -2 < i; i-= 2){
+                        j++;
+                        Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
+                        bombs.add(bomb);
+                        Bomb bomb2 = new Bomb(xMan + j*32 , yMan - i*32 - 32, stage, bombs, explosions);
+                        bombs.add(bomb2);
+                    }
+                    j+= 2;
+                    i+=2;
+                    for(;i < 7;i ++){
+                        Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
+                        bombs.add(bomb);
+
+                    }
+                    j++;
+                    System.out.println(j);
+                    for(;j < 15;j ++){
+                        Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
+                        bombs.add(bomb);
+
+                    }
+                    i--;
+                    System.out.println(i);
+                    for(; -1 < i; i --){
+                        Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
+                        bombs.add(bomb);
+                    }
+                    GameState.bombNumber-=32;
+                }
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.B) && GameState.decorator) {
+                // kích nổ qủa đầu tiên
+                bombs.get(0).isExploded = true;
+            }
+
             for (Explosion explosion : explosions) {
                 if (explosion.getBound().overlaps(man.getBound())) {
                     man.isAlive = false;
                     dieSound.play();
                     break;
+                }
+                for (Bomb b : bombs) {
+                    if (explosion.getBound().overlaps(b.getBound())) {
+                        b.isExploded = true;
+                    }
                 }
             }
             for (MyActor enemy : enemies) {
@@ -170,15 +289,26 @@ public class Master implements Screen {
                 }
             }
             if(!man.isAlive){
+                GameState.left--;
+                GameState.decorator = false;
                 man.time = 0;
             }
         }
 
-        if(!isEnemiesAllDie && enemies.isEmpty()){
-            enemiesalldieMusic.play();
-            isEnemiesAllDie = true;
+        if(enemies.isEmpty()){
+            if(!isEnemiesAllDie) {
+                enemiesalldieMusic.play();
+                isEnemiesAllDie = true;
+            }
+            if(GameState.level == 1 || GameState.level == 9) {
+                if(itemBonus == null && Utils.isShownGoddess && !Utils.isCollectedItemBonus){
+                    itemBonus = new Item(32, 32, ItemType.GODDESS_MASK, stage);
+                    System.out.println("item bonus");
+                } else {
+                    Utils.updatePlayerPosition(new Vector2(man.getX(), man.getY()));
+                }
+            }
         }
-
 
         stage.act();
         collisionWall();
@@ -189,8 +319,8 @@ public class Master implements Screen {
 
         game.batch.begin();
         game.font.draw(game.batch, "TIME: " + timing, 32, Gdx.graphics.getHeight() - 16);
-        game.font.draw(game.batch, score < 10 ? "0" + score : "" + score, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - 16);
-        game.font.draw(game.batch, "LEFT: " + left, Gdx.graphics.getWidth() - 128, Gdx.graphics.getHeight() - 16);
+        game.font.draw(game.batch, GameState.score < 10 ? "0" + GameState.score : "" + GameState.score, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - 16);
+        game.font.draw(game.batch, "LEFT: " + GameState.left, Gdx.graphics.getWidth() - 128, Gdx.graphics.getHeight() - 16);
         game.batch.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -203,12 +333,25 @@ public class Master implements Screen {
     public void collectItems() {
         if (item != null && man.getBound().overlaps(item.getBound())) {
             if (item.type.equals(ItemType.BOMB_NUMBER)) {
-                man.bombNumber++;
+                GameState.bombNumber++;
             } else if (item.type.equals(ItemType.BOMB_POWER)) {
-                man.bombPower++;
+                GameState.bombPower++;
+            } else if (item.type.equals(ItemType.DETONATOR)) {
+                GameState.decorator = true;
+            }else if (item.type.equals(ItemType.BOMB_PASS)) {
+                GameState.bombPass = true;
             }
             item.remove();
             item = null;
+            collectSound.play();
+        }
+        if(itemBonus != null && man.getBound().overlaps(itemBonus.getBound())){
+            if (itemBonus.type.equals(ItemType.GODDESS_MASK)) {
+                GameState.score += 20000;
+                Utils.isCollectedItemBonus = true;
+            }
+            itemBonus.remove();
+            itemBonus = null;
             collectSound.play();
         }
     }
@@ -228,31 +371,63 @@ public class Master implements Screen {
         for (MyActor wall : walls) {
             if (checkCollision(wall, man)) {
                 if (man.direction.equalsIgnoreCase("L")) {
-                    man.moveBy(2, 0);
+                    man.moveBy(Utils.MAN_SPEED, 0);
                     float diff = diffirentYCor(man, wall);
                     if (Math.abs(diff) < 10) {
                         man.moveBy(0, diff);
                     }
                 } else if (man.direction.equalsIgnoreCase("R")) {
-                    man.moveBy(-2, 0);
+                    man.moveBy(-Utils.MAN_SPEED, 0);
                     float diff = diffirentYCor(man, wall);
                     if (Math.abs(diff) < 10) {
                         man.moveBy(0, diff);
                     }
                 } else if (man.direction.equalsIgnoreCase("U")) {
-                    man.moveBy(0, -2);
+                    man.moveBy(0, -Utils.MAN_SPEED);
                     float diff = diffirentXCor(man, wall);
                     if (Math.abs(diff) < 10) {
                         man.moveBy(diff, 0);
                     }
                 } else if (man.direction.equalsIgnoreCase("D")) {
-                    man.moveBy(0, 2);
+                    man.moveBy(0, Utils.MAN_SPEED);
                     float diff = diffirentXCor(man, wall);
                     if (Math.abs(diff) < 10) {
                         man.moveBy(diff, 0);
                     }
                 }
                 break;
+            }
+        }
+        if(!GameState.bombPass){
+            for (Bomb b : bombs) {
+                if (checkCollision(b, man)) {
+                    if (man.direction.equalsIgnoreCase("L")) {
+                        man.moveBy(Utils.MAN_SPEED, 0);
+                        float diff = diffirentYCor(man, b);
+                        if (Math.abs(diff) < 10) {
+                            man.moveBy(0, diff);
+                        }
+                    } else if (man.direction.equalsIgnoreCase("R")) {
+                        man.moveBy(-Utils.MAN_SPEED, 0);
+                        float diff = diffirentYCor(man, b);
+                        if (Math.abs(diff) < 10) {
+                            man.moveBy(0, diff);
+                        }
+                    } else if (man.direction.equalsIgnoreCase("U")) {
+                        man.moveBy(0, -Utils.MAN_SPEED);
+                        float diff = diffirentXCor(man, b);
+                        if (Math.abs(diff) < 10) {
+                            man.moveBy(diff, 0);
+                        }
+                    } else if (man.direction.equalsIgnoreCase("D")) {
+                        man.moveBy(0, Utils.MAN_SPEED);
+                        float diff = diffirentXCor(man, b);
+                        if (Math.abs(diff) < 10) {
+                            man.moveBy(diff, 0);
+                        }
+                    }
+                    break;
+                }
             }
         }
     }
@@ -284,8 +459,6 @@ public class Master implements Screen {
         panel = new Panel(0, Gdx.graphics.getHeight() - 64, stage);
 
         wallArray = Utils.buildMap();
-        int enemy1Number = 5;
-        int enemy2Number = 3;
 
         int tileSize = 32; // Kích thước mỗi ô
         for (int row = 0; row < wallArray.length; row++) {
@@ -302,22 +475,35 @@ public class Master implements Screen {
                     briches.add(brick);
                     // cho cả gạch vào tuờng để kiểm tra va chạm dễ hơn
                     walls.add(brick);
-                } else if (cell == 3) {
-                    if (enemy1Number > 0) {
-                        Enemy1 enemy1 = new Enemy1(x, y, stage);
-                        // Tạo enemy
-                        enemies.add(enemy1);
-                        enemy1Number--;
-                    }
-                } else if (cell == 4) {
-                    if(level > 1){
-                        if (enemy2Number > 0) {
-                            Enemy2 enemy2 = new Enemy2(x, y, stage);
-                            // Tạo enemy
-                            enemies.add(enemy2);
-                            enemy2Number--;
-                        }
-                    }
+                } else if (cell == Utils.ENEMY_TYPE1) {
+                    // Tạo enemy
+                    Enemy1 enemy1 = new Enemy1(x, y, stage);
+                    // thêm vào danh sách các enemies
+                    enemies.add(enemy1);
+                } else if (cell == Utils.ENEMY_TYPE2) {
+                    Enemy2 enemy2 = new Enemy2(x, y, stage);
+                    enemies.add(enemy2);
+                } else if (cell == Utils.ENEMY_TYPE3) {
+                    Enemy3 enemy3 = new Enemy3(x, y, stage);
+                    enemies.add(enemy3);
+                }else if (cell == Utils.ENEMY_TYPE4) {
+                    Enemy4 enemy4 = new Enemy4(x, y, stage);
+                    enemies.add(enemy4);
+                }else if (cell == Utils.ENEMY_TYPE5) {
+                    Enemy5 enemy5 = new Enemy5(x, y, stage);
+                    enemies.add(enemy5);
+                }
+                else if (cell == Utils.ENEMY_TYPE6) {
+                    Enemy6 enemy6 = new Enemy6(x, y, stage);
+                    enemies.add(enemy6);
+                }
+                else if (cell == Utils.ENEMY_TYPE7) {
+                    Enemy7 enemy7 = new Enemy7(x, y, stage);
+                    enemies.add(enemy7);
+                }
+                else if (cell == Utils.ENEMY_TYPE_FAST) {
+                    Enemy8 enemy8 = new Enemy8(x, y, stage);
+                    enemies.add(enemy8);
                 }
             }
         }
