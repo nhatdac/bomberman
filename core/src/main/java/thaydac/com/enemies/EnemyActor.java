@@ -58,7 +58,7 @@ public class EnemyActor extends MyActor {
         if(isAlive) {
             moveBy(speedX, speedY);
                 for (MyActor wall : Master.walls) {
-                    if (!(wall instanceof Brick && type == Utils.ENEMY_TYPE5) && wall.getBound().overlaps(getBound())) {
+                    if (!(wall instanceof Brick && brickPass) && wall.getBound().overlaps(getBound())) {
                         if (speedX == speed) {
                             moveBy(-speed, 0);
                             speedX = 0;
@@ -88,9 +88,9 @@ public class EnemyActor extends MyActor {
                                 speedY = speed;
                             }
                         }
-                    }
-                    if(type == Utils.ENEMY_TYPE5 && wall instanceof Brick){
-                        checkAndUpdateZIndex(this, wall);
+                        if(brickPass && wall instanceof Brick){
+                            checkAndUpdateZIndex(this, wall);
+                        }
                     }
                 }
             for (Bomb b : Master.bombs) {

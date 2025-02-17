@@ -21,7 +21,14 @@ public class Item extends MyActor{
             tRegion.setRegion(16 * 5, 0, 16, 16);
         }else if(this.type.equals(ItemType.GODDESS_MASK)){
             tRegion.setRegion(16 * 9, 0, 16, 16);
+        }else if(this.type.equals(ItemType.Wall_pass)){
+            tRegion.setRegion(16 * 3, 0, 16, 16);
+        }else if(this.type.equals(ItemType.Flame_pass)){
+            tRegion.setRegion(16 * 6, 0, 16, 16);
+        }else if(this.type.equals(ItemType.Mystery)){
+            tRegion.setRegion(16 * 7, 0, 16, 16);
         }
+
         textureRegion = tRegion;
         setSize(32, 32);
     }

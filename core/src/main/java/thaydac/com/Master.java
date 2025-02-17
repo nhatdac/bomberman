@@ -43,6 +43,9 @@ public class Master implements Screen {
     Music timeupMusic;
     Music enemiesalldieMusic;
     Sound collectSound;
+    int timee;
+    float wait = 0;
+
 
     // vẽ đ thử
     ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -52,6 +55,7 @@ public class Master implements Screen {
     public Master(StartGame game) {
         this.game = game;
         stage = new Stage();
+        timee =0;
 
         walls = new Array<>();
         briches = new Array<>();
@@ -120,6 +124,12 @@ public class Master implements Screen {
 
     @Override
     public void render(float v) {
+        wait = wait-1;
+        if (wait <= 0){
+            GameState.mystery = false;
+        }else {
+            GameState.mystery = true;
+        }
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
 
@@ -139,9 +149,19 @@ public class Master implements Screen {
                     }
                 }
                 if (positionOK && GameState.bombNumber > 0) {
-                    Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions);
-                    bombs.add(bomb);
-                    GameState.bombNumber--;
+                    boolean isbrick = false;
+                    for (Brick brick :briches){
+                        if (brick.getBound().overlaps(man.getBound())){
+                            isbrick = true;
+                            break;
+                        }
+                    }
+                    if (!isbrick){
+                        Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions);
+                        bombs.add(bomb);
+                        GameState.bombNumber--;
+                    }
+
                 }
             }
             if (Gdx.input.isKeyPressed(Input.Keys.B) && Gdx.input.isKeyPressed(Input.Keys.A) && Gdx.input.isKeyJustPressed(Input.Keys.V)) {//BAV = BuiAnhVu
@@ -254,9 +274,10 @@ public class Master implements Screen {
             }
 
             for (Explosion explosion : explosions) {
-                if (explosion.getBound().overlaps(man.getBound())) {
+                if ((explosion.getBound().overlaps(man.getBound()))&& (!GameState.mystery) &&(!GameState.flamepass)) {
                     man.isAlive = false;
                     dieSound.play();
+                    GameState.wallPass = false;
                     break;
                 }
                 for (Bomb b : bombs) {
@@ -266,9 +287,10 @@ public class Master implements Screen {
                 }
             }
             for (MyActor enemy : enemies) {
-                if (enemy.getBound().overlaps(man.getBound())) {
+                if ((enemy.getBound().overlaps(man.getBound())) && (!GameState.mystery)){
                     man.isAlive = false;
                     dieSound.play();
+                    GameState.wallPass = false;
                     break;
                 }
             }
@@ -333,6 +355,15 @@ public class Master implements Screen {
                 GameState.decorator = true;
             }else if (item.type.equals(ItemType.BOMB_PASS)) {
                 GameState.bombPass = true;
+            }else if (item.type.equals(ItemType.Flame_pass)) {
+                GameState.flamepass = true;
+            }else if (item.type.equals(ItemType.Wall_pass)) {
+                GameState.wallPass = true;
+            }else if (item.type.equals(ItemType.Mystery)) {
+
+                timee = MathUtils.random(10,30);
+                wait = timee*60;
+
             }
             item.remove();
             item = null;
@@ -485,6 +516,13 @@ public class Master implements Screen {
                 }else if (cell == Utils.ENEMY_TYPE5) {
                     Enemy5 enemy5 = new Enemy5(x, y, stage);
                     enemies.add(enemy5);
+                }else if (cell == Utils.ENEMY_TYPE6) {
+                    Enemy6 enemy6 = new Enemy6(x, y, stage);
+                    enemies.add(enemy6);
+                }
+                else if (cell == Utils.ENEMY_TYPE7) {
+                    Enemy7 enemy7 = new Enemy7(x, y, stage);
+                    enemies.add(enemy7);
                 }
             }
         }
@@ -506,6 +544,10 @@ public class Master implements Screen {
         if (_actor1 instanceof Bomb && ((Bomb) _actor1).isJustPlaced) {
             return false;
         }
+        if(GameState.wallPass && _actor1 instanceof Brick){
+            return false;
+        }
+
         return _actor1.getBound().overlaps(_actor2.getBound());
     }
 
