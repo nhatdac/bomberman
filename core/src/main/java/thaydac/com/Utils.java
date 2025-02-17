@@ -31,6 +31,7 @@ public class Utils {
     public static final int ENEMY_TYPE_FAST = 10;
 
     public static boolean isShownGoddess = false;
+    public static boolean isShownBonusTarget = false;
     public static boolean isCollectedItemBonus = false;
 
     private static List<Vector2> boundaryPositions = new ArrayList<>();
@@ -77,6 +78,7 @@ public class Utils {
         enemyConfig.put(22, Map.of(ENEMY_TYPE3, 4, ENEMY_TYPE4, 3, ENEMY_TYPE5, 1,ENEMY_TYPE7, 1));
         enemyConfig.put(23, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 2, ENEMY_TYPE5, 2,ENEMY_TYPE6, 2,ENEMY_TYPE7, 1));
         enemyConfig.put(103, Map.of(ENEMY_TYPE4,200));
+        enemyConfig.put(102, Map.of(ENEMY_TYPE3,200));
         // ... thêm các level tiếp theo...
 
         List<int[]> emptyPositions = new ArrayList<>();
