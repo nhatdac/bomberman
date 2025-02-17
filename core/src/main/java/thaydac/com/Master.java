@@ -1,5 +1,6 @@
 package thaydac.com;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -20,6 +21,7 @@ public class Master implements Screen {
     int count = 0;
     static boolean isFinished;
     boolean isEnemiesAllDie = false;
+    int countDown = 1799;
 
     Stage stage;
     private Background background;
@@ -36,6 +38,7 @@ public class Master implements Screen {
     public static Array<MyActor> enemies;
     public static Array<Bomb> bombs;
     public static Array<Explosion> explosions;
+
     Music dieSound;
     Music dieMusic;
     Music finishMusic;
@@ -98,8 +101,15 @@ public class Master implements Screen {
             @Override
             public void onCompletion(Music music) {
                 GameState.level++;
+                if(GameState.level == 6){
+                    GameState.level = 100;
+                }
+                if(GameState.level == 11){
+                    GameState.level = 101;
+                }
                 Utils.saveGame();
                 game.setScreen(new StageScreen(game));
+
             }
         });
 
@@ -114,7 +124,12 @@ public class Master implements Screen {
     @Override
     public void show() {
         isFinished = false;
-        timing = 300;
+        if(!(GameState.level == 100 || GameState.level == 101)) {
+            timing = 300;
+        }else {
+            timing = 30;
+        }
+
         System.out.println("" + GameState.score);
     }
 
@@ -255,9 +270,12 @@ public class Master implements Screen {
 
             for (Explosion explosion : explosions) {
                 if (explosion.getBound().overlaps(man.getBound())) {
-                    man.isAlive = false;
-                    dieSound.play();
-                    break;
+                    if(!(GameState.level==100||GameState.level==101)) {
+                        man.isAlive = false;
+                        dieSound.play();
+                        break;
+                    }
+
                 }
                 for (Bomb b : bombs) {
                     if (explosion.getBound().overlaps(b.getBound())) {
@@ -267,9 +285,11 @@ public class Master implements Screen {
             }
             for (MyActor enemy : enemies) {
                 if (enemy.getBound().overlaps(man.getBound())) {
-                    man.isAlive = false;
-                    dieSound.play();
-                    break;
+                    if(!(GameState.level==100||GameState.level==101)) {
+                        man.isAlive = false;
+                        dieSound.play();
+                        break;
+                    }
                 }
             }
             count++;
@@ -284,6 +304,7 @@ public class Master implements Screen {
             if(!man.isAlive){
                 GameState.left--;
                 GameState.decorator = false;
+                GameState.wallPass = false;
                 man.time = 0;
             }
         }
@@ -321,11 +342,29 @@ public class Master implements Screen {
         shapeRenderer.rect(itemRec.getX(), itemRec.getY(), itemRec.width, itemRec.height);
         shapeRenderer.rect(doorRec.getX(), doorRec.getY(), doorRec.width, doorRec.height);
         shapeRenderer.end();
+        if(GameState.level == 100 || GameState.level == 101)  {
+            countDown = countDown - 1;
+        }if(countDown == 0){
+            GameState.level++;
+           if(GameState.level == 101){
+                GameState.level = 6;
+           }
+            if(GameState.level == 102){
+                GameState.level = 11;
+            }
+            countDown = 1799;
+            Utils.saveGame();
+            game.setScreen(new StageScreen(game));
+        }
+
     }
 
     public void collectItems() {
         if (item != null && man.getBound().overlaps(item.getBound())) {
-            if (item.type.equals(ItemType.BOMB_NUMBER)) {
+            if(item.type.equals(ItemType.WALLPASS)) {
+                GameState.wallPass = true;
+                System.out.println("Collected wall pass");
+            } else if (item.type.equals(ItemType.BOMB_NUMBER)) {
                 GameState.bombNumber++;
             } else if (item.type.equals(ItemType.BOMB_POWER)) {
                 GameState.bombPower++;
@@ -504,6 +543,8 @@ public class Master implements Screen {
     // _actor1: wall, _actor2: man
     boolean checkCollision(MyActor _actor1, MyActor _actor2) {
         if (_actor1 instanceof Bomb && ((Bomb) _actor1).isJustPlaced) {
+            return false;
+        }if(_actor1 instanceof Brick && GameState.wallPass){
             return false;
         }
         return _actor1.getBound().overlaps(_actor2.getBound());

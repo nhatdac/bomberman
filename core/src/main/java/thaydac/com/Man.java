@@ -24,6 +24,7 @@ public class Man extends MyActor {
     boolean isPlaying = false;
     boolean isAlive = true;
 
+
     Man(float x, float y, Stage s) {
         super(x, y, s);
         Texture texture = new Texture("man1.png");
@@ -95,6 +96,7 @@ public class Man extends MyActor {
                     textureRegion = animationUp.getKeyFrame(time);
                     playSoundWalking(2, delta);
                 }
+
             } else {
                 time += delta;
                 textureRegion = animationDie.getKeyFrame(time);

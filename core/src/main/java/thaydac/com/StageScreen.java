@@ -22,8 +22,12 @@ public class StageScreen implements Screen {
         if(GameState.left < 1){
             GameState.reset();
         }
+        if ((GameState.level == 100) || (GameState.level == 101)) {
+            layout.setText(game.font, "SURPRISE");
+        }else{
 
-        layout.setText(game.font,"STAGE " + GameState.level);
+            layout.setText(game.font,"STAGE " + GameState.level);
+        }
         stageMusic.play();
         stageMusic.setOnCompletionListener(new Music.OnCompletionListener() {
             @Override
