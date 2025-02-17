@@ -21,7 +21,7 @@ public class Master implements Screen {
     static boolean isFinished;
     boolean isEnemiesAllDie = false;
 
-    Stage stage;
+    public static Stage stage;
     private Background background;
     private Panel panel;
     public static Man man;
@@ -29,7 +29,7 @@ public class Master implements Screen {
     public static Item itemBonus;
     public static Door door;
 
-    int[][] wallArray;
+    public static int[][] wallArray;
 
     public static Array<MyActor> walls;
     public static Array<Brick> briches;
@@ -97,7 +97,13 @@ public class Master implements Screen {
         finishMusic.setOnCompletionListener(new Music.OnCompletionListener() {
             @Override
             public void onCompletion(Music music) {
-                GameState.level++;
+                if(GameState.level == 20){
+                    GameState.level = 103;
+                }else if(GameState.level == 103){
+                    GameState.level = 21;
+                }else {
+                    GameState.level++;
+                }
                 Utils.saveGame();
                 game.setScreen(new StageScreen(game));
             }
@@ -254,7 +260,7 @@ public class Master implements Screen {
             }
 
             for (Explosion explosion : explosions) {
-                if (explosion.getBound().overlaps(man.getBound())) {
+                if (!(GameState.level == 103) && explosion.getBound().overlaps(man.getBound())) {
                     man.isAlive = false;
                     dieSound.play();
                     break;
@@ -266,7 +272,7 @@ public class Master implements Screen {
                 }
             }
             for (MyActor enemy : enemies) {
-                if (enemy.getBound().overlaps(man.getBound())) {
+                if (!(GameState.level == 103) && enemy.getBound().overlaps(man.getBound())) {
                     man.isAlive = false;
                     dieSound.play();
                     break;
@@ -350,13 +356,11 @@ public class Master implements Screen {
     }
 
     public void collisionDoor(){
-        if (door != null
-            && !isFinished
-            && enemies.isEmpty()
-            && man.getX() == door.getX()
-            && man.getY() == door.getY()) { // lúc vào cửa trùng hoàn toàn vị trí cho đẹp
-            isFinished = true;
-            finishMusic.play();
+        if(!isFinished && (enemies.isEmpty() || GameState.level == 103) ){
+            if (door != null && man.getX() == door.getX() && man.getY() == door.getY()) { // lúc vào cửa trùng hoàn toàn vị trí cho đẹp
+                isFinished = true;
+                finishMusic.play();
+            }
         }
     }
 
@@ -485,6 +489,12 @@ public class Master implements Screen {
                 }else if (cell == Utils.ENEMY_TYPE5) {
                     Enemy5 enemy5 = new Enemy5(x, y, stage);
                     enemies.add(enemy5);
+                }else if (cell == Utils.ENEMY_TYPE6) {
+                    Enemy6 enemy6 = new Enemy6(x, y, stage);
+                    enemies.add(enemy6);
+                }else if (cell == Utils.ENEMY_TYPE7) {
+                    Enemy7 enemy7 = new Enemy7(x, y, stage);
+                    enemies.add(enemy7);
                 }
             }
         }

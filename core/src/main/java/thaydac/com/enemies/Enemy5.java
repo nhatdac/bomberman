@@ -15,7 +15,7 @@ public class Enemy5 extends EnemyActor {
         type = Utils.ENEMY_TYPE5;
         smart = EnemySmart.HIGH;
         brickPass = true;
-        speed = 0.5f;
-        speedY = speed;
+        speed = EnemySpeed.SLOWEST;
+        speedY = speed.getValue();
     }
 }
