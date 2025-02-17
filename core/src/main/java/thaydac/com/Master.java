@@ -331,8 +331,10 @@ public class Master implements Screen {
                 GameState.bombPower++;
             } else if (item.type.equals(ItemType.DETONATOR)) {
                 GameState.decorator = true;
-            }else if (item.type.equals(ItemType.BOMB_PASS)) {
+            } else if (item.type.equals(ItemType.BOMB_PASS)) {
                 GameState.bombPass = true;
+            } else if (item.type.equals(ItemType.SPEED)) {
+                GameState.speed= true;
             }
             item.remove();
             item = null;
