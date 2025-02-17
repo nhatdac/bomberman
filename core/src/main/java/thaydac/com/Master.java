@@ -524,6 +524,12 @@ public class Master implements Screen {
                 }else if (cell == Utils.ENEMY_TYPE5) {
                     Enemy5 enemy5 = new Enemy5(x, y, stage);
                     enemies.add(enemy5);
+                }else if (cell == Utils.ENEMY_TYPE6) {
+                    Enemy6 enemy6 = new Enemy6(x, y, stage);
+                    enemies.add(enemy6);
+                }else if (cell == Utils.ENEMY_TYPE7) {
+                    Enemy7 enemy7 = new Enemy7(x, y, stage);
+                    enemies.add(enemy7);
                 }
             }
         }
