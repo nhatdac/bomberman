@@ -281,11 +281,20 @@ public class Master implements Screen {
 
             count++;
             if (count % 60 == 0) {
-                if(timing > 0) {
-                    timing--;
+                timing--;
+                if(timing > 0 && GameState.level < 100) {
+
                     if (timing == 0) {
                         timeupMusic.play();
                     }
+                }else if(timing == 0 && GameState.level == 105){
+                    GameState.level = 26;
+                    Utils.saveGame();
+                    game.setScreen(new StageScreen(game));
+                } else if (timing == 0 && GameState.level >= 106){
+                    GameState.level = 31;
+                    Utils.saveGame();
+                    game.setScreen(new StageScreen(game));
                 }
             }
             if(!man.isAlive){
@@ -296,17 +305,29 @@ public class Master implements Screen {
         }
 
         if(enemies.isEmpty()){
-            if(!isEnemiesAllDie) {
-                enemiesalldieMusic.play();
-                isEnemiesAllDie = true;
-            }
-            if(GameState.level == 1 || GameState.level == 9) {
-                if(itemBonus == null && Utils.isShownGoddess && !Utils.isCollectedItemBonus){
-                    itemBonus = new Item(32, 32, ItemType.GODDESS_MASK, stage);
-                    System.out.println("item bonus");
-                } else {
-                    Utils.updatePlayerPosition(new Vector2(man.getX(), man.getY()));
+            if(GameState.level < 100){
+                if(!isEnemiesAllDie) {
+                    enemiesalldieMusic.play();
+                    isEnemiesAllDie = true;
                 }
+                if(GameState.level == 1 || GameState.level == 9) {
+                    if (itemBonus == null && Utils.isShownGoddess && !Utils.isCollectedItemBonus) {
+                        itemBonus = new Item(32, 32, ItemType.GODDESS_MASK, stage);
+                        System.out.println("item bonus");
+                    } else {
+                        Utils.updatePlayerPosition(new Vector2(man.getX(), man.getY()));
+                    }
+                }
+            }
+            if(GameState.level == 105){
+                GameState.level = 26;
+                Utils.saveGame();
+                game.setScreen(new StageScreen(game));
+            }
+            if (GameState.level == 106){
+                GameState.level = 31;
+                Utils.saveGame();
+                game.setScreen(new StageScreen(game));
             }
         }
 
@@ -478,12 +499,15 @@ public class Master implements Screen {
                 if (cell == 1) {
                     // Tạo tường
                     walls.add(new Wall(x, y, stage));
+
                 } else if (cell == 2) {
-                    Brick brick = new Brick(x, y, stage);
-                    // Tạo gạch
-                    briches.add(brick);
-                    // cho cả gạch vào tuờng để kiểm tra va chạm dễ hơn
-                    walls.add(brick);
+                    if (GameState.level < 100){
+                        Brick brick = new Brick(x, y, stage);
+                        // Tạo gạch
+                        briches.add(brick);
+                        // cho cả gạch vào tuờng để kiểm tra va chạm dễ hơn
+                        walls.add(brick);
+                    }
                 } else if (cell == Utils.ENEMY_TYPE1) {
                     // Tạo enemy
                     Enemy1 enemy1 = new Enemy1(x, y, stage);
@@ -510,16 +534,20 @@ public class Master implements Screen {
                 }
             }
         }
-        int itemPosition = MathUtils.random(0, briches.size - 1);
-        int doorPosition = MathUtils.random(0, briches.size - 1);
+        if(GameState.level < 100) {
 
-        while (itemPosition == doorPosition) {
-            doorPosition = MathUtils.random(0, briches.size - 1);
+
+            int itemPosition = MathUtils.random(0, briches.size - 1);
+            int doorPosition = MathUtils.random(0, briches.size - 1);
+
+            while (itemPosition == doorPosition) {
+                doorPosition = MathUtils.random(0, briches.size - 1);
+            }
+            briches.get(itemPosition).hasItem = true;
+            briches.get(doorPosition).hasDoor = true;
+            itemRec = briches.get(itemPosition).getBound();
+            doorRec = briches.get(doorPosition).getBound();
         }
-        briches.get(itemPosition).hasItem = true;
-        briches.get(doorPosition).hasDoor = true;
-        itemRec = briches.get(itemPosition).getBound();
-        doorRec = briches.get(doorPosition).getBound();
     }
 
 
