@@ -76,6 +76,7 @@ public class Utils {
         enemyConfig.put(49, Map.of(ENEMY_TYPE5, 1, ENEMY_TYPE6, 2, ENEMY_TYPE7, 6,ENEMY_TYPE_FAST,1)); // Level 2 có 3 enemy1 và 3 enemy2
         enemyConfig.put(50, Map.of(ENEMY_TYPE5, 1, ENEMY_TYPE6, 2, ENEMY_TYPE7, 5,ENEMY_TYPE_FAST,2)); // Level 2 có 3 enemy1 và 3 enemy2
         enemyConfig.put(9, Map.of(ENEMY_TYPE2, 1, ENEMY_TYPE3, 1, ENEMY_TYPE4, 4,ENEMY_TYPE5, 1)); // Level 2 có 3 enemy1 và 3 enemy2
+        enemyConfig.put(109, Map.of(ENEMY_TYPE_FAST,100));
         // ... thêm các level tiếp theo...
 
         List<int[]> emptyPositions = new ArrayList<>();

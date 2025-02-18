@@ -255,9 +255,29 @@ public class Master implements Screen {
                 }
             }
 
+            for (Explosion explosion : explosions) {
+                if (GameState.level != 108 && explosion.getBound().overlaps(man.getBound())) {
+                    man.isAlive = false;
+                    dieSound.play();
+                    break;
+                }
+                for (Bomb b : bombs) {
+                    if (explosion.getBound().overlaps(b.getBound())) {
+                        b.isExploded = true;
+                    }
+                }
+            }
+            for (MyActor enemy : enemies) {
+                if (GameState.level != 108 && enemy.getBound().overlaps(man.getBound())) {
+                    man.isAlive = false;
+                    dieSound.play();
+                    break;
+                }
+            }
             if (Gdx.input.isKeyJustPressed(Input.Keys.B) && GameState.decorator) {
                 // kích nổ qủa đầu tiên
                 bombs.get(0).isExploded = true;
+
             }
 
             for (Explosion explosion : explosions) {
@@ -340,6 +360,8 @@ public class Master implements Screen {
                 GameState.decorator = true;
             }else if (item.type.equals(ItemType.BOMB_PASS)) {
                 GameState.bombPass = true;
+            }else if (item.type.equals(ItemType.WALL_PASS)) {
+                GameState.wallPass = true;
             }
             item.remove();
             item = null;
@@ -429,7 +451,39 @@ public class Master implements Screen {
                     break;
                 }
             }
-        }
+        }//
+//        if(!GameState.wallPass){
+//            for (MyActor b : walls) {
+//                if (checkCollision(b, man)) {
+//                    if (man.direction.equalsIgnoreCase("L")) {
+//                        man.moveBy(Utils.MAN_SPEED, 0);
+//                        float diff = diffirentYCor(man, b);
+//                        if (Math.abs(diff) < 10) {
+//                            man.moveBy(0, diff);
+//                        }
+//                    } else if (man.direction.equalsIgnoreCase("R")) {
+//                        man.moveBy(-Utils.MAN_SPEED, 0);
+//                        float diff = diffirentYCor(man, b);
+//                        if (Math.abs(diff) < 10) {
+//                            man.moveBy(0, diff);
+//                        }
+//                    } else if (man.direction.equalsIgnoreCase("U")) {
+//                        man.moveBy(0, -Utils.MAN_SPEED);
+//                        float diff = diffirentXCor(man, b);
+//                        if (Math.abs(diff) < 10) {
+//                            man.moveBy(diff, 0);
+//                        }
+//                    } else if (man.direction.equalsIgnoreCase("D")) {
+//                        man.moveBy(0, Utils.MAN_SPEED);
+//                        float diff = diffirentXCor(man, b);
+//                        if (Math.abs(diff) < 10) {
+//                            man.moveBy(diff, 0);
+//                        }
+//                    }
+////                    break;
+//                }
+//            }
+//        }
     }
 
     public float diffirentYCor(MyActor _man, MyActor _wall) {
