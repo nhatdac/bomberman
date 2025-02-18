@@ -397,7 +397,6 @@ public class Master implements Screen {
             GameState.bonusTarget = true;
         }
     }
-g
     public void collisionWall() {
         for (MyActor wall : walls) {
             if (checkCollision(wall, man)) {
