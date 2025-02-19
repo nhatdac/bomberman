@@ -501,7 +501,7 @@ public class Master implements Screen {
                 if (cell == 1) {
                     // Tạo tường
                     walls.add(new Wall(x, y, stage));
-                } else if (cell == 2) {
+                } else if ((cell == 2)&&(!(GameState.level == 100|| GameState.level == 101)) ) {
                     Brick brick = new Brick(x, y, stage);
                     // Tạo gạch
                     briches.add(brick);
@@ -533,16 +533,18 @@ public class Master implements Screen {
                 }
             }
         }
-        int itemPosition = MathUtils.random(0, briches.size - 1);
-        int doorPosition = MathUtils.random(0, briches.size - 1);
+        if(!(GameState.level == 100 || GameState.level == 101)) {
+            int itemPosition = MathUtils.random(0, briches.size - 1);
+            int doorPosition = MathUtils.random(0, briches.size - 1);
 
-        while (itemPosition == doorPosition) {
-            doorPosition = MathUtils.random(0, briches.size - 1);
+            while (itemPosition == doorPosition) {
+                doorPosition = MathUtils.random(0, briches.size - 1);
+            }
+            briches.get(itemPosition).hasItem = true;
+            briches.get(doorPosition).hasDoor = true;
+            itemRec = briches.get(itemPosition).getBound();
+            doorRec = briches.get(doorPosition).getBound();
         }
-        briches.get(itemPosition).hasItem = true;
-        briches.get(doorPosition).hasDoor = true;
-        itemRec = briches.get(itemPosition).getBound();
-        doorRec = briches.get(doorPosition).getBound();
     }
 
 
