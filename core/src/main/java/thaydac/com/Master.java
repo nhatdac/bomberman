@@ -66,12 +66,15 @@ public class Master implements Screen {
         generateMap();
         if(man == null) { // lúc mới vào game nó chưa được khơỉ tạp
             man = new Man(32, Gdx.graphics.getHeight() - 32 * 4, stage);
-        } else { // khi vào ván mới chỉ cần đặt vị trí và add vào stage, vì stage đã khởi tạo lại
+        } else{ // khi vào ván mới chỉ cần đặt vị trí và add vào stage, vì stage đã khởi tạo lại
             man.setPosition(32, Gdx.graphics.getHeight() - 32 * 4);
             man.time = 0;
             man.isAlive = true;
             man.textureRegion = man.animationRight.getKeyFrame(timing);
             stage.addActor(man);
+        }
+        if(GameState.level == 51){
+            man.setPosition(32, 32*4);
         }
 
         dieSound = Gdx.audio.newMusic(Gdx.files.internal("die.mp3"));
@@ -319,9 +322,6 @@ public class Master implements Screen {
                     if(itemBonus == null && Utils.isShownGoddess && !Utils.isCollectedItemBonus){
                         itemBonus = new Item(32, 32, ItemType.GODDESS_MASK, stage);
                         System.out.println("item bonus");
-                    }else if(itemBonus == null && GameState.bonusTarget && !Utils.isCollectedItemBonus){
-                        itemBonus = new Item(32, 32, ItemType.BONUS_TARGET, stage);
-                        System.out.println("item bonus");
                     } else {
                         Utils.updatePlayerPosition(new Vector2(man.getX(), man.getY()));
                     }
@@ -532,7 +532,7 @@ public class Master implements Screen {
                 }
             }
         }else{
-            for(int i = 3;i < 21;i++){
+            for(int i = 0;i < 25;i++){
                 Brick brick = new Brick(32*i, 32*3, stage);
                 briches.add(brick);
                 walls.add(brick);

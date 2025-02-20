@@ -1,7 +1,7 @@
 package thaydac.com;
 
 public class GameState {
-    public static int level = 51;
+    public static int level = 17;
     public static int score = 0;
     public static int bombNumber = 1;
     public static int bombPower = 1;
