@@ -45,6 +45,8 @@ public class Master implements Screen {
     Sound collectSound;
     int timee;
     float wait = 0;
+    int G = 0;
+    int H = 0;
 
 
     // vẽ đ thử
@@ -102,9 +104,24 @@ public class Master implements Screen {
             @Override
             public void onCompletion(Music music) {
                 GameState.level++;
+                if (G==1){
+                    GameState.level = 36;
+                }
+                if (H==1){
+                    GameState.level = 41;
+                }
+                if ((GameState.level == 36) && (G ==0) ){
+                    GameState.level = 108;
+                    G =1;
+                }
+                if((GameState.level == 41 )&&(H ==0)){
+                    GameState.level = 109;
+                    H =1;
+                }
                 Utils.saveGame();
                 game.setScreen(new StageScreen(game));
             }
+
         });
 
         timeupMusic.setOnCompletionListener(new Music.OnCompletionListener() {
@@ -124,6 +141,7 @@ public class Master implements Screen {
 
     @Override
     public void render(float v) {
+        System.out.println(GameState.level);
         wait = wait-1;
         if (wait <= 0){
             GameState.mystery = false;
@@ -274,7 +292,7 @@ public class Master implements Screen {
             }
 
             for (Explosion explosion : explosions) {
-                if ((explosion.getBound().overlaps(man.getBound()))&& (!GameState.mystery) &&(!GameState.flamepass)) {
+                if ((explosion.getBound().overlaps(man.getBound()))&& (!GameState.mystery) &&(!GameState.flamepass)&&((GameState.level != 108)&&(GameState.level != 109))) {
                     man.isAlive = false;
                     dieSound.play();
                     GameState.wallPass = false;
@@ -287,7 +305,7 @@ public class Master implements Screen {
                 }
             }
             for (MyActor enemy : enemies) {
-                if ((enemy.getBound().overlaps(man.getBound())) && (!GameState.mystery)){
+                if ((enemy.getBound().overlaps(man.getBound())) && (!GameState.mystery)&&((GameState.level != 108)&&(GameState.level != 109))){
                     man.isAlive = false;
                     dieSound.play();
                     GameState.wallPass = false;
@@ -479,63 +497,87 @@ public class Master implements Screen {
     }
 
     public void generateMap() {
-        background = new Background(0, 0, stage);
-        panel = new Panel(0, Gdx.graphics.getHeight() - 64, stage);
+        if ((GameState.level == 108 )||(GameState.level == 109)) {
+            background = new Background(0, 0, stage);
+            panel = new Panel(0, Gdx.graphics.getHeight() - 64, stage);
 
-        wallArray = Utils.buildMap();
+            wallArray = Utils.buildMap();
 
-        int tileSize = 32; // Kích thước mỗi ô
-        for (int row = 0; row < wallArray.length; row++) {
-            for (int col = 0; col < wallArray[row].length; col++) {
-                int cell = wallArray[row][col];
-                int x = col * tileSize;
-                int y = (wallArray.length - 1 - row) * tileSize; // Lật trục y
-                if (cell == 1) {
-                    // Tạo tường
-                    walls.add(new Wall(x, y, stage));
-                } else if (cell == 2) {
-                    Brick brick = new Brick(x, y, stage);
-                    // Tạo gạch
-                    briches.add(brick);
-                    // cho cả gạch vào tuờng để kiểm tra va chạm dễ hơn
-                    walls.add(brick);
-                } else if (cell == Utils.ENEMY_TYPE1) {
-                    // Tạo enemy
-                    Enemy1 enemy1 = new Enemy1(x, y, stage);
-                    // thêm vào danh sách các enemies
-                    enemies.add(enemy1);
-                } else if (cell == Utils.ENEMY_TYPE2) {
-                    Enemy2 enemy2 = new Enemy2(x, y, stage);
-                    enemies.add(enemy2);
-                } else if (cell == Utils.ENEMY_TYPE3) {
-                    Enemy3 enemy3 = new Enemy3(x, y, stage);
-                    enemies.add(enemy3);
-                }else if (cell == Utils.ENEMY_TYPE4) {
-                    Enemy4 enemy4 = new Enemy4(x, y, stage);
-                    enemies.add(enemy4);
-                }else if (cell == Utils.ENEMY_TYPE5) {
-                    Enemy5 enemy5 = new Enemy5(x, y, stage);
-                    enemies.add(enemy5);
-                }else if (cell == Utils.ENEMY_TYPE6) {
-                    Enemy6 enemy6 = new Enemy6(x, y, stage);
-                    enemies.add(enemy6);
-                }
-                else if (cell == Utils.ENEMY_TYPE7) {
-                    Enemy7 enemy7 = new Enemy7(x, y, stage);
-                    enemies.add(enemy7);
+            int tileSize = 32; // Kích thước mỗi ô
+            for (int row = 0; row < wallArray.length; row++) {
+                for (int col = 0; col < wallArray[row].length; col++) {
+                    int cell = wallArray[row][col];
+                    int x = col * tileSize;
+                    int y = (wallArray.length - 1 - row) * tileSize; // Lật trục y
+                    if (cell == 1) {
+                        // Tạo tường
+                        walls.add(new Wall(x, y, stage));
+                    }else if (cell == Utils.ENEMY_TYPE1) {
+                        // Tạo enemy
+                        Enemy1 enemy1 = new Enemy1(x, y, stage);
+                        // thêm vào danh sách các enemies
+                        enemies.add(enemy1);
+                    }
                 }
             }
-        }
-        int itemPosition = MathUtils.random(0, briches.size - 1);
-        int doorPosition = MathUtils.random(0, briches.size - 1);
+        }else {
+            background = new Background(0, 0, stage);
+            panel = new Panel(0, Gdx.graphics.getHeight() - 64, stage);
 
-        while (itemPosition == doorPosition) {
-            doorPosition = MathUtils.random(0, briches.size - 1);
+            wallArray = Utils.buildMap();
+
+            int tileSize = 32; // Kích thước mỗi ô
+            for (int row = 0; row < wallArray.length; row++) {
+                for (int col = 0; col < wallArray[row].length; col++) {
+                    int cell = wallArray[row][col];
+                    int x = col * tileSize;
+                    int y = (wallArray.length - 1 - row) * tileSize; // Lật trục y
+                    if (cell == 1) {
+                        // Tạo tường
+                        walls.add(new Wall(x, y, stage));
+                    } else if (cell == 2) {
+                        Brick brick = new Brick(x, y, stage);
+                        // Tạo gạch
+                        briches.add(brick);
+                        // cho cả gạch vào tuờng để kiểm tra va chạm dễ hơn
+                        walls.add(brick);
+                    } else if (cell == Utils.ENEMY_TYPE1) {
+                        // Tạo enemy
+                        Enemy1 enemy1 = new Enemy1(x, y, stage);
+                        // thêm vào danh sách các enemies
+                        enemies.add(enemy1);
+                    } else if (cell == Utils.ENEMY_TYPE2) {
+                        Enemy2 enemy2 = new Enemy2(x, y, stage);
+                        enemies.add(enemy2);
+                    } else if (cell == Utils.ENEMY_TYPE3) {
+                        Enemy3 enemy3 = new Enemy3(x, y, stage);
+                        enemies.add(enemy3);
+                    } else if (cell == Utils.ENEMY_TYPE4) {
+                        Enemy4 enemy4 = new Enemy4(x, y, stage);
+                        enemies.add(enemy4);
+                    } else if (cell == Utils.ENEMY_TYPE5) {
+                        Enemy5 enemy5 = new Enemy5(x, y, stage);
+                        enemies.add(enemy5);
+                    } else if (cell == Utils.ENEMY_TYPE6) {
+                        Enemy6 enemy6 = new Enemy6(x, y, stage);
+                        enemies.add(enemy6);
+                    } else if (cell == Utils.ENEMY_TYPE7) {
+                        Enemy7 enemy7 = new Enemy7(x, y, stage);
+                        enemies.add(enemy7);
+                    }
+                }
+            }
+            int itemPosition = MathUtils.random(0, briches.size - 1);
+            int doorPosition = MathUtils.random(0, briches.size - 1);
+
+            while (itemPosition == doorPosition) {
+                doorPosition = MathUtils.random(0, briches.size - 1);
+            }
+            briches.get(itemPosition).hasItem = true;
+            briches.get(doorPosition).hasDoor = true;
+            itemRec = briches.get(itemPosition).getBound();
+            doorRec = briches.get(doorPosition).getBound();
         }
-        briches.get(itemPosition).hasItem = true;
-        briches.get(doorPosition).hasDoor = true;
-        itemRec = briches.get(itemPosition).getBound();
-        doorRec = briches.get(doorPosition).getBound();
     }
 
 

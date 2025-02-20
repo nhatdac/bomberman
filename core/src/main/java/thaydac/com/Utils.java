@@ -78,8 +78,8 @@ public class Utils {
         enemyConfig.put(36, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 2, ENEMY_TYPE5, 3,ENEMY_TYPE6,0,ENEMY_TYPE7,3));
         enemyConfig.put(37, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 1, ENEMY_TYPE5, 3,ENEMY_TYPE6,1,ENEMY_TYPE7,3));
 
-        enemyConfig.put(G, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 1, ENEMY_TYPE5, 3,ENEMY_TYPE6,1,ENEMY_TYPE7,3));
-        enemyConfig.put(37, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 1, ENEMY_TYPE5, 3,ENEMY_TYPE6,1,ENEMY_TYPE7,3));
+        enemyConfig.put(108, Map.of(ENEMY_TYPE1, 2000));
+        enemyConfig.put(109, Map.of(ENEMY_TYPE1, 2000));
         List<int[]> emptyPositions = new ArrayList<>();
 
         // Tìm tất cả vị trí trống
@@ -92,6 +92,7 @@ public class Utils {
                 }
             }
         }
+
 
         // Lấy cấu hình enemy của level hiện tại
         Map<Integer, Integer> levelEnemies = enemyConfig.getOrDefault(GameState.level, new HashMap<>());
