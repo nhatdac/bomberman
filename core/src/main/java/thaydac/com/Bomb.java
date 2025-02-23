@@ -29,7 +29,7 @@ public class Bomb extends MyActor {
     Array<Explosion> explosions;
     boolean isJustPlaced = false;
 
-    Bomb(float x, float y, Stage s, Array<Bomb> _bombs, Array<Explosion> _explosions) {
+    Bomb(float x, float y, Stage s, Array<Bomb> _bombs, Array<Explosion> _explosions, boolean isSetSound) {
         super(x, y, s);
         this.bombs = _bombs;
         this.explosions = _explosions;
@@ -66,7 +66,9 @@ public class Bomb extends MyActor {
         textureRegion = animation.getKeyFrame(time);
 
         setSound = Gdx.audio.newSound(Gdx.files.internal("set.mp3"));
-        setSound.play(0.3f);
+        if(isSetSound){
+            setSound.play(0.3f);
+        }
         explodeSound = Gdx.audio.newSound(Gdx.files.internal("explode.mp3"));
     }
 

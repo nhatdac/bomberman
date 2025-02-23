@@ -154,7 +154,7 @@ public class Master implements Screen {
                         }
                     }
                     if (positionOK && GameState.bombNumber > 0) {
-                        Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions);
+                        Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions,true);
                         bombs.add(bomb);
                         GameState.bombNumber--;
                     }
@@ -171,17 +171,17 @@ public class Master implements Screen {
                     }
                     if (positionOK && GameState.bombNumber > 0) {
                         for(MyActor e : enemies){
-                            Bomb bomb = new Bomb(e.getX() - 32, e.getY(), stage, bombs, explosions);
+                            Bomb bomb = new Bomb(e.getX() - 32, e.getY(), stage, bombs, explosions,false);
                             bombs.add(bomb);
-                            Bomb bomb2 = new Bomb(e.getX() + 32, e.getY(), stage, bombs, explosions);
+                            Bomb bomb2 = new Bomb(e.getX() + 32, e.getY(), stage, bombs, explosions,false);
                             bombs.add(bomb2);
-                            Bomb bomb3 = new Bomb(e.getX(), e.getY()-32, stage, bombs, explosions);
+                            Bomb bomb3 = new Bomb(e.getX(), e.getY()-32, stage, bombs, explosions,false);
                             bombs.add(bomb3);
-                            Bomb bomb4 = new Bomb(e.getX(), e.getY()+32, stage, bombs, explosions);
+                            Bomb bomb4 = new Bomb(e.getX(), e.getY()+32, stage, bombs, explosions,false);
                             bombs.add(bomb4);
                             GameState.bombNumber -= 4;
                         }
-                        Bomb bomb = new Bomb(doorRec .getX() - 32, doorRec.getY(), stage, bombs, explosions);
+                        Bomb bomb = new Bomb(doorRec .getX() - 32, doorRec.getY(), stage, bombs, explosions,false);
                         bombs.add(bomb);
                         GameState.bombNumber--;
                     }
@@ -198,15 +198,15 @@ public class Master implements Screen {
                     }
                     if (positionOK && GameState.bombNumber > 0) {
                         for(int i = 0;i < 20;i += 2){
-                            Bomb bomb = new Bomb(xMan + i*32 , yMan, stage, bombs, explosions);
+                            Bomb bomb = new Bomb(xMan + i*32 , yMan, stage, bombs, explosions,false);
                             bombs.add(bomb);
                         }
                         for(int i = 1;i < 21;i += 2){
-                            Bomb bomb = new Bomb(xMan + i*32 , yMan-32, stage, bombs, explosions);
+                            Bomb bomb = new Bomb(xMan + i*32 , yMan-32, stage, bombs, explosions,false);
                             bombs.add(bomb);
                         }
                         for(int i = 0;i < 20;i += 2){
-                            Bomb bomb = new Bomb(xMan + i*32 , yMan-64, stage, bombs, explosions);
+                            Bomb bomb = new Bomb(xMan + i*32 , yMan-64, stage, bombs, explosions,false);
                             bombs.add(bomb);
                         }
                         GameState.bombNumber-=30;
@@ -227,36 +227,36 @@ public class Master implements Screen {
                         int j = 0;
                         for(;i < 6;i += 2){
                             j++;
-                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
+                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions,false);
                             bombs.add(bomb);
-                            Bomb bomb2 = new Bomb(xMan + j*32 , yMan - i*32 - 32, stage, bombs, explosions);
+                            Bomb bomb2 = new Bomb(xMan + j*32 , yMan - i*32 - 32, stage, bombs, explosions,false);
                             bombs.add(bomb2);
                         }
                         for(; -2 < i; i-= 2){
                             j++;
-                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
+                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions,false);
                             bombs.add(bomb);
-                            Bomb bomb2 = new Bomb(xMan + j*32 , yMan - i*32 - 32, stage, bombs, explosions);
+                            Bomb bomb2 = new Bomb(xMan + j*32 , yMan - i*32 - 32, stage, bombs, explosions,false);
                             bombs.add(bomb2);
                         }
                         j+= 2;
                         i+=2;
                         for(;i < 7;i ++){
-                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
+                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions,false);
                             bombs.add(bomb);
 
                         }
                         j++;
                         System.out.println(j);
                         for(;j < 15;j ++){
-                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
+                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions,false);
                             bombs.add(bomb);
 
                         }
                         i--;
                         System.out.println(i);
                         for(; -1 < i; i --){
-                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
+                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions,false);
                             bombs.add(bomb);
                         }
                         GameState.bombNumber-=32;
