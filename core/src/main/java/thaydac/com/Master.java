@@ -108,10 +108,6 @@ public class Master implements Screen {
                     GameState.level = 103;
                 }else if(GameState.level == 15){
                     GameState.level = 102;
-                }else if(GameState.level == 103){
-                    GameState.level = 21;
-                }else if(GameState.level == 102){
-                    GameState.level = 16;
                 }else {
                     GameState.level++;
                 }
@@ -296,7 +292,20 @@ public class Master implements Screen {
                     if(timing > 0) {
                         timing--;
                         if (timing == 0) {
-                            timeupMusic.play();
+                            System.out.println(123);
+                            if(GameState.level == 102){
+                                GameState.level = 16;
+                                System.out.println(123);
+                                Utils.saveGame();
+                                game.setScreen(new StageScreen(game));
+                            }else if(GameState.level == 103){
+                                GameState.level = 21;
+                                System.out.println(123);
+                                Utils.saveGame();
+                                game.setScreen(new StageScreen(game));
+                            }else{
+                                timeupMusic.play();
+                            }
                         }
                     }
                 }
@@ -499,7 +508,7 @@ public class Master implements Screen {
                     if (cell == 1) {
                         // Tạo tường
                         walls.add(new Wall(x, y, stage));
-                    } else if (cell == 2) {
+                    } else if (cell == 2 && GameState.level != 103 && GameState.level != 102) {
                         Brick brick = new Brick(x, y, stage);
                         // Tạo gạch
                         briches.add(brick);
@@ -538,6 +547,15 @@ public class Master implements Screen {
                 walls.add(brick);
             }
         }
+        if(GameState.level == 102 || GameState.level == 103){
+            Brick brick = new Brick(-32, 0, stage);
+            briches.add(brick);
+            walls.add(brick);
+            Brick brick2 = new Brick(-32, 0, stage);
+            briches.add(brick2);
+            walls.add(brick2);
+        }
+        System.out.println(GameState.level);
         int itemPosition = MathUtils.random(0, briches.size - 1);
         int doorPosition = MathUtils.random(0, briches.size - 1);
 
