@@ -15,6 +15,7 @@ public class Utils {
     public static final String LEVEL = "level";
     public static final String SCORE = "score";
     public static final String LEFT = "left";
+    public static final String WALLPASS = "wallpass";
 
     public static final int MAN_SPEED = 2;
 
@@ -157,6 +158,7 @@ public class Utils {
         GameState.bombNumber = preferences.getInteger(BOMB_NUMBER, 1);
         GameState.bombPower = preferences.getInteger(BOMB_POWER, 1);
         GameState.decorator = preferences.getBoolean(DECORATOR, false);
+        GameState.wallPass = preferences.getBoolean(WALLPASS, false);
 
         System.out.println("Saved Data: " + preferences.get());
     }

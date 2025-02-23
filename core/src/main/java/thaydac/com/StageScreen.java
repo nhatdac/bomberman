@@ -21,6 +21,7 @@ public class StageScreen implements Screen {
         // Hết mạng rồi thì chơi lại từ đầu
         if(GameState.left < 1){
             GameState.reset();
+            Utils.saveGame();
         }
         if ((GameState.level == 100) || (GameState.level == 101)) {
             layout.setText(game.font, "SURPRISE");

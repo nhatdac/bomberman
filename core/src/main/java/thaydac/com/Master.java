@@ -101,12 +101,14 @@ public class Master implements Screen {
             @Override
             public void onCompletion(Music music) {
                 GameState.level++;
+                GameState.left++;
                 if(GameState.level == 6){
                     GameState.level = 100;
                 }
                 if(GameState.level == 11){
                     GameState.level = 101;
                 }
+
                 Utils.saveGame();
                 game.setScreen(new StageScreen(game));
 
@@ -273,6 +275,7 @@ public class Master implements Screen {
                     if(!(GameState.level==100||GameState.level==101)) {
                         man.isAlive = false;
                         dieSound.play();
+                        Utils.saveGame();
                         break;
                     }
 
@@ -288,6 +291,7 @@ public class Master implements Screen {
                     if(!(GameState.level==100||GameState.level==101)) {
                         man.isAlive = false;
                         dieSound.play();
+                        Utils.saveGame();
                         break;
                     }
                 }
@@ -353,10 +357,11 @@ public class Master implements Screen {
                 GameState.level = 11;
             }
             countDown = 1799;
+
+
             Utils.saveGame();
             game.setScreen(new StageScreen(game));
         }
-
     }
 
     public void collectItems() {
