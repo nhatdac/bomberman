@@ -1,5 +1,6 @@
 package thaydac.com;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -101,6 +102,16 @@ public class Master implements Screen {
             @Override
             public void onCompletion(Music music) {
                 GameState.level++;
+                if(GameState.level == 26) {
+                    GameState.level = 105;
+                } if(GameState.level == 106) {
+                    GameState.level = 26;
+                }
+                if(GameState.level == 31) {
+                    GameState.level = 106;
+                } if(GameState.level == 107) {
+                    GameState.level = 31;
+                }
                 Utils.saveGame();
                 game.setScreen(new StageScreen(game));
             }
@@ -260,9 +271,9 @@ public class Master implements Screen {
 
                for (Explosion explosion : explosions) {
                    if (!GameState.flamepass && explosion.getBound().overlaps(man.getBound())) {
-//                    man.isAlive = false;
-//                    dieSound.play();
-//                    break;
+                    man.isAlive = false;
+                    dieSound.play();
+                    break;
                    }
                    for (Bomb b : bombs) {
                        if (explosion.getBound().overlaps(b.getBound())) {
@@ -272,9 +283,9 @@ public class Master implements Screen {
                }
                for (MyActor enemy : enemies) {
                    if (enemy.getBound().overlaps(man.getBound())) {
-//                    man.isAlive = false;
-//                    dieSound.play();
-//                    break;
+                    man.isAlive = false;
+                    dieSound.play();
+                    break;
                    }
                }
            }
@@ -318,16 +329,6 @@ public class Master implements Screen {
                         Utils.updatePlayerPosition(new Vector2(man.getX(), man.getY()));
                     }
                 }
-            }
-            if(GameState.level == 105){
-                GameState.level = 26;
-                Utils.saveGame();
-                game.setScreen(new StageScreen(game));
-            }
-            if (GameState.level == 106){
-                GameState.level = 31;
-                Utils.saveGame();
-                game.setScreen(new StageScreen(game));
             }
         }
 
