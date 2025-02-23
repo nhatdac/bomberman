@@ -104,12 +104,7 @@ public class Master implements Screen {
             @Override
             public void onCompletion(Music music) {
                 GameState.level++;
-                if (G==1){
-                    GameState.level = 36;
-                }
-                if (H==1){
-                    GameState.level = 41;
-                }
+                GameState.left++;
                 if ((GameState.level == 36) && (G ==0) ){
                     GameState.level = 108;
                     G =1;
@@ -135,7 +130,12 @@ public class Master implements Screen {
     @Override
     public void show() {
         isFinished = false;
-        timing = 300;
+        if((GameState.level == 108 ) || (GameState.level ==109)){
+            timing = 60;
+        }else {
+            timing = 300;
+        }
+
         System.out.println("" + GameState.score);
     }
 
@@ -159,6 +159,7 @@ public class Master implements Screen {
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                 int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
                 int yMan = Math.round(man.getY() / 32) * 32;
+
                 boolean positionOK = true;
                 for (Bomb b : bombs) {
                     if (b.getX() == xMan && b.getY() == yMan) {
@@ -316,8 +317,15 @@ public class Master implements Screen {
             if (count % 60 == 0) {
                 if(timing > 0) {
                     timing--;
-                    if (timing == 0) {
+                    if ((timing == 0)&&(GameState.level !=108)&&(GameState.level != 109)) {
                         timeupMusic.play();
+                    }else if((timing == 0)&&(GameState.level == 108)){
+                        GameState.level = 36;
+                        Utils.saveGame();
+                        game.setScreen(new StageScreen(game));
+
+                    }else if((timing == 0)&&(GameState.level == 109)){
+                        GameState.level = 41;
                     }
                 }
             }
@@ -378,10 +386,8 @@ public class Master implements Screen {
             }else if (item.type.equals(ItemType.Wall_pass)) {
                 GameState.wallPass = true;
             }else if (item.type.equals(ItemType.Mystery)) {
-
                 timee = MathUtils.random(10,30);
                 wait = timee*60;
-
             }
             item.remove();
             item = null;

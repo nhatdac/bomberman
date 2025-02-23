@@ -81,6 +81,7 @@ public class Brick extends MyActor{
             }
             remove();
             Master.walls.removeValue(this, true);
+            Master.briches.removeValue(this, true);
         }
     }
 }
