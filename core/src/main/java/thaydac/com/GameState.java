@@ -8,6 +8,10 @@ public class GameState {
     public static int left = 3;
     public static boolean decorator = false;
     public static boolean goddessMask = false;
+    public static boolean bonusTarget = false;
+    public static boolean colaBottle = false;
+    public static boolean nakamotoSan = false;
+    public static boolean dezenimanSan = false;
     public static boolean bombPass = false;
     public static boolean wallPass = false;
 
@@ -21,5 +25,9 @@ public class GameState {
         bombPass = false;
         goddessMask = false;
         wallPass = false;
+        bonusTarget  = false;
+        colaBottle  = false;
+        nakamotoSan  = false;
+        dezenimanSan  = false;
     }
 }

@@ -9,11 +9,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class StageScreen implements Screen {
     StartGame game;
-    GlyphLayout layout;
+    public static GlyphLayout layout = new GlyphLayout() ;
     Music stageMusic;
     StageScreen(StartGame game){
         this.game = game;
-        layout = new GlyphLayout();
         stageMusic = Gdx.audio.newMusic(Gdx.files.internal("stage.mp3"));
     }
     @Override
@@ -25,8 +24,13 @@ public class StageScreen implements Screen {
         }
         if ((GameState.level == 100) || (GameState.level == 101)) {
             layout.setText(game.font, "SURPRISE");
-        }else{
+        } else if(GameState.level == 103){
+            layout.setText(game.font,"STAGE D");
+        }else if(GameState.level == 102){
+            layout.setText(game.font,"STAGE C");
+        }else if (GameState.level == 51){
 
+        } else{
             layout.setText(game.font,"STAGE " + GameState.level);
         }
         stageMusic.play();

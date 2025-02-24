@@ -1,9 +1,11 @@
 package thaydac.com.enemies;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import thaydac.com.EnemySmart;
 import thaydac.com.Utils;
+import thaydac.com.*;
 
 public class Enemy6 extends EnemyActor {
     public Enemy6(float x, float y, Stage s) {
@@ -13,7 +15,7 @@ public class Enemy6 extends EnemyActor {
         type = Utils.ENEMY_TYPE6;
         smart = EnemySmart.NORMAL;
         brickPass = true;
-        speed = 1f;
-        speedX = speed;
+        speed = EnemySpeed.SLOW;
+        speedY = speed.getValue();
     }
 }

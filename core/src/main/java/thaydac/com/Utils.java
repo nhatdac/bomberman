@@ -33,6 +33,7 @@ public class Utils {
     public static final int ENEMY_TYPE_FAST = 10;
 
     public static boolean isShownGoddess = false;
+    public static boolean isShownBonusTarget = false;
     public static boolean isCollectedItemBonus = false;
 
     private static List<Vector2> boundaryPositions = new ArrayList<>();
@@ -79,8 +80,17 @@ public class Utils {
         enemyConfig.put(14, Map.of(ENEMY_TYPE6, 7, ENEMY_TYPE7, 1));
         enemyConfig.put(15, Map.of(ENEMY_TYPE3,1,ENEMY_TYPE4,3,ENEMY_TYPE5,3,ENEMY_TYPE7,1));
         enemyConfig.put(16, Map.of(ENEMY_TYPE4, 3, ENEMY_TYPE5, 4, ENEMY_TYPE7, 1));
+        enemyConfig.put(17, Map.of(ENEMY_TYPE3, 5, ENEMY_TYPE5, 2, ENEMY_TYPE7, 1));
+        enemyConfig.put(18, Map.of(ENEMY_TYPE1, 3, ENEMY_TYPE2, 3, ENEMY_TYPE7, 2));
+        enemyConfig.put(19, Map.of(ENEMY_TYPE1, 1, ENEMY_TYPE2, 1, ENEMY_TYPE3, 3,ENEMY_TYPE6, 1,ENEMY_TYPE7, 2));
+        enemyConfig.put(20, Map.of(ENEMY_TYPE2, 1, ENEMY_TYPE3, 1, ENEMY_TYPE4, 1,ENEMY_TYPE5, 2,ENEMY_TYPE6, 1,ENEMY_TYPE7, 2));
+        enemyConfig.put(21, Map.of(ENEMY_TYPE5, 4, ENEMY_TYPE6, 3, ENEMY_TYPE7,2));
+        enemyConfig.put(22, Map.of(ENEMY_TYPE3, 4, ENEMY_TYPE4, 3, ENEMY_TYPE5, 1,ENEMY_TYPE7, 1));
+        enemyConfig.put(23, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 2, ENEMY_TYPE5, 2,ENEMY_TYPE6, 2,ENEMY_TYPE7, 1));
         enemyConfig.put(100,Map.of(ENEMY_TYPE1,125));
         enemyConfig.put(101,Map.of(ENEMY_TYPE2, 125));
+        enemyConfig.put(103, Map.of(ENEMY_TYPE4,200));
+        enemyConfig.put(102, Map.of(ENEMY_TYPE3,200));
         // ... thêm các level tiếp theo...
 
         List<int[]> emptyPositions = new ArrayList<>();
