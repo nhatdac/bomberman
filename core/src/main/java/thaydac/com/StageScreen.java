@@ -20,13 +20,17 @@ public class StageScreen implements Screen {
         // Hết mạng rồi thì chơi lại từ đầu
         if(GameState.left < 1){
             GameState.reset();
+            Utils.saveGame();
         }
-        if(GameState.level == 103){
+        if ((GameState.level == 100) || (GameState.level == 101)) {
+            layout.setText(game.font, "SURPRISE");
+        } else if(GameState.level == 103){
             layout.setText(game.font,"STAGE D");
         }else if(GameState.level == 102){
             layout.setText(game.font,"STAGE C");
         }else if (GameState.level == 51){
-        }else{
+
+        } else{
             layout.setText(game.font,"STAGE " + GameState.level);
         }
         stageMusic.play();

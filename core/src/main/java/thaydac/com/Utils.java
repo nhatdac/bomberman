@@ -3,6 +3,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import thaydac.com.enemies.EnemyActor;
 
 import java.util.*;
 
@@ -14,6 +15,7 @@ public class Utils {
     public static final String LEVEL = "level";
     public static final String SCORE = "score";
     public static final String LEFT = "left";
+    public static final String WALLPASS = "wallpass";
 
     public static final int MAN_SPEED = 2;
 
@@ -69,7 +71,15 @@ public class Utils {
         enemyConfig.put(1, Map.of(ENEMY_TYPE1, 6)); // Level 1 có 6 enemy1, gọi là loại 3, bởi vì số 0, 1, 2 đã dùng cho ô trống, tường, gạch rồi.
         enemyConfig.put(2, Map.of(ENEMY_TYPE1, 3, ENEMY_TYPE2, 3)); // Level 2 có 3 enemy1 và 3 enemy2
         enemyConfig.put(3, Map.of(ENEMY_TYPE1, 2, ENEMY_TYPE2, 2, ENEMY_TYPE3, 2)); // Level 2 có 3 enemy1 và 3 enemy2
-        enemyConfig.put(9, Map.of(ENEMY_TYPE2, 1, ENEMY_TYPE3, 1, ENEMY_TYPE4, 4,ENEMY_TYPE5, 1));
+        enemyConfig.put(7, Map.of(ENEMY_TYPE2, 2, ENEMY_TYPE3, 3, ENEMY_TYPE5, 2));
+        enemyConfig.put(9, Map.of(ENEMY_TYPE2, 1, ENEMY_TYPE3, 1, ENEMY_TYPE4, 4,ENEMY_TYPE5, 1)); // Level 2 có 3 enemy1 và 3 enemy2
+        enemyConfig.put(10, Map.of(ENEMY_TYPE2,1,ENEMY_TYPE3,1,ENEMY_TYPE4,1,ENEMY_TYPE5,3,ENEMY_TYPE6,1));
+        enemyConfig.put(11, Map.of(ENEMY_TYPE2,1,ENEMY_TYPE3,2,ENEMY_TYPE4,3,ENEMY_TYPE5,1,ENEMY_TYPE6,1));
+        enemyConfig.put(12, Map.of(ENEMY_TYPE2,1,ENEMY_TYPE3,1,ENEMY_TYPE4,1,ENEMY_TYPE5,4,ENEMY_TYPE6,1));
+        enemyConfig.put(13, Map.of(ENEMY_TYPE3, 3, ENEMY_TYPE4, 3, ENEMY_TYPE5, 3));
+        enemyConfig.put(14, Map.of(ENEMY_TYPE6, 7, ENEMY_TYPE7, 1));
+        enemyConfig.put(15, Map.of(ENEMY_TYPE3,1,ENEMY_TYPE4,3,ENEMY_TYPE5,3,ENEMY_TYPE7,1));
+        enemyConfig.put(16, Map.of(ENEMY_TYPE4, 3, ENEMY_TYPE5, 4, ENEMY_TYPE7, 1));
         enemyConfig.put(17, Map.of(ENEMY_TYPE3, 5, ENEMY_TYPE5, 2, ENEMY_TYPE7, 1));
         enemyConfig.put(18, Map.of(ENEMY_TYPE1, 3, ENEMY_TYPE2, 3, ENEMY_TYPE7, 2));
         enemyConfig.put(19, Map.of(ENEMY_TYPE1, 1, ENEMY_TYPE2, 1, ENEMY_TYPE3, 3,ENEMY_TYPE6, 1,ENEMY_TYPE7, 2));
@@ -77,6 +87,8 @@ public class Utils {
         enemyConfig.put(21, Map.of(ENEMY_TYPE5, 4, ENEMY_TYPE6, 3, ENEMY_TYPE7,2));
         enemyConfig.put(22, Map.of(ENEMY_TYPE3, 4, ENEMY_TYPE4, 3, ENEMY_TYPE5, 1,ENEMY_TYPE7, 1));
         enemyConfig.put(23, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 2, ENEMY_TYPE5, 2,ENEMY_TYPE6, 2,ENEMY_TYPE7, 1));
+        enemyConfig.put(100,Map.of(ENEMY_TYPE1,125));
+        enemyConfig.put(101,Map.of(ENEMY_TYPE2, 125));
         enemyConfig.put(103, Map.of(ENEMY_TYPE4,200));
         enemyConfig.put(102, Map.of(ENEMY_TYPE3,200));
         // ... thêm các level tiếp theo...
@@ -156,6 +168,7 @@ public class Utils {
         GameState.bombNumber = preferences.getInteger(BOMB_NUMBER, 1);
         GameState.bombPower = preferences.getInteger(BOMB_POWER, 1);
         GameState.decorator = preferences.getBoolean(DECORATOR, false);
+        GameState.wallPass = preferences.getBoolean(WALLPASS, false);
 
         System.out.println("Saved Data: " + preferences.get());
     }

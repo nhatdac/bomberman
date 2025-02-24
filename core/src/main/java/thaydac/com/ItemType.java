@@ -6,6 +6,7 @@ public enum ItemType {
     BOMB_PASS,
     DETONATOR,
     GODDESS_MASK,
+    WALLPASS,
     BONUS_TARGET,
     COLA_BOTTLE,
     FAMICOM,

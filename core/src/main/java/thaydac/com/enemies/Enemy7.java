@@ -3,6 +3,8 @@ package thaydac.com.enemies;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import thaydac.com.EnemySmart;
+import thaydac.com.Utils;
 import thaydac.com.*;
 
 public class Enemy7 extends EnemyActor{

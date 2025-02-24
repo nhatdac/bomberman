@@ -58,7 +58,7 @@ public class EnemyActor extends MyActor {
         if(isAlive) {
             moveBy(speedX, speedY);
                 for (MyActor wall : Master.walls) {
-                    if (!(wall instanceof Brick && type == Utils.ENEMY_TYPE5) && wall.getBound().overlaps(getBound())) {
+                    if (!(wall instanceof Brick && brickPass) && wall.getBound().overlaps(getBound())) {
                         if (speedX == speed.getValue()) {
                             moveBy(-speed.getValue() , 0);
                             speedX = 0;
@@ -89,7 +89,7 @@ public class EnemyActor extends MyActor {
                             }
                         }
                     }
-                    if(type == Utils.ENEMY_TYPE5 && wall instanceof Brick){
+                    if(brickPass && wall instanceof Brick){
                         checkAndUpdateZIndex(this, wall);
                     }
                 }
@@ -312,7 +312,6 @@ public class EnemyActor extends MyActor {
             checkAndUpdateZIndex(this, Master.door);
         }
     }
-
 
     private boolean isWallBetween(float x1, float y1, float x2, float y2, boolean isVertical) {
         for (MyActor wall : Master.walls) {

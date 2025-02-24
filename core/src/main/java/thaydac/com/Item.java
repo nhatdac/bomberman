@@ -21,6 +21,8 @@ public class Item extends MyActor{
             tRegion.setRegion(16 * 5, 0, 16, 16);
         }else if(this.type.equals(ItemType.GODDESS_MASK)){
             tRegion.setRegion(16 * 9, 0, 16, 16);
+        }else if(this.type.equals(ItemType.WALLPASS)){
+            tRegion.setRegion(16 * 3, 0, 16, 16);
         } else if(this.type.equals(ItemType.BONUS_TARGET)){
             tRegion.setRegion(16 * 8, 0, 16, 16);
         }else if(this.type.equals(ItemType.COLA_BOTTLE)){
