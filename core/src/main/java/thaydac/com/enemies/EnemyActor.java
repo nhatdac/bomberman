@@ -14,7 +14,7 @@ public class EnemyActor extends MyActor {
     Animation<TextureRegion> animationDie;
     float time;
     String direction = "R";
-    float speed = 0;
+    EnemySpeed speed = EnemySpeed.SLOW;
     float speedX = 0;
     float speedY = 0;
     boolean isAlive = true;
@@ -59,33 +59,33 @@ public class EnemyActor extends MyActor {
             moveBy(speedX, speedY);
                 for (MyActor wall : Master.walls) {
                     if (!(wall instanceof Brick && type == Utils.ENEMY_TYPE5) && wall.getBound().overlaps(getBound())) {
-                        if (speedX == speed) {
-                            moveBy(-speed, 0);
+                        if (speedX == speed.getValue()) {
+                            moveBy(-speed.getValue() , 0);
                             speedX = 0;
-                            speedY = MathUtils.random(-1, 1) * speed;
+                            speedY = MathUtils.random(-1, 1) * speed.getValue();
                             if (speedY == 0) {
-                                speedX = -speed;
+                                speedX = -speed.getValue();
                             }
-                        } else if (speedX == -speed) {
-                            moveBy(speed, 0);
+                        } else if (speedX == -speed.getValue()) {
+                            moveBy(speed.getValue() , 0);
                             speedX = 0;
-                            speedY = MathUtils.random(-1, 1) * speed;
+                            speedY = MathUtils.random(-1, 1) * speed.getValue() ;
                             if (speedY == 0) {
-                                speedX = speed;
+                                speedX = speed.getValue() ;
                             }
-                        } else if (speedY == speed) {
-                            moveBy(0, -speed);
+                        } else if (speedY == speed.getValue() ) {
+                            moveBy(0, -speed.getValue() );
                             speedY = 0;
-                            speedX = MathUtils.random(-1, 1) * speed;
+                            speedX = MathUtils.random(-1, 1) * speed.getValue() ;
                             if (speedX == 0) {
-                                speedY = -speed;
+                                speedY = -speed.getValue() ;
                             }
-                        } else if (speedY == -speed) {
-                            moveBy(0, speed);
+                        } else if (speedY == -speed.getValue() ) {
+                            moveBy(0, speed.getValue() );
                             speedY = 0;
-                            speedX = MathUtils.random(-1, 1) * speed;
+                            speedX = MathUtils.random(-1, 1) * speed.getValue() ;
                             if (speedX == 0) {
-                                speedY = speed;
+                                speedY = speed.getValue() ;
                             }
                         }
                     }
@@ -95,33 +95,33 @@ public class EnemyActor extends MyActor {
                 }
             for (Bomb b : Master.bombs) {
                 if (b.getBound().overlaps(getBound())) {
-                    if (speedX == speed) {
-                        moveBy(-speed, 0);
+                    if (speedX == speed.getValue() ) {
+                        moveBy(-speed.getValue() , 0);
                         speedX = 0;
-                        speedY = MathUtils.random(-1, 1) * speed;
+                        speedY = MathUtils.random(-1, 1) * speed.getValue() ;
                         if (speedY == 0) {
-                            speedX = -speed;
+                            speedX = -speed.getValue() ;
                         }
-                    } else if (speedX == -speed) {
-                        moveBy(speed, 0);
+                    } else if (speedX == -speed.getValue() ) {
+                        moveBy(speed.getValue() , 0);
                         speedX = 0;
-                        speedY = MathUtils.random(-1, 1) * speed;
+                        speedY = MathUtils.random(-1, 1) * speed.getValue() ;
                         if (speedY == 0) {
-                            speedX = speed;
+                            speedX = speed.getValue();
                         }
-                    } else if (speedY == speed) {
-                        moveBy(0, -speed);
+                    } else if (speedY == speed.getValue() ) {
+                        moveBy(0, -speed.getValue() );
                         speedY = 0;
-                        speedX = MathUtils.random(-1, 1) * speed;
+                        speedX = MathUtils.random(-1, 1) * speed.getValue() ;
                         if (speedX == 0) {
-                            speedY = -speed;
+                            speedY = -speed.getValue() ;
                         }
-                    } else if (speedY == -speed) {
-                        moveBy(0, speed);
+                    } else if (speedY == -speed.getValue() ) {
+                        moveBy(0, speed.getValue() );
                         speedY = 0;
-                        speedX = MathUtils.random(-1, 1) * speed;
+                        speedX = MathUtils.random(-1, 1) * speed.getValue() ;
                         if (speedX == 0) {
-                            speedY = speed;
+                            speedY = speed.getValue() ;
                         }
                     }
                 }
@@ -143,41 +143,41 @@ public class EnemyActor extends MyActor {
                         distance = Math.abs(enemyY - playerY);
                         if (distance < 150 && !isWallBetween(enemyX, enemyY, playerX, playerY, true)) {
                             if(!speedUp && MathUtils.randomBoolean()){
-                                speed *=2;
+                              //  speed.getValue()  *=2;
                                 speedUp = true;
                             }
                             speedX = 0;
                             if (playerY > enemyY) {
-                                speedY = speed;
+                                speedY = speed.getValue() ;
                             } else {
-                                speedY = -speed;
+                                speedY = -speed.getValue() ;
                             }
                         }
                     } else if (enemyY == playerY) {
                         distance = Math.abs(enemyX - playerX);
                         if (distance < 150 && !isWallBetween(enemyX, enemyY, playerX, playerY, false)) {
                             if(!speedUp && MathUtils.randomBoolean()){
-                                speed *=2;
+                              //  speed  *=2;
                                 speedUp = true;
                             }
                             speedY = 0;
                             if (playerX > enemyX) {
-                                speedX = speed;
+                                speedX = speed.getValue() ;
                             } else {
-                                speedX = -speed;
+                                speedX = -speed.getValue() ;
                             }
                         }
                     } else {
                         if(speedUp){
-                            speed /= 2;
+                          //  speed.getValue()  /= 2;
                             speedUp = false;
                         }
                     }
                     // Đặt lại speedX, speedY cho đúng để không bị trôi lúc chạm tường
                     if(speedX != 0){
-                        speedX = (speedX/Math.abs(speedX))*speed;
+                        speedX = (speedX/Math.abs(speedX))*speed.getValue() ;
                     } else if (speedY != 0) {
-                        speedY = (speedY/Math.abs(speedY))*speed;
+                        speedY = (speedY/Math.abs(speedY))*speed.getValue() ;
                     }
                 }
                 case HIGH -> {
@@ -194,9 +194,9 @@ public class EnemyActor extends MyActor {
                         if (distance < 1000) {
                             speedX = 0;
                             if (playerY > getY()) {
-                                speedY = speed;
+                                speedY = speed.getValue() ;
                             } else {
-                                speedY = -speed;
+                                speedY = -speed.getValue() ;
                             }
                         }
                     } else if (getY() == playerY && !isWallBetween(getX(), getY(), Master.man.getX(), Master.man.getY(), false)) {
@@ -204,9 +204,9 @@ public class EnemyActor extends MyActor {
                         if (distance < 1000) {
                             speedY = 0;
                             if (playerX > getX()) {
-                                speedX = speed;
+                                speedX = speed.getValue() ;
                             } else {
-                                speedX = -speed;
+                                speedX = -speed.getValue() ;
                             }
                         }
                     } else {
@@ -216,18 +216,18 @@ public class EnemyActor extends MyActor {
                             if (!isWallBetween(getX(), getY(), Master.man.getX(), getY(), false) && distanceX > 32) {
                                 speedY = 0;
                                 if (playerX > getX()) {
-                                    speedX = speed;
+                                    speedX = speed.getValue() ;
                                 } else {
-                                    speedX = -speed;
+                                    speedX = -speed.getValue() ;
                                 }
                             }
                         } else {
                             if (!isWallBetween(getX(), getY(), getX(), Master.man.getY(), true) && distanceY > 32) {
                                 speedX = 0;
                                 if (playerY > getX()) {
-                                    speedY = speed;
+                                    speedY = speed.getValue() ;
                                 } else {
-                                    speedY = -speed;
+                                    speedY = -speed.getValue() ;
                                 }
                             }
                         }
@@ -239,9 +239,9 @@ public class EnemyActor extends MyActor {
                             if (distance < 32 * GameState.bombPower + 64 && !isWallBetween(getX(), getY(), b.getX(), b.getY(), true)) {
                                 speedX = 0;
                                 if (b.getY() < getY()) {
-                                    speedY = speed;
+                                    speedY = speed.getValue() ;
                                 } else {
-                                    speedY = -speed;
+                                    speedY = -speed.getValue() ;
                                 }
                             }
                         } else if (getY() == b.getY()) {
@@ -249,9 +249,9 @@ public class EnemyActor extends MyActor {
                             if (distance < 32 * GameState.bombPower + 64 && !isWallBetween(getX(), getY(), b.getX(), b.getY(), false)) {
                                 speedY = 0;
                                 if (b.getX() < getX()) {
-                                    speedX = speed;
+                                    speedX = speed.getValue() ;
                                 } else {
-                                    speedX = -speed;
+                                    speedX = -speed.getValue() ;
                                 }
                             }
                         }
@@ -267,6 +267,19 @@ public class EnemyActor extends MyActor {
                 if (getBound().overlaps(explosion.getBound())) {
                     isAlive = false;
                     time = 0;
+//                    if(GameState.level == 103){
+//                        Master.wallArray = Utils.buildMap();
+//
+//                        int tileSize = 32; // Kích thước mỗi ô
+//                        for (int row = 0; row < Master.wallArray.length; row++) {
+//                            for (int col = 0; col < Master.wallArray[row].length; col++) {
+//                                int x = col * tileSize;
+//                                int y = (Master.wallArray.length - 1 - row) * tileSize; // Lật trục y
+//                                Enemy4 enemy4 = new Enemy4(x, y, Master.stage);
+//                                Master.enemies.add(enemy4);
+//                            }
+//                        }
+//                    }
                     break;
                 }
             }
@@ -299,6 +312,7 @@ public class EnemyActor extends MyActor {
             checkAndUpdateZIndex(this, Master.door);
         }
     }
+
 
     private boolean isWallBetween(float x1, float y1, float x2, float y2, boolean isVertical) {
         for (MyActor wall : Master.walls) {

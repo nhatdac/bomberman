@@ -5,15 +5,14 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import thaydac.com.*;
 
-// Pontan
-public class EnemyFast extends EnemyActor {
-
-    public EnemyFast(float x, float y, Stage s) {
+public class Enemy7 extends EnemyActor{
+    public Enemy7(float x, float y, Stage s) {
         super(x, y, s);
-        Texture texture = new Texture("enemyfast.png");
-        setAnimation(texture, 11, 1, 0.05f);
-        type = Utils.ENEMY_TYPE_FAST;
+        Texture texture = new Texture("enemy7.png");
+        setAnimation(texture, 11, 1, 0.3f);
+        type = Utils.ENEMY_TYPE7;
         smart = EnemySmart.HIGH;
         speed = EnemySpeed.FAST;
+        speedX = speed.getValue();
     }
 }
