@@ -11,5 +11,8 @@ public enum ItemType {
     COLA_BOTTLE,
     FAMICOM,
     NAKAMOTO_SAN,
-    DEZENIMAN_SAN
+    DEZENIMAN_SAN,
+    Flame_pass,
+    Mystery,
+    Bomb_pass
 }

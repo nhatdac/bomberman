@@ -51,6 +51,11 @@ public class Master implements Screen {
     Music timeupMusic;
     Music enemiesalldieMusic;
     Sound collectSound;
+    int timee;
+    float wait = 0;
+    int G = 0;
+    int H = 0;
+
 
     // vẽ đ thử
     ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -60,6 +65,7 @@ public class Master implements Screen {
     public Master(StartGame game) {
         this.game = game;
         stage = new Stage();
+        timee =0;
 
         walls = new Array<>();
         briches = new Array<>();
@@ -121,10 +127,18 @@ public class Master implements Screen {
                 }else if(GameState.level == 21){
                     GameState.level = 103;
                 }
-
+                if ((GameState.level == 36) && (G ==0) ){
+                    GameState.level = 108;
+                    G =1;
+                }
+                if((GameState.level == 41 )&&(H ==0)){
+                    GameState.level = 109;
+                    H =1;
+                }
                 Utils.saveGame();
                 game.setScreen(new StageScreen(game));
             }
+
         });
 
         timeupMusic.setOnCompletionListener(new Music.OnCompletionListener() {
@@ -138,7 +152,9 @@ public class Master implements Screen {
     @Override
     public void show() {
         isFinished = false;
-        if(!(GameState.level == 100 || GameState.level == 101)) {
+        if(!(GameState.level == 100 || GameState.level == 101
+        || GameState.level == 101
+        || GameState.level == 101)) {
             timing = 300;
         }else {
             timing = 30;
@@ -149,6 +165,13 @@ public class Master implements Screen {
 
     @Override
     public void render(float v) {
+        System.out.println(GameState.level);
+        wait = wait-1;
+        if (wait <= 0){
+            GameState.mystery = false;
+        }else {
+            GameState.mystery = true;
+        }
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
         ScreenUtils.clear(Color.BLACK) ;
@@ -170,9 +193,18 @@ public class Master implements Screen {
                         }
                     }
                     if (positionOK && GameState.bombNumber > 0) {
-                        Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions,true);
-                        bombs.add(bomb);
-                        GameState.bombNumber--;
+                        boolean isbrick = false;
+                        for (Brick brick :briches){
+                            if (brick.getBound().overlaps(man.getBound())){
+                                isbrick = true;
+                                break;
+                            }
+                        }
+                        if (!isbrick) {
+                            Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions, true);
+                            bombs.add(bomb);
+                            GameState.bombNumber--;
+                        }
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.B) && Gdx.input.isKeyPressed(Input.Keys.A) && Gdx.input.isKeyJustPressed(Input.Keys.V)) {//BAV = BuiAnhVu
@@ -288,9 +320,11 @@ public class Master implements Screen {
                     if (explosion.getBound().overlaps(man.getBound())
                     && GameState.level != 100 && GameState.level != 101
                     && GameState.level != 102 && GameState.level != 103
+                    && GameState.level != 108 && GameState.level != 109
                     ) {
                         man.isAlive = false;
                         dieSound.play();
+                        GameState.wallPass = false;
                         Utils.saveGame();
                         break;
                     }
@@ -304,9 +338,11 @@ public class Master implements Screen {
                     if (enemy.getBound().overlaps(man.getBound())
                         && GameState.level != 100 && GameState.level != 101
                         && GameState.level != 102 && GameState.level != 103
+                        && GameState.level != 108 && GameState.level != 109
                     ) {
                         man.isAlive = false;
                         dieSound.play();
+                        GameState.wallPass = false;
                         Utils.saveGame();
                         break;
                     }
@@ -316,18 +352,23 @@ public class Master implements Screen {
                     if(timing > 0) {
                         timing--;
                         if (timing == 0) {
-                            System.out.println(123);
                             if(GameState.level == 102){
                                 GameState.level = 16;
-                                System.out.println(123);
                                 Utils.saveGame();
                                 game.setScreen(new StageScreen(game));
-                            }else if(GameState.level == 103){
+                            } else if(GameState.level == 103){
                                 GameState.level = 21;
-                                System.out.println(123);
                                 Utils.saveGame();
                                 game.setScreen(new StageScreen(game));
-                            }else{
+                            } else if(GameState.level == 108){
+                                GameState.level = 36;
+                                Utils.saveGame();
+                                game.setScreen(new StageScreen(game));
+                            } else if(GameState.level == 109){
+                                GameState.level = 41;
+                                Utils.saveGame();
+                                game.setScreen(new StageScreen(game));
+                            } else{
                                 timeupMusic.play();
                             }
                         }
@@ -423,6 +464,11 @@ public class Master implements Screen {
                 GameState.decorator = true;
             }else if (item.type.equals(ItemType.BOMB_PASS)) {
                 GameState.bombPass = true;
+            }else if (item.type.equals(ItemType.Flame_pass)) {
+                GameState.flamepass = true;
+            } else if (item.type.equals(ItemType.Mystery)) {
+                timee = MathUtils.random(10,30);
+                wait = timee*60;
             }
             item.remove();
             item = null;
@@ -543,7 +589,7 @@ public class Master implements Screen {
             background = new Background(0, 0, stage);
             panel = new Panel(0, Gdx.graphics.getHeight() - 64, stage);
 
-        wallArray = Utils.buildMap();
+            wallArray = Utils.buildMap();
 
         int tileSize = 32; // Kích thước mỗi ô
         for (int row = 0; row < wallArray.length; row++) {
@@ -604,13 +650,13 @@ public class Master implements Screen {
         int itemPosition = MathUtils.random(0, briches.size - 1);
         int doorPosition = MathUtils.random(0, briches.size - 1);
 
-        while (itemPosition == doorPosition) {
-            doorPosition = MathUtils.random(0, briches.size - 1);
-        }
-        briches.get(itemPosition).hasItem = true;
-        briches.get(doorPosition).hasDoor = true;
-        itemRec = briches.get(itemPosition).getBound();
-        doorRec = briches.get(doorPosition).getBound();
+            while (itemPosition == doorPosition) {
+                doorPosition = MathUtils.random(0, briches.size - 1);
+            }
+            briches.get(itemPosition).hasItem = true;
+            briches.get(doorPosition).hasDoor = true;
+            itemRec = briches.get(itemPosition).getBound();
+            doorRec = briches.get(doorPosition).getBound();
     }
 
 
@@ -618,9 +664,11 @@ public class Master implements Screen {
     boolean checkCollision(MyActor _actor1, MyActor _actor2) {
         if (_actor1 instanceof Bomb && ((Bomb) _actor1).isJustPlaced) {
             return false;
-        }if(_actor1 instanceof Brick && GameState.wallPass){
+        }
+        if(_actor1 instanceof Brick && GameState.wallPass){
             return false;
         }
+
         return _actor1.getBound().overlaps(_actor2.getBound());
     }
 

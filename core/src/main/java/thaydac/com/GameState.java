@@ -14,6 +14,8 @@ public class GameState {
     public static boolean dezenimanSan = false;
     public static boolean bombPass = false;
     public static boolean wallPass = false;
+    public static boolean flamepass = true;
+    public static boolean mystery = false;
 
     public static void reset(){
         left = 3;
@@ -23,8 +25,10 @@ public class GameState {
         bombNumber = 1;
         decorator = false;
         bombPass = false;
-        goddessMask = false;
+        mystery = false;
         wallPass = false;
+        flamepass = false;
+        goddessMask = false;
         bonusTarget  = false;
         colaBottle  = false;
         nakamotoSan  = false;

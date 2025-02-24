@@ -87,12 +87,21 @@ public class Utils {
         enemyConfig.put(21, Map.of(ENEMY_TYPE5, 4, ENEMY_TYPE6, 3, ENEMY_TYPE7,2));
         enemyConfig.put(22, Map.of(ENEMY_TYPE3, 4, ENEMY_TYPE4, 3, ENEMY_TYPE5, 1,ENEMY_TYPE7, 1));
         enemyConfig.put(23, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 2, ENEMY_TYPE5, 2,ENEMY_TYPE6, 2,ENEMY_TYPE7, 1));
+        enemyConfig.put(31, Map.of(ENEMY_TYPE2, 2,ENEMY_TYPE3,2,ENEMY_TYPE4,2,ENEMY_TYPE5,2,ENEMY_TYPE6,2));
+        enemyConfig.put(32, Map.of(ENEMY_TYPE2, 1, ENEMY_TYPE3, 1,ENEMY_TYPE4,3,ENEMY_TYPE5,4,ENEMY_TYPE7,1));
+        enemyConfig.put(33, Map.of(ENEMY_TYPE3, 3, ENEMY_TYPE4, 2, ENEMY_TYPE5, 2,ENEMY_TYPE6,1,ENEMY_TYPE7,2));
+        enemyConfig.put(34, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 3, ENEMY_TYPE5, 3,ENEMY_TYPE6,0,ENEMY_TYPE7,2));
+        enemyConfig.put(35, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 1, ENEMY_TYPE5, 3,ENEMY_TYPE6,1,ENEMY_TYPE7,2));
+        enemyConfig.put(36, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 2, ENEMY_TYPE5, 3,ENEMY_TYPE6,0,ENEMY_TYPE7,3));
+        enemyConfig.put(37, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 1, ENEMY_TYPE5, 3,ENEMY_TYPE6,1,ENEMY_TYPE7,3));
         enemyConfig.put(100,Map.of(ENEMY_TYPE1,125));
         enemyConfig.put(101,Map.of(ENEMY_TYPE2, 125));
         enemyConfig.put(103, Map.of(ENEMY_TYPE4,200));
         enemyConfig.put(102, Map.of(ENEMY_TYPE3,200));
         // ... thêm các level tiếp theo...
 
+        enemyConfig.put(108, Map.of(ENEMY_TYPE1, 20000));
+        enemyConfig.put(109, Map.of(ENEMY_TYPE1, 20000));
         List<int[]> emptyPositions = new ArrayList<>();
 
         // Tìm tất cả vị trí trống
@@ -105,6 +114,7 @@ public class Utils {
                 }
             }
         }
+
 
         // Lấy cấu hình enemy của level hiện tại
         Map<Integer, Integer> levelEnemies = enemyConfig.getOrDefault(GameState.level, new HashMap<>());

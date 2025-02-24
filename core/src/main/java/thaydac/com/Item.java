@@ -33,7 +33,12 @@ public class Item extends MyActor{
             tRegion.setRegion(16 * 12, 0, 16, 16);
         }else if(this.type.equals(ItemType.DEZENIMAN_SAN)){
             tRegion.setRegion(16 * 13, 0, 16, 16);
+        }else if(this.type.equals(ItemType.Flame_pass)){
+            tRegion.setRegion(16 * 6, 0, 16, 16);
+        }else if(this.type.equals(ItemType.Mystery)){
+            tRegion.setRegion(16 * 7, 0, 16, 16);
         }
+
         textureRegion = tRegion;
         setSize(32, 32);
     }

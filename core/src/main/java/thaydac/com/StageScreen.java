@@ -28,7 +28,11 @@ public class StageScreen implements Screen {
             layout.setText(game.font,"STAGE D");
         }else if(GameState.level == 102){
             layout.setText(game.font,"STAGE C");
-        }else if (GameState.level == 51){
+        } else if(GameState.level == 108){
+            layout.setText(game.font,"STAGE G");
+        }else if(GameState.level == 109){
+            layout.setText(game.font,"STAGE H");
+        } else if (GameState.level == 51){
 
         } else{
             layout.setText(game.font,"STAGE " + GameState.level);

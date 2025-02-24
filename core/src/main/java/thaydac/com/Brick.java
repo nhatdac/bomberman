@@ -50,7 +50,7 @@ public class Brick extends MyActor{
         if(animation.isAnimationFinished(time)){
             isFire = false;
             if(hasItem){
-                if((GameState.level == 1)||(GameState.level == 7)||(GameState.level == 11)||(GameState.level == 12)){
+                if(GameState.level == 1 || GameState.level == 7 || GameState.level == 11 || GameState.level == 12 || GameState.level == 31){
                     Master.item = new Item(getX(), getY(), ItemType.BOMB_POWER, getStage());
                 } else if((GameState.level == 2)||(GameState.level == 15)){
                     Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
@@ -74,6 +74,18 @@ public class Brick extends MyActor{
                     Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
                 }else if(GameState.level == 23){
                     Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
+                } else if(GameState.level == 32){
+                    Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
+                }else if(GameState.level == 33){
+                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
+                }else if(GameState.level == 34){
+                    Master.item = new Item(getX(), getY(), ItemType.Mystery, getStage());
+                }else if(GameState.level == 35){
+                    Master.item = new Item(getX(), getY(), ItemType.BOMB_PASS, getStage());
+                }else if(GameState.level == 36){
+                    Master.item = new Item(getX(), getY(), ItemType.Flame_pass, getStage());
+                }else if(GameState.level == 37){
+                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
                 }
 
             } else if(hasDoor){
@@ -81,6 +93,7 @@ public class Brick extends MyActor{
             }
             remove();
             Master.walls.removeValue(this, true);
+            Master.briches.removeValue(this, true);
         }
     }
 }
