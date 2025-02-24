@@ -200,8 +200,8 @@ public class Master implements Screen {
                                 break;
                             }
                         }
-                        if (!isbrick){
-                            Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions,true);
+                        if (!isbrick) {
+                            Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions, true);
                             bombs.add(bomb);
                             GameState.bombNumber--;
                         }
