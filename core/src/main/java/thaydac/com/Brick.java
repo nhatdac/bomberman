@@ -50,15 +50,30 @@ public class Brick extends MyActor{
         if(animation.isAnimationFinished(time)){
             isFire = false;
             if(hasItem){
-                if(GameState.level == 1){
+                if((GameState.level == 1)||(GameState.level == 7)||(GameState.level == 11)||(GameState.level == 12)){
                     Master.item = new Item(getX(), getY(), ItemType.BOMB_POWER, getStage());
-                } else if(GameState.level == 2){
+                } else if((GameState.level == 2)||(GameState.level == 15)){
                     Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
-                } else if(GameState.level == 3){
+                } else if((GameState.level == 3)|| (GameState.level == 13)){
                     Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
-                }
-                else if(GameState.level == 9){
+                }else if((GameState.level == 9)||(GameState.level == 14)){
                     Master.item = new Item(getX(), getY(), ItemType.BOMB_PASS, getStage());
+                }else if((GameState.level == 10)||(GameState.level == 16)){
+                    Master.item = new Item(getX(), getY(), ItemType.WALLPASS, getStage());
+                } else if(GameState.level == 17){
+                    Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
+                }else if(GameState.level == 18){
+                    Master.item = new Item(getX(), getY(), ItemType.BOMB_PASS, getStage());
+                }else if(GameState.level == 19){
+                    Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
+                }else if(GameState.level == 20){
+                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
+                }else if(GameState.level == 21){
+                    Master.item = new Item(getX(), getY(), ItemType.BOMB_PASS, getStage());
+                }else if(GameState.level == 22){
+                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
+                }else if(GameState.level == 23){
+                    Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
                 }
                 else if(GameState.level == 31){
                     Master.item = new Item(getX(), getY(), ItemType.Wall_pass, getStage());

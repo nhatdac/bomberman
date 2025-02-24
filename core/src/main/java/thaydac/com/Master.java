@@ -1,17 +1,23 @@
 package thaydac.com;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ScreenUtils;
 import thaydac.com.enemies.*;
 
 public class Master implements Screen {
@@ -20,8 +26,9 @@ public class Master implements Screen {
     int count = 0;
     static boolean isFinished;
     boolean isEnemiesAllDie = false;
+    int countDown = 1799;
 
-    Stage stage;
+    public static Stage stage;
     private Background background;
     private Panel panel;
     public static Man man;
@@ -29,13 +36,14 @@ public class Master implements Screen {
     public static Item itemBonus;
     public static Door door;
 
-    int[][] wallArray;
+    public static int[][] wallArray;
 
     public static Array<MyActor> walls;
     public static Array<Brick> briches;
     public static Array<MyActor> enemies;
     public static Array<Bomb> bombs;
     public static Array<Explosion> explosions;
+
     Music dieSound;
     Music dieMusic;
     Music finishMusic;
@@ -75,6 +83,9 @@ public class Master implements Screen {
             man.textureRegion = man.animationRight.getKeyFrame(timing);
             stage.addActor(man);
         }
+        if(GameState.level == 51){
+            man.setPosition(32, 32*4);
+        }
 
         dieSound = Gdx.audio.newMusic(Gdx.files.internal("die.mp3"));
         dieMusic = Gdx.audio.newMusic(Gdx.files.internal("dieMusic.mp3"));
@@ -105,6 +116,17 @@ public class Master implements Screen {
             public void onCompletion(Music music) {
                 GameState.level++;
                 GameState.left++;
+                if(GameState.level == 6){
+                    GameState.level = 100;
+                }
+                if(GameState.level == 11){
+                    GameState.level = 101;
+                }
+                if(GameState.level == 16){
+                    GameState.level = 102;
+                }else if(GameState.level == 21){
+                    GameState.level = 103;
+                }
                 if ((GameState.level == 36) && (G ==0) ){
                     GameState.level = 108;
                     G =1;
@@ -130,10 +152,12 @@ public class Master implements Screen {
     @Override
     public void show() {
         isFinished = false;
-        if((GameState.level == 108 ) || (GameState.level ==109)){
-            timing = 60;
-        }else {
+        if(!(GameState.level == 100 || GameState.level == 101
+        || GameState.level == 101
+        || GameState.level == 101)) {
             timing = 300;
+        }else {
+            timing = 30;
         }
 
         System.out.println("" + GameState.score);
@@ -150,203 +174,232 @@ public class Master implements Screen {
         }
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
+        ScreenUtils.clear(Color.BLACK) ;
 
-        if(man.getX() > Gdx.graphics.getWidth()/2 && man.getX() < 31*32 - Gdx.graphics.getWidth()/2){
-            stage.getCamera().position.x = man.getX();
-        }
+        if(GameState.level != 51){
+            if(man.getX() > Gdx.graphics.getWidth()/2 && man.getX() < 31*32 - Gdx.graphics.getWidth()/2){
+                stage.getCamera().position.x = man.getX();
+            }
 
-        if (man.isAlive) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-                int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
-                int yMan = Math.round(man.getY() / 32) * 32;
-
-                boolean positionOK = true;
-                for (Bomb b : bombs) {
-                    if (b.getX() == xMan && b.getY() == yMan) {
-                        positionOK = false;
-                        break;
-                    }
-                }
-                if (positionOK && GameState.bombNumber > 0) {
-                    boolean isbrick = false;
-                    for (Brick brick :briches){
-                        if (brick.getBound().overlaps(man.getBound())){
-                            isbrick = true;
+            if (man.isAlive) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+                    int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
+                    int yMan = Math.round(man.getY() / 32) * 32;
+                    boolean positionOK = true;
+                    for (Bomb b : bombs) {
+                        if (b.getX() == xMan && b.getY() == yMan) {
+                            positionOK = false;
                             break;
                         }
                     }
-                    if (!isbrick){
-                        Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions);
+                    if (positionOK && GameState.bombNumber > 0) {
+                        boolean isbrick = false;
+                        for (Brick brick :briches){
+                            if (brick.getBound().overlaps(man.getBound())){
+                                isbrick = true;
+                                break;
+                            }
+                        }
+                        if (!isbrick){
+                            Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions,true);
+                            bombs.add(bomb);
+                            GameState.bombNumber--;
+                        }
+                    }
+                }
+                if (Gdx.input.isKeyPressed(Input.Keys.B) && Gdx.input.isKeyPressed(Input.Keys.A) && Gdx.input.isKeyJustPressed(Input.Keys.V)) {//BAV = BuiAnhVu
+                    int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
+                    int yMan = Math.round(man.getY() / 32) * 32;
+                    boolean positionOK = true;
+                    for (Bomb b : bombs) {
+                        if (b.getX() == xMan && b.getY() == yMan) {
+                            positionOK = false;
+                            break;
+                        }
+                    }
+                    if (positionOK && GameState.bombNumber > 0) {
+                        for(MyActor e : enemies){
+                            Bomb bomb = new Bomb(e.getX() - 32, e.getY(), stage, bombs, explosions,false);
+                            bombs.add(bomb);
+                            Bomb bomb2 = new Bomb(e.getX() + 32, e.getY(), stage, bombs, explosions,false);
+                            bombs.add(bomb2);
+                            Bomb bomb3 = new Bomb(e.getX(), e.getY()-32, stage, bombs, explosions,false);
+                            bombs.add(bomb3);
+                            Bomb bomb4 = new Bomb(e.getX(), e.getY()+32, stage, bombs, explosions,false);
+                            bombs.add(bomb4);
+                            GameState.bombNumber -= 4;
+                        }
+                        Bomb bomb = new Bomb(doorRec .getX() - 32, doorRec.getY(), stage, bombs, explosions,false);
                         bombs.add(bomb);
                         GameState.bombNumber--;
                     }
+                }
+                if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+                    int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
+                    int yMan = Math.round(man.getY() / 32) * 32;
+                    boolean positionOK = true;
+                    for (Bomb b : bombs) {
+                        if (b.getX() == xMan && b.getY() == yMan) {
+                            positionOK = false;
+                            break;
+                        }
+                    }
+                    if (positionOK && GameState.bombNumber > 0) {
+                        for(int i = 0;i < 20;i += 2){
+                            Bomb bomb = new Bomb(xMan + i*32 , yMan, stage, bombs, explosions,false);
+                            bombs.add(bomb);
+                        }
+                        for(int i = 1;i < 21;i += 2){
+                            Bomb bomb = new Bomb(xMan + i*32 , yMan-32, stage, bombs, explosions,false);
+                            bombs.add(bomb);
+                        }
+                        for(int i = 0;i < 20;i += 2){
+                            Bomb bomb = new Bomb(xMan + i*32 , yMan-64, stage, bombs, explosions,false);
+                            bombs.add(bomb);
+                        }
+                        GameState.bombNumber-=30;
+                    }
+                }
+                if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+                    int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
+                    int yMan = Math.round(man.getY() / 32) * 32;
+                    boolean positionOK = true;
+                    for (Bomb b : bombs) {
+                        if (b.getX() == xMan && b.getY() == yMan) {
+                            positionOK = false;
+                            break;
+                        }
+                    }
+                    if (positionOK && GameState.bombNumber > 0) {
+                        int i = 0;
+                        int j = 0;
+                        for(;i < 6;i += 2){
+                            j++;
+                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions,false);
+                            bombs.add(bomb);
+                            Bomb bomb2 = new Bomb(xMan + j*32 , yMan - i*32 - 32, stage, bombs, explosions,false);
+                            bombs.add(bomb2);
+                        }
+                        for(; -2 < i; i-= 2){
+                            j++;
+                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions,false);
+                            bombs.add(bomb);
+                            Bomb bomb2 = new Bomb(xMan + j*32 , yMan - i*32 - 32, stage, bombs, explosions,false);
+                            bombs.add(bomb2);
+                        }
+                        j+= 2;
+                        i+=2;
+                        for(;i < 7;i ++){
+                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions,false);
+                            bombs.add(bomb);
 
-                }
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.B) && Gdx.input.isKeyPressed(Input.Keys.A) && Gdx.input.isKeyJustPressed(Input.Keys.V)) {//BAV = BuiAnhVu
-                int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
-                int yMan = Math.round(man.getY() / 32) * 32;
-                boolean positionOK = true;
-                for (Bomb b : bombs) {
-                    if (b.getX() == xMan && b.getY() == yMan) {
-                        positionOK = false;
-                        break;
-                    }
-                }
-                if (positionOK && GameState.bombNumber > 0) {
-                    for(MyActor e : enemies){
-                        Bomb bomb = new Bomb(e.getX() - 32, e.getY(), stage, bombs, explosions);
-                        bombs.add(bomb);
-                        Bomb bomb2 = new Bomb(e.getX() + 32, e.getY(), stage, bombs, explosions);
-                        bombs.add(bomb2);
-                        Bomb bomb3 = new Bomb(e.getX(), e.getY()-32, stage, bombs, explosions);
-                        bombs.add(bomb3);
-                        Bomb bomb4 = new Bomb(e.getX(), e.getY()+32, stage, bombs, explosions);
-                        bombs.add(bomb4);
-                        GameState.bombNumber -= 4;
-                    }
-                    Bomb bomb = new Bomb(doorRec .getX() - 32, doorRec.getY(), stage, bombs, explosions);
-                    bombs.add(bomb);
-                    GameState.bombNumber--;
-                }
-            }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
-                int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
-                int yMan = Math.round(man.getY() / 32) * 32;
-                boolean positionOK = true;
-                for (Bomb b : bombs) {
-                    if (b.getX() == xMan && b.getY() == yMan) {
-                        positionOK = false;
-                        break;
-                    }
-                }
-                if (positionOK && GameState.bombNumber > 0) {
-                    for(int i = 0;i < 20;i += 2){
-                        Bomb bomb = new Bomb(xMan + i*32 , yMan, stage, bombs, explosions);
-                        bombs.add(bomb);
-                    }
-                    for(int i = 1;i < 21;i += 2){
-                        Bomb bomb = new Bomb(xMan + i*32 , yMan-32, stage, bombs, explosions);
-                        bombs.add(bomb);
-                    }
-                    for(int i = 0;i < 20;i += 2){
-                        Bomb bomb = new Bomb(xMan + i*32 , yMan-64, stage, bombs, explosions);
-                        bombs.add(bomb);
-                    }
-                    GameState.bombNumber-=30;
-                }
-            }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
-                int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
-                int yMan = Math.round(man.getY() / 32) * 32;
-                boolean positionOK = true;
-                for (Bomb b : bombs) {
-                    if (b.getX() == xMan && b.getY() == yMan) {
-                        positionOK = false;
-                        break;
-                    }
-                }
-                if (positionOK && GameState.bombNumber > 0) {
-                    int i = 0;
-                    int j = 0;
-                    for(;i < 6;i += 2){
+                        }
                         j++;
-                        Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
-                        bombs.add(bomb);
-                        Bomb bomb2 = new Bomb(xMan + j*32 , yMan - i*32 - 32, stage, bombs, explosions);
-                        bombs.add(bomb2);
-                    }
-                    for(; -2 < i; i-= 2){
-                        j++;
-                        Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
-                        bombs.add(bomb);
-                        Bomb bomb2 = new Bomb(xMan + j*32 , yMan - i*32 - 32, stage, bombs, explosions);
-                        bombs.add(bomb2);
-                    }
-                    j+= 2;
-                    i+=2;
-                    for(;i < 7;i ++){
-                        Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
-                        bombs.add(bomb);
+                        System.out.println(j);
+                        for(;j < 15;j ++){
+                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions,false);
+                            bombs.add(bomb);
 
-                    }
-                    j++;
-                    System.out.println(j);
-                    for(;j < 15;j ++){
-                        Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
-                        bombs.add(bomb);
-
-                    }
-                    i--;
-                    System.out.println(i);
-                    for(; -1 < i; i --){
-                        Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions);
-                        bombs.add(bomb);
-                    }
-                    GameState.bombNumber-=32;
-                }
-            }
-
-            if (Gdx.input.isKeyJustPressed(Input.Keys.B) && GameState.decorator) {
-                // kích nổ qủa đầu tiên
-                bombs.get(0).isExploded = true;
-            }
-
-            for (Explosion explosion : explosions) {
-                if ((explosion.getBound().overlaps(man.getBound()))&& (!GameState.mystery) &&(!GameState.flamepass)&&((GameState.level != 108)&&(GameState.level != 109))) {
-                    man.isAlive = false;
-                    dieSound.play();
-                    GameState.wallPass = false;
-                    break;
-                }
-                for (Bomb b : bombs) {
-                    if (explosion.getBound().overlaps(b.getBound())) {
-                        b.isExploded = true;
+                        }
+                        i--;
+                        System.out.println(i);
+                        for(; -1 < i; i --){
+                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions,false);
+                            bombs.add(bomb);
+                        }
+                        GameState.bombNumber-=32;
                     }
                 }
-            }
-            for (MyActor enemy : enemies) {
-                if ((enemy.getBound().overlaps(man.getBound())) && (!GameState.mystery)&&((GameState.level != 108)&&(GameState.level != 109))){
-                    man.isAlive = false;
-                    dieSound.play();
-                    GameState.wallPass = false;
-                    break;
+
+                if (Gdx.input.isKeyJustPressed(Input.Keys.B) && GameState.decorator) {
+                    // kích nổ qủa đầu tiên
+                    bombs.get(0).isExploded = true;
                 }
-            }
-            count++;
-            if (count % 60 == 0) {
-                if(timing > 0) {
-                    timing--;
-                    if ((timing == 0)&&(GameState.level !=108)&&(GameState.level != 109)) {
-                        timeupMusic.play();
-                    }else if((timing == 0)&&(GameState.level == 108)){
-                        GameState.level = 36;
+
+                for (Explosion explosion : explosions) {
+                    if (explosion.getBound().overlaps(man.getBound())
+                    && GameState.level != 100 && GameState.level != 101
+                    && GameState.level != 102 && GameState.level != 103
+                    && GameState.level != 108 && GameState.level != 109
+                    ) {
+                        man.isAlive = false;
+                        dieSound.play();
+                        GameState.wallPass = false;
                         Utils.saveGame();
-                        game.setScreen(new StageScreen(game));
-
-                    }else if((timing == 0)&&(GameState.level == 109)){
-                        GameState.level = 41;
+                        break;
+                    }
+                    for (Bomb b : bombs) {
+                        if (explosion.getBound().overlaps(b.getBound())) {
+                            b.isExploded = true;
+                        }
                     }
                 }
+                for (MyActor enemy : enemies) {
+                    if (enemy.getBound().overlaps(man.getBound())
+                        && GameState.level != 100 && GameState.level != 101
+                        && GameState.level != 102 && GameState.level != 103
+                        && GameState.level != 108 && GameState.level != 109
+                    ) {
+                        man.isAlive = false;
+                        dieSound.play();
+                        GameState.wallPass = false;
+                        Utils.saveGame();
+                        break;
+                    }
+                }
+                count++;
+                if (count % 60 == 0) {
+                    if(timing > 0) {
+                        timing--;
+                        if (timing == 0) {
+                            if(GameState.level == 102){
+                                GameState.level = 16;
+                                Utils.saveGame();
+                                game.setScreen(new StageScreen(game));
+                            } else if(GameState.level == 103){
+                                GameState.level = 21;
+                                Utils.saveGame();
+                                game.setScreen(new StageScreen(game));
+                            } else if(GameState.level == 108){
+                                GameState.level = 36;
+                                Utils.saveGame();
+                                game.setScreen(new StageScreen(game));
+                            } else if(GameState.level == 109){
+                                GameState.level = 41;
+                                Utils.saveGame();
+                                game.setScreen(new StageScreen(game));
+                            } else{
+                                timeupMusic.play();
+                            }
+                        }
+                    }
+                }
+                if(!man.isAlive){
+                    GameState.left--;
+                    GameState.decorator = false;
+                    GameState.wallPass = false;
+                    man.time = 0;
+                }
             }
-            if(!man.isAlive){
-                GameState.left--;
-                GameState.decorator = false;
-                man.time = 0;
-            }
-        }
 
-        if(enemies.isEmpty()){
-            if(!isEnemiesAllDie) {
-                enemiesalldieMusic.play();
-                isEnemiesAllDie = true;
-            }
-            if(GameState.level == 1 || GameState.level == 9) {
-                if(itemBonus == null && Utils.isShownGoddess && !Utils.isCollectedItemBonus){
-                    itemBonus = new Item(32, 32, ItemType.GODDESS_MASK, stage);
-                    System.out.println("item bonus");
-                } else {
-                    Utils.updatePlayerPosition(new Vector2(man.getX(), man.getY()));
+            if(enemies.isEmpty()){
+                if(!isEnemiesAllDie) {
+                    enemiesalldieMusic.play();
+                    isEnemiesAllDie = true;
+                }
+                if(
+                    GameState.level == 1 || GameState.level == 7 || GameState.level == 9
+                    || GameState.level == 15 || GameState.level == 17
+                    || GameState.level == 23 || GameState.level == 25
+                    || GameState.level == 31 || GameState.level == 33
+                    || GameState.level == 39 || GameState.level == 41
+                    || GameState.level == 47 || GameState.level == 49 ) {
+                    if(itemBonus == null && Utils.isShownGoddess && !Utils.isCollectedItemBonus){
+                        itemBonus = new Item(32, 32, ItemType.GODDESS_MASK, stage);
+                        System.out.println("item bonus");
+                    } else {
+                        Utils.updatePlayerPosition(new Vector2(man.getX(), man.getY()));
+                    }
                 }
             }
         }
@@ -359,9 +412,20 @@ public class Master implements Screen {
         stage.draw();
 
         game.batch.begin();
-        game.font.draw(game.batch, "TIME: " + timing, 32, Gdx.graphics.getHeight() - 16);
-        game.font.draw(game.batch, GameState.score < 10 ? "0" + GameState.score : "" + GameState.score, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - 16);
-        game.font.draw(game.batch, "LEFT: " + GameState.left, Gdx.graphics.getWidth() - 128, Gdx.graphics.getHeight() - 16);
+        if(GameState.level == 51){
+            game.font.draw(game.batch,"CONGRATULATIONS",Gdx.graphics.getWidth()/2f - 15*7.5f,450);
+            game.font.draw(game.batch,"YOU HAVE SUCCEEDED IN",Gdx.graphics.getWidth()/2f - 15*10.5f,390);
+            game.font.draw(game.batch,"HELPING BOMBERMAN TO BECOME",Gdx.graphics.getWidth()/2f - 15*13.5f,350);
+            game.font.draw(game.batch,"A HUMAN BEING",Gdx.graphics.getWidth()/2f - 15*13.5f,310);
+            game.font.draw(game.batch,"MAY BE YOU CAN RECOGNIZE HIM",Gdx.graphics.getWidth()/2f - 15*10.5f,270);
+            game.font.draw(game.batch,"IN ANOTHER HUDSON SOFT GAME",Gdx.graphics.getWidth()/2f - 15*13.5f,230);
+            game.font.draw(game.batch,"GOOD BYE",Gdx.graphics.getWidth()/2f - 15*4f,190);
+
+        }else{
+            game.font.draw(game.batch, "TIME: " + timing, 32, Gdx.graphics.getHeight() - 16);
+            game.font.draw(game.batch, GameState.score < 10 ? "0" + GameState.score : "" + GameState.score, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - 16);
+            game.font.draw(game.batch, "LEFT: " + GameState.left, Gdx.graphics.getWidth() - 128, Gdx.graphics.getHeight() - 16);
+        }
         game.batch.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -369,11 +433,30 @@ public class Master implements Screen {
         shapeRenderer.rect(itemRec.getX(), itemRec.getY(), itemRec.width, itemRec.height);
         shapeRenderer.rect(doorRec.getX(), doorRec.getY(), doorRec.width, doorRec.height);
         shapeRenderer.end();
+        if(GameState.level == 100 || GameState.level == 101)  {
+            countDown = countDown - 1;
+        }if(countDown == 0){
+            GameState.level++;
+           if(GameState.level == 101){
+                GameState.level = 6;
+           }
+            if(GameState.level == 102){
+                GameState.level = 11;
+            }
+            countDown = 1799;
+
+
+            Utils.saveGame();
+            game.setScreen(new StageScreen(game));
+        }
     }
 
     public void collectItems() {
         if (item != null && man.getBound().overlaps(item.getBound())) {
-            if (item.type.equals(ItemType.BOMB_NUMBER)) {
+            if(item.type.equals(ItemType.WALLPASS)) {
+                GameState.wallPass = true;
+                System.out.println("Collected wall pass");
+            } else if (item.type.equals(ItemType.BOMB_NUMBER)) {
                 GameState.bombNumber++;
             } else if (item.type.equals(ItemType.BOMB_POWER)) {
                 GameState.bombPower++;
@@ -383,9 +466,7 @@ public class Master implements Screen {
                 GameState.bombPass = true;
             }else if (item.type.equals(ItemType.Flame_pass)) {
                 GameState.flamepass = true;
-            }else if (item.type.equals(ItemType.Wall_pass)) {
-                GameState.wallPass = true;
-            }else if (item.type.equals(ItemType.Mystery)) {
+            } else if (item.type.equals(ItemType.Mystery)) {
                 timee = MathUtils.random(10,30);
                 wait = timee*60;
             }
@@ -405,13 +486,14 @@ public class Master implements Screen {
     }
 
     public void collisionDoor(){
-        if (door != null
-            && !isFinished
-            && enemies.isEmpty()
-            && man.getX() == door.getX()
-            && man.getY() == door.getY()) { // lúc vào cửa trùng hoàn toàn vị trí cho đẹp
-            isFinished = true;
-            finishMusic.play();
+        if(!isFinished && (enemies.isEmpty() || GameState.level == 103 || GameState.level == 102) ){
+            if (door != null && man.getX() == door.getX() && man.getY() == door.getY()) { // lúc vào cửa trùng hoàn toàn vị trí cho đẹp
+                isFinished = true;
+                finishMusic.play();
+            }
+        }
+        if(enemies.isEmpty()){
+            GameState.bonusTarget = true;
         }
     }
 
@@ -503,78 +585,70 @@ public class Master implements Screen {
     }
 
     public void generateMap() {
-        if ((GameState.level == 108 )||(GameState.level == 109)) {
+        if(GameState.level != 51){
             background = new Background(0, 0, stage);
             panel = new Panel(0, Gdx.graphics.getHeight() - 64, stage);
 
             wallArray = Utils.buildMap();
 
-            int tileSize = 32; // Kích thước mỗi ô
-            for (int row = 0; row < wallArray.length; row++) {
-                for (int col = 0; col < wallArray[row].length; col++) {
-                    int cell = wallArray[row][col];
-                    int x = col * tileSize;
-                    int y = (wallArray.length - 1 - row) * tileSize; // Lật trục y
-                    if (cell == 1) {
-                        // Tạo tường
-                        walls.add(new Wall(x, y, stage));
-                    }else if (cell == Utils.ENEMY_TYPE1) {
-                        // Tạo enemy
-                        Enemy1 enemy1 = new Enemy1(x, y, stage);
-                        // thêm vào danh sách các enemies
-                        enemies.add(enemy1);
-                    }
+        int tileSize = 32; // Kích thước mỗi ô
+        for (int row = 0; row < wallArray.length; row++) {
+            for (int col = 0; col < wallArray[row].length; col++) {
+                int cell = wallArray[row][col];
+                int x = col * tileSize;
+                int y = (wallArray.length - 1 - row) * tileSize; // Lật trục y
+                if (cell == 1) {
+                    // Tạo tường
+                    walls.add(new Wall(x, y, stage));
+                } else if ((cell == 2) && (!(GameState.level == 100 || GameState.level == 101 || GameState.level == 102 || GameState.level == 103))) {
+                    Brick brick = new Brick(x, y, stage);
+                    // Tạo gạch
+                    briches.add(brick);
+                    // cho cả gạch vào tuờng để kiểm tra va chạm dễ hơn
+                    walls.add(brick);
+                } else if (cell == Utils.ENEMY_TYPE1) {
+                    // Tạo enemy
+                    Enemy1 enemy1 = new Enemy1(x, y, stage);
+                    // thêm vào danh sách các enemies
+                    enemies.add(enemy1);
+                } else if (cell == Utils.ENEMY_TYPE2) {
+                    Enemy2 enemy2 = new Enemy2(x, y, stage);
+                    enemies.add(enemy2);
+                } else if (cell == Utils.ENEMY_TYPE3) {
+                    Enemy3 enemy3 = new Enemy3(x, y, stage);
+                    enemies.add(enemy3);
+                } else if (cell == Utils.ENEMY_TYPE4) {
+                    Enemy4 enemy4 = new Enemy4(x, y, stage);
+                    enemies.add(enemy4);
+                } else if (cell == Utils.ENEMY_TYPE5) {
+                    Enemy5 enemy5 = new Enemy5(x, y, stage);
+                    enemies.add(enemy5);
+                } else if (cell == Utils.ENEMY_TYPE6) {
+                    Enemy6 enemy6 = new Enemy6(x, y, stage);
+                    enemies.add(enemy6);
+                } else if (cell == Utils.ENEMY_TYPE7) {
+                    Enemy7 enemy7 = new Enemy7(x, y, stage);
+                    enemies.add(enemy7);
                 }
             }
-        }else {
-            background = new Background(0, 0, stage);
-            panel = new Panel(0, Gdx.graphics.getHeight() - 64, stage);
-
-            wallArray = Utils.buildMap();
-
-            int tileSize = 32; // Kích thước mỗi ô
-            for (int row = 0; row < wallArray.length; row++) {
-                for (int col = 0; col < wallArray[row].length; col++) {
-                    int cell = wallArray[row][col];
-                    int x = col * tileSize;
-                    int y = (wallArray.length - 1 - row) * tileSize; // Lật trục y
-                    if (cell == 1) {
-                        // Tạo tường
-                        walls.add(new Wall(x, y, stage));
-                    } else if (cell == 2) {
-                        Brick brick = new Brick(x, y, stage);
-                        // Tạo gạch
-                        briches.add(brick);
-                        // cho cả gạch vào tuờng để kiểm tra va chạm dễ hơn
-                        walls.add(brick);
-                    } else if (cell == Utils.ENEMY_TYPE1) {
-                        // Tạo enemy
-                        Enemy1 enemy1 = new Enemy1(x, y, stage);
-                        // thêm vào danh sách các enemies
-                        enemies.add(enemy1);
-                    } else if (cell == Utils.ENEMY_TYPE2) {
-                        Enemy2 enemy2 = new Enemy2(x, y, stage);
-                        enemies.add(enemy2);
-                    } else if (cell == Utils.ENEMY_TYPE3) {
-                        Enemy3 enemy3 = new Enemy3(x, y, stage);
-                        enemies.add(enemy3);
-                    } else if (cell == Utils.ENEMY_TYPE4) {
-                        Enemy4 enemy4 = new Enemy4(x, y, stage);
-                        enemies.add(enemy4);
-                    } else if (cell == Utils.ENEMY_TYPE5) {
-                        Enemy5 enemy5 = new Enemy5(x, y, stage);
-                        enemies.add(enemy5);
-                    } else if (cell == Utils.ENEMY_TYPE6) {
-                        Enemy6 enemy6 = new Enemy6(x, y, stage);
-                        enemies.add(enemy6);
-                    } else if (cell == Utils.ENEMY_TYPE7) {
-                        Enemy7 enemy7 = new Enemy7(x, y, stage);
-                        enemies.add(enemy7);
-                    }
-                }
             }
-            int itemPosition = MathUtils.random(0, briches.size - 1);
-            int doorPosition = MathUtils.random(0, briches.size - 1);
+        }else{
+            for(int i = 0;i < 25;i++){
+                Brick brick = new Brick(32*i, 32*3, stage);
+                briches.add(brick);
+                walls.add(brick);
+            }
+        }
+        if(GameState.level == 100 || GameState.level == 101 ||GameState.level == 102 || GameState.level == 103){
+            Brick brick = new Brick(-32, 0, stage);
+            briches.add(brick);
+            walls.add(brick);
+            Brick brick2 = new Brick(-32, 0, stage);
+            briches.add(brick2);
+            walls.add(brick2);
+        }
+        int itemPosition = MathUtils.random(0, briches.size - 1);
+        int doorPosition = MathUtils.random(0, briches.size - 1);
 
             while (itemPosition == doorPosition) {
                 doorPosition = MathUtils.random(0, briches.size - 1);
@@ -583,7 +657,6 @@ public class Master implements Screen {
             briches.get(doorPosition).hasDoor = true;
             itemRec = briches.get(itemPosition).getBound();
             doorRec = briches.get(doorPosition).getBound();
-        }
     }
 
 
@@ -592,7 +665,7 @@ public class Master implements Screen {
         if (_actor1 instanceof Bomb && ((Bomb) _actor1).isJustPlaced) {
             return false;
         }
-        if(GameState.wallPass && _actor1 instanceof Brick){
+        if(_actor1 instanceof Brick && GameState.wallPass){
             return false;
         }
 
