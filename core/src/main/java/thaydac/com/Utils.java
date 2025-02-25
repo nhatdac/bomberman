@@ -103,10 +103,10 @@ public class Utils {
         enemyConfig.put(37, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 1, ENEMY_TYPE5, 3,ENEMY_TYPE6,1,ENEMY_TYPE7,3));
         enemyConfig.put(100,Map.of(ENEMY_TYPE1,125));
         enemyConfig.put(101,Map.of(ENEMY_TYPE2, 125));
-        enemyConfig.put(103, Map.of(ENEMY_TYPE4,200));
         enemyConfig.put(102, Map.of(ENEMY_TYPE3,200));
-        enemyConfig.put(105,Map.of(ENEMY_TYPE6,100));
-        enemyConfig.put(106,Map.of(ENEMY_TYPE5,100));
+        enemyConfig.put(103, Map.of(ENEMY_TYPE4,200));
+        enemyConfig.put(104,Map.of(ENEMY_TYPE6,100));
+        enemyConfig.put(105,Map.of(ENEMY_TYPE5,100));
         // ... thêm các level tiếp theo...
 
         enemyConfig.put(108, Map.of(ENEMY_TYPE1, 20000));

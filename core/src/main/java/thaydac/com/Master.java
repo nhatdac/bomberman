@@ -482,9 +482,9 @@ public class Master implements Screen {
                 GameState.decorator = true;
             }else if (item.type.equals(ItemType.BOMB_PASS)) {
                 GameState.bombPass = true;
-            }else if (item.type.equals(ItemType.Flame_pass)) {
+            }else if (item.type.equals(ItemType.FLAME_PASS)) {
                 GameState.flamepass = true;
-            } else if (item.type.equals(ItemType.Mystery)) {
+            } else if (item.type.equals(ItemType.MYSTERY)) {
                 timee = MathUtils.random(10,30);
                 wait = timee*60;
             }

@@ -14,7 +14,7 @@ public class GameState {
     public static boolean dezenimanSan = false;
     public static boolean bombPass = false;
     public static boolean wallPass = false;
-    public static boolean flamepass = true;
+    public static boolean flamepass = false;
     public static boolean mystery = false;
 
     public static void reset(){
