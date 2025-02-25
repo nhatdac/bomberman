@@ -12,7 +12,7 @@ public enum ItemType {
     FAMICOM,
     NAKAMOTO_SAN,
     DEZENIMAN_SAN,
-    Flame_pass,
-    Mystery,
+    FLAME_PASS,
+    MYSTERY,
     Bomb_pass
 }

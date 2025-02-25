@@ -20,6 +20,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import thaydac.com.enemies.*;
 
+import java.util.Random;
+
 public class Master implements Screen {
     StartGame game;
     int timing = 0;
@@ -62,6 +64,7 @@ public class Master implements Screen {
     Rectangle itemRec = new Rectangle();
     Rectangle doorRec = new Rectangle();
 
+    int time = 0;
     public Master(StartGame game) {
         this.game = game;
         stage = new Stage();
@@ -118,14 +121,16 @@ public class Master implements Screen {
                 GameState.left++;
                 if(GameState.level == 6){
                     GameState.level = 100;
-                }
-                if(GameState.level == 11){
+                } else if(GameState.level == 11){
                     GameState.level = 101;
-                }
-                if(GameState.level == 16){
+                } else if(GameState.level == 16){
                     GameState.level = 102;
-                }else if(GameState.level == 21){
+                } else if(GameState.level == 21){
                     GameState.level = 103;
+                } else if(GameState.level == 26){
+                    GameState.level = 104;
+                } else if(GameState.level == 31){
+                    GameState.level = 105;
                 }
                 if ((GameState.level == 36) && (G ==0) ){
                     GameState.level = 108;
@@ -153,8 +158,10 @@ public class Master implements Screen {
     public void show() {
         isFinished = false;
         if(!(GameState.level == 100 || GameState.level == 101
-        || GameState.level == 101
-        || GameState.level == 101)) {
+        || GameState.level == 102
+        || GameState.level == 103
+        || GameState.level == 104
+        || GameState.level == 105)) {
             timing = 300;
         }else {
             timing = 30;
@@ -321,6 +328,8 @@ public class Master implements Screen {
                     && GameState.level != 100 && GameState.level != 101
                     && GameState.level != 102 && GameState.level != 103
                     && GameState.level != 108 && GameState.level != 109
+                    && GameState.mystery
+                    && !GameState.flamepass
                     ) {
                         man.isAlive = false;
                         dieSound.play();
@@ -339,6 +348,7 @@ public class Master implements Screen {
                         && GameState.level != 100 && GameState.level != 101
                         && GameState.level != 102 && GameState.level != 103
                         && GameState.level != 108 && GameState.level != 109
+                        && GameState.mystery
                     ) {
                         man.isAlive = false;
                         dieSound.play();
@@ -358,6 +368,14 @@ public class Master implements Screen {
                                 game.setScreen(new StageScreen(game));
                             } else if(GameState.level == 103){
                                 GameState.level = 21;
+                                Utils.saveGame();
+                                game.setScreen(new StageScreen(game));
+                            } else if(GameState.level == 104){
+                                GameState.level = 26;
+                                Utils.saveGame();
+                                game.setScreen(new StageScreen(game));
+                            } else if(GameState.level == 105){
+                                GameState.level = 31;
                                 Utils.saveGame();
                                 game.setScreen(new StageScreen(game));
                             } else if(GameState.level == 108){
@@ -464,9 +482,9 @@ public class Master implements Screen {
                 GameState.decorator = true;
             }else if (item.type.equals(ItemType.BOMB_PASS)) {
                 GameState.bombPass = true;
-            }else if (item.type.equals(ItemType.Flame_pass)) {
+            }else if (item.type.equals(ItemType.FLAME_PASS)) {
                 GameState.flamepass = true;
-            } else if (item.type.equals(ItemType.Mystery)) {
+            } else if (item.type.equals(ItemType.MYSTERY)) {
                 timee = MathUtils.random(10,30);
                 wait = timee*60;
             }
@@ -600,7 +618,8 @@ public class Master implements Screen {
                 if (cell == 1) {
                     // Tạo tường
                     walls.add(new Wall(x, y, stage));
-                } else if ((cell == 2) && (!(GameState.level == 100 || GameState.level == 101 || GameState.level == 102 || GameState.level == 103))) {
+                } else if ((cell == 2) && (!(GameState.level == 100 || GameState.level == 101 || GameState.level == 102 || GameState.level == 103
+                    || GameState.level == 104 || GameState.level == 105))) {
                     Brick brick = new Brick(x, y, stage);
                     // Tạo gạch
                     briches.add(brick);
@@ -639,7 +658,8 @@ public class Master implements Screen {
                 walls.add(brick);
             }
         }
-        if(GameState.level == 100 || GameState.level == 101 ||GameState.level == 102 || GameState.level == 103){
+        if(GameState.level == 100 || GameState.level == 101 ||GameState.level == 102 || GameState.level == 103
+            || GameState.level == 104 || GameState.level == 105){
             Brick brick = new Brick(-32, 0, stage);
             briches.add(brick);
             walls.add(brick);

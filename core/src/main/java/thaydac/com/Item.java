@@ -33,9 +33,9 @@ public class Item extends MyActor{
             tRegion.setRegion(16 * 12, 0, 16, 16);
         }else if(this.type.equals(ItemType.DEZENIMAN_SAN)){
             tRegion.setRegion(16 * 13, 0, 16, 16);
-        }else if(this.type.equals(ItemType.Flame_pass)){
+        }else if(this.type.equals(ItemType.FLAME_PASS)){
             tRegion.setRegion(16 * 6, 0, 16, 16);
-        }else if(this.type.equals(ItemType.Mystery)){
+        }else if(this.type.equals(ItemType.MYSTERY)){
             tRegion.setRegion(16 * 7, 0, 16, 16);
         }
 
