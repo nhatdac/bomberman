@@ -104,13 +104,9 @@ public class Master implements Screen {
                 GameState.level++;
                 if(GameState.level == 26) {
                     GameState.level = 105;
-                } if(GameState.level == 106) {
-                    GameState.level = 26;
                 }
                 if(GameState.level == 31) {
                     GameState.level = 106;
-                } if(GameState.level == 107) {
-                    GameState.level = 31;
                 }
                 Utils.saveGame();
                 game.setScreen(new StageScreen(game));
@@ -129,6 +125,9 @@ public class Master implements Screen {
     public void show() {
         isFinished = false;
         timing = 300;
+        if(GameState.level == 105 || GameState.level == 106) {
+            timing = 10;
+        }
         System.out.println("" + GameState.score);
     }
 
@@ -263,8 +262,17 @@ public class Master implements Screen {
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.B) && GameState.decorator) {
-                // kích nổ qủa đầu tiên
-                bombs.get(0).isExploded = true;
+                try {
+                    // kích nổ qủa đầu tiên
+                    bombs.get(0).isExploded = true;
+                } catch (ArithmeticException e){
+                    System.out.println("Hay dat bom de lam hanh dong nay"+ e.getMessage());
+                } catch (AbstractMethodError q){
+                    System.out.println("Hay dat bom de lam hanh dong nay"+ q.getMessage());
+                } catch (Exception r){
+                    System.out.println("Hay dat bom de lam hanh dong nay"+ r.getMessage());
+                }
+
             }
 
            if(GameState.mystery = false){
@@ -293,19 +301,16 @@ public class Master implements Screen {
             count++;
             if (count % 60 == 0) {
                 timing--;
-                if(timing > 0 && GameState.level < 100) {
-
-                    if (timing == 0) {
+                if(timing == 0) {
+                    if (GameState.level == 105) {
+                        GameState.level = 26;
+                        game.setScreen(new StageScreen(game));
+                    } if(GameState.level == 106) {
+                        GameState.level = 31;
+                        game.setScreen(new StageScreen(game));
+                    } else{
                         timeupMusic.play();
                     }
-                }else if(timing == 0 && GameState.level == 105){
-                    GameState.level = 26;
-                    Utils.saveGame();
-                    game.setScreen(new StageScreen(game));
-                } else if (timing == 0 && GameState.level >= 106){
-                    GameState.level = 31;
-                    Utils.saveGame();
-                    game.setScreen(new StageScreen(game));
                 }
             }
             if(!man.isAlive){
