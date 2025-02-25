@@ -21,11 +21,24 @@ public class Item extends MyActor{
             tRegion.setRegion(16 * 5, 0, 16, 16);
         }else if(this.type.equals(ItemType.GODDESS_MASK)){
             tRegion.setRegion(16 * 9, 0, 16, 16);
-        } else if(this.type.equals(ItemType.MYSTERY)){
-            tRegion.setRegion(16 *7, 0, 16, 16);
-        } else if(this.type.equals(ItemType.FLAME_PASS)){
+        }else if(this.type.equals(ItemType.WALLPASS)){
+            tRegion.setRegion(16 * 3, 0, 16, 16);
+        } else if(this.type.equals(ItemType.BONUS_TARGET)){
+            tRegion.setRegion(16 * 8, 0, 16, 16);
+        }else if(this.type.equals(ItemType.COLA_BOTTLE)){
+            tRegion.setRegion(16 * 10, 0, 16, 16);
+        }else if(this.type.equals(ItemType.FAMICOM )){
+            tRegion.setRegion(16 * 11, 0, 16, 16);
+        }else if(this.type.equals(ItemType.NAKAMOTO_SAN )){
+            tRegion.setRegion(16 * 12, 0, 16, 16);
+        }else if(this.type.equals(ItemType.DEZENIMAN_SAN)){
+            tRegion.setRegion(16 * 13, 0, 16, 16);
+        }else if(this.type.equals(ItemType.Flame_pass)){
             tRegion.setRegion(16 * 6, 0, 16, 16);
+        }else if(this.type.equals(ItemType.Mystery)){
+            tRegion.setRegion(16 * 7, 0, 16, 16);
         }
+
         textureRegion = tRegion;
         setSize(32, 32);
     }

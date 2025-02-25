@@ -8,12 +8,15 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import java.util.Objects;
+
 public class Man extends MyActor {
     Animation<TextureRegion> animationLeft;
     Animation<TextureRegion> animationRight;
     Animation<TextureRegion> animationUp;
     Animation<TextureRegion> animationDown;
     Animation<TextureRegion> animationDie;
+    Animation<TextureRegion> animationWin;
 
     float time;
     String direction = "R";
@@ -27,6 +30,7 @@ public class Man extends MyActor {
     Man(float x, float y, Stage s) {
         super(x, y, s);
         Texture texture = new Texture("man1.png");
+        Texture textureWin = new Texture("man-win.png");
         int cot = 19;
         int hang = 1;
         TextureRegion[][] frameBuff = TextureRegion.split(texture, texture.getWidth() / cot, texture.getHeight() / hang);
@@ -36,6 +40,15 @@ public class Man extends MyActor {
         for (int i = 0; i < hang; i++) {
             for (int j = 0; j < cot; j++) {
                 frames[index++] = frameBuff[i][j];
+            }
+        }
+
+        TextureRegion[][] frameBuffWin = TextureRegion.split(textureWin, textureWin.getWidth() / 3, textureWin.getHeight() / 1);
+        TextureRegion[] framesWin = new TextureRegion[3];
+        int indexWin = 0;
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 3; j++) {
+                framesWin[indexWin++] = frameBuffWin[i][j];
             }
         }
 
@@ -50,11 +63,13 @@ public class Man extends MyActor {
         animationDown = new Animation<TextureRegion>(0.1f, framesDown);
         animationUp = new Animation<TextureRegion>(0.1f, framesUp);
         animationDie = new Animation<TextureRegion>(0.3f, framesDie);
+        animationWin = new Animation<TextureRegion>(0.3f, framesWin);
 
         animationLeft.setPlayMode(Animation.PlayMode.LOOP);
         animationRight.setPlayMode(Animation.PlayMode.LOOP);
         animationUp.setPlayMode(Animation.PlayMode.LOOP);
         animationDown.setPlayMode(Animation.PlayMode.LOOP);
+        animationWin.setPlayMode(Animation.PlayMode.LOOP);
 
         setSize(32, 32);
 
@@ -69,7 +84,7 @@ public class Man extends MyActor {
     public void act(float delta) {
         super.act(delta);
         if(!Master.isFinished) {
-            if (isAlive) {
+            if (isAlive && GameState.level != 51) {
                 if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                     direction = "L";
                     moveBy(-Utils.MAN_SPEED, 0);
@@ -95,9 +110,30 @@ public class Man extends MyActor {
                     textureRegion = animationUp.getKeyFrame(time);
                     playSoundWalking(2, delta);
                 }
-            } else {
+            } else if (!isAlive){
                 time += delta;
                 textureRegion = animationDie.getKeyFrame(time);
+            }else{
+                time += delta;
+                textureRegion = animationWin.getKeyFrame(time);
+                if(direction.equals("U") || direction.equals("D")){
+                    direction = "R";
+                }
+                if(getX() == 32){
+                    direction = "R";
+                }
+                if(getX() == Gdx.graphics.getWidth() - 32){
+                    direction = "L";
+                }
+                if(direction.equals("R")){
+                    moveBy(2,0);
+                    setScaleX(1);
+                }
+                if(direction.equals("L")){
+                    moveBy(-2,0);
+                    setScaleX(-1);
+                }
+
             }
         }
     }
