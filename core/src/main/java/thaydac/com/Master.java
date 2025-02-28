@@ -55,6 +55,7 @@ public class Master implements Screen {
     Sound collectSound;
     int timee;
     float wait = 0;
+    float waitSpawnEnemy = 61;
     int G = 0;
     int H = 0;
 
@@ -174,6 +175,7 @@ public class Master implements Screen {
     public void render(float v) {
         System.out.println(GameState.level);
         wait = wait-1;
+        waitSpawnEnemy += 1;
         if (wait <= 0){
             GameState.mystery = false;
         }else {
@@ -342,7 +344,206 @@ public class Master implements Screen {
                             b.isExploded = true;
                         }
                     }
+                    if (item != null && explosion.getBound().overlaps(item.getBound())) {
+                        item.remove();
+                    }
+                    if(GameState.enemyInDoor && door != null && explosion.getBound().overlaps(door.getBound())){
+                        waitSpawnEnemy = 0;
+                        GameState.enemyInDoor = false;
+                    }
                 }
+                    if(waitSpawnEnemy == 60){
+                        switch(GameState.level){
+                            case 1 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy2 enemy2 = new Enemy2(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 2 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy2 enemy2 = new Enemy2(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                    Enemy3 e = new Enemy3(door.getX(),door.getY(),stage);
+                                    enemies.add(e);
+                                }case 3 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy3 enemy2 = new Enemy3(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                    Enemy2 e = new Enemy2(door.getX(),door.getY(),stage);
+                                    enemies.add(e);
+                                }case 4 ->{
+                                }case 5 ->{
+                                }case 6 ->{
+                                for(int i = 0;i<3;i++){
+                                    Enemy3 enemy2 = new Enemy3(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy2);
+                                    }
+                                }case 7 ->{
+                                }case 8 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy4 enemy2 = new Enemy4(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 9 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy5 enemy2 = new Enemy5(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 10 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy4 enemy2 = new Enemy4(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 11 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy5 enemy2 = new Enemy5(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 12 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy3 enemy2 = new Enemy3(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 13 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy6 enemy2 = new Enemy6(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 14 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy2 enemy2 = new Enemy2(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 15 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy4 enemy2 = new Enemy4(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 16 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy2 enemy2 = new Enemy2(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 17 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy3 enemy2 = new Enemy3(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 18 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy3 enemy2 = new Enemy3(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 19 ->{
+                                    for(int i = 0;i<2;i++){
+                                        Enemy6 enemy2 = new Enemy6(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                    Enemy5 enemy2 = new Enemy5(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy2);
+                                }case 20 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy5 enemy2 = new Enemy5(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 21 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy3 enemy2 = new Enemy3(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 22 ->{
+                                    for(int i = 0;i<2;i++){
+                                        Enemy3 enemy2 = new Enemy3(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                    Enemy4 enemy2 = new Enemy4(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy2);
+                                }case 23 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy5 enemy2 = new Enemy5(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 24 ->{
+                                    for(int i = 0;i<2;i++){
+                                        Enemy2 enemy2 = new Enemy2(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                    Enemy3 enemy2 = new Enemy3(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy2);
+                                }case 25 ->{
+                                    Enemy2 enemy2 = new Enemy2(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy2);
+                                    Enemy3 enemy3 = new Enemy3(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy3);
+                                    Enemy4 enemy4 = new Enemy4(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy4);
+                                }case 26 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy5 enemy2 = new Enemy5(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 27 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy3 enemy2 = new Enemy3(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 28 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy6 enemy2 = new Enemy6(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 29 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy3 enemy2 = new Enemy3(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 30 ->{
+                                    for(int i = 0;i<2;i++){
+                                        Enemy2 enemy2 = new Enemy2(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                    Enemy3 enemy2 = new Enemy3(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy2);
+                                }case 31 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy4 enemy2 = new Enemy4(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 32 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy3 enemy2 = new Enemy3(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 33 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy4 enemy2 = new Enemy4(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 34 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy5 enemy2 = new Enemy5(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 35 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy5 enemy2 = new Enemy5(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 36 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy5 enemy2 = new Enemy5(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }case 37 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy5 enemy2 = new Enemy5(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy2);
+                                    }
+                                }
+                            }
+                        }
                 for (MyActor enemy : enemies) {
                     if (enemy.getBound().overlaps(man.getBound())
                         && GameState.level != 100 && GameState.level != 101
