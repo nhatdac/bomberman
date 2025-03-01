@@ -101,12 +101,20 @@ public class Utils {
         enemyConfig.put(35, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 1, ENEMY_TYPE5, 3,ENEMY_TYPE6,1,ENEMY_TYPE7,2));
         enemyConfig.put(36, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 2, ENEMY_TYPE5, 3,ENEMY_TYPE6,0,ENEMY_TYPE7,3));
         enemyConfig.put(37, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 1, ENEMY_TYPE5, 3,ENEMY_TYPE6,1,ENEMY_TYPE7,3));
+        enemyConfig.put(38, Map.of(ENEMY_TYPE3, 2, ENEMY_TYPE4, 2, ENEMY_TYPE5, 3,ENEMY_TYPE7, 3));
+        enemyConfig.put(39, Map.of(ENEMY_TYPE3, 1, ENEMY_TYPE4, 1, ENEMY_TYPE5, 2,ENEMY_TYPE6, 2,ENEMY_TYPE7, 4));
+        enemyConfig.put(40, Map.of(ENEMY_TYPE3, 1, ENEMY_TYPE4, 2, ENEMY_TYPE5, 3,ENEMY_TYPE7, 4));
+        enemyConfig.put(41, Map.of(ENEMY_TYPE3, 1, ENEMY_TYPE4, 1, ENEMY_TYPE5, 3,ENEMY_TYPE6, 1,ENEMY_TYPE7, 4));
+        enemyConfig.put(42, Map.of(ENEMY_TYPE4, 1, ENEMY_TYPE5, 3,  ENEMY_TYPE6,1,ENEMY_TYPE7, 5));
+        enemyConfig.put(43, Map.of(ENEMY_TYPE4, 1, ENEMY_TYPE5, 2,  ENEMY_TYPE6,1,ENEMY_TYPE7, 6));
+        enemyConfig.put(44, Map.of(ENEMY_TYPE4, 1, ENEMY_TYPE5, 2,  ENEMY_TYPE6,1,ENEMY_TYPE7, 6));
         enemyConfig.put(100,Map.of(ENEMY_TYPE1,125));
         enemyConfig.put(101,Map.of(ENEMY_TYPE2, 125));
         enemyConfig.put(102, Map.of(ENEMY_TYPE3,200));
         enemyConfig.put(103, Map.of(ENEMY_TYPE4,200));
         enemyConfig.put(104,Map.of(ENEMY_TYPE6,100));
         enemyConfig.put(105,Map.of(ENEMY_TYPE5,100));
+        enemyConfig.put(108,Map.of(ENEMY_TYPE_FAST,100));
         // ... thêm các level tiếp theo...
 
         enemyConfig.put(108, Map.of(ENEMY_TYPE1, 20000));

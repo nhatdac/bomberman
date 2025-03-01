@@ -100,6 +100,26 @@ public class Brick extends MyActor{
                     Master.item = new Item(getX(), getY(), ItemType.FLAME_PASS, getStage());
                 }else if(GameState.level == 37){
                     Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
+                }else if(GameState.level == 38){
+                    Master.item = new Item(getX(), getY(), ItemType.BOMB_POWER, getStage());
+
+                } else if(GameState.level == 39){
+                    Master.item = new Item(getX(), getY(), ItemType.WALLPASS, getStage());
+
+                } else if(GameState.level == 40){
+                    Master.item = new Item(getX(), getY(), ItemType.MYSTERY, getStage());
+
+                } else if(GameState.level == 41){
+                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
+
+                } else if(GameState.level == 42){
+                    Master.item = new Item(getX(), getY(), ItemType.WALLPASS, getStage());
+
+                } else if(GameState.level == 43){
+                    Master.item = new Item(getX(), getY(), ItemType.BOMB_PASS, getStage());
+
+                } else if(GameState.level == 44){
+                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
                 }
 
             } else if(hasDoor){
