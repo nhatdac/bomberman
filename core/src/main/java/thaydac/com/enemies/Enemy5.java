@@ -7,7 +7,6 @@ import thaydac.com.*;
 
 // Balloon
 public class Enemy5 extends EnemyActor {
-
     public Enemy5(float x, float y, Stage s) {
         super(x, y, s);
         Texture texture = new Texture("enemy5.png");

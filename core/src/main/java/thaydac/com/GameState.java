@@ -22,6 +22,8 @@ public class GameState {
         left = 3;
         level = 1;
         score = 0;
+        bombPower = 1;
+        bombNumber = 1;
         decorator = false;
         bombPass = false;
         mystery = false;

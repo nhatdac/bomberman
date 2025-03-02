@@ -8,7 +8,7 @@ public enum EnemySpeed {
     SLOWEST(0.5f),
     SLOW(1f),
     NORMAL(2),
-    FAST(4);
+    FAST(4f);
 
     private final float value;
     public static float ran(float s){
