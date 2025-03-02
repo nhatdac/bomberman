@@ -542,7 +542,71 @@ public class Master implements Screen {
                                         Enemy5 enemy2 = new Enemy5(door.getX(),door.getY(),stage);
                                         enemies.add(enemy2);
                                     }
+                                }case 38 ->{
+                                    for(int i = 0;i<3;i++){
+                                        Enemy7 enemy = new Enemy7(door.getX(),door.getY(),stage);
+                                        enemies.add(enemy);
+                                    }
+                                }case 39 ->{
+                                for(int i = 0;i<3;i++){
+                                    Enemy7 enemy = new Enemy7(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy);
                                 }
+                                }case 40 ->{
+                                for(int i = 0;i<3;i++){
+                                    Enemy7 enemy = new Enemy7(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy);
+                                }
+                                }case 41 ->{
+                                for(int i = 0;i<3;i++){
+                                    Enemy7 enemy = new Enemy7(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy);
+                                }
+                                }case 42 ->{
+                                for(int i = 0;i<3;i++){
+                                    Enemy7 enemy = new Enemy7(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy);
+                                }
+                                }case 43 ->{
+                                for(int i = 0;i<3;i++){
+                                    Enemy7 enemy = new Enemy7(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy);
+                                }
+                                }case 44 ->{
+                                for(int i = 0;i<3;i++){
+                                    Enemy7 enemy = new Enemy7(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy);
+                                }
+                                }case 45 ->{
+                                for(int i = 0;i<3;i++){
+                                    Enemy7 enemy = new Enemy7(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy);
+                                }
+                                }case 46 ->{
+                                for(int i = 0;i<3;i++){
+                                    Enemy7 enemy = new Enemy7(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy);
+                                }
+                                }case 47 ->{
+                                for(int i = 0;i<3;i++){
+                                    Enemy7 enemy = new Enemy7(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy);
+                                }
+                                }case 48 ->{
+                                for(int i = 0;i<3;i++){
+                                    Enemy7 enemy = new Enemy7(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy);
+                                }
+                                }case 49 ->{
+                                for(int i = 0;i<2;i++){
+                                    Enemy7 enemy = new Enemy7(door.getX(),door.getY(),stage);
+                                    enemies.add(enemy);
+                                }
+                                EnemyFast enemy = new EnemyFast(door.getX(),door.getY(),stage);
+                                enemies.add(enemy);
+                                }
+
+
                             }
                         }
                 for (MyActor enemy : enemies) {
@@ -652,11 +716,11 @@ public class Master implements Screen {
         }
         game.batch.end();
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(itemRec.getX(), itemRec.getY(), itemRec.width, itemRec.height);
-        shapeRenderer.rect(doorRec.getX(), doorRec.getY(), doorRec.width, doorRec.height);
-        shapeRenderer.end();
+        //shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        //shapeRenderer.setColor(Color.RED);
+        //shapeRenderer.rect(itemRec.getX(), itemRec.getY(), itemRec.width, itemRec.height);
+        //shapeRenderer.rect(doorRec.getX(), doorRec.getY(), doorRec.width, doorRec.height);
+        //shapeRenderer.end();
         if(GameState.level == 100 || GameState.level == 101)  {
             countDown = countDown - 1;
         }if(countDown == 0){
