@@ -163,7 +163,7 @@ public class Master implements Screen {
         || GameState.level == 103
         || GameState.level == 104
         || GameState.level == 105)) {
-            timing = 300;
+            timing = 3;
         }else {
             timing = 30;
         }
@@ -322,7 +322,7 @@ public class Master implements Screen {
 
                 if (Gdx.input.isKeyJustPressed(Input.Keys.B) && GameState.decorator) {
                     // kích nổ qủa đầu tiên
-                    if(!bombs.isEmpty()){bombs.get(0).isExploded = true;}g
+                    if(!bombs.isEmpty()){bombs.get(0).isExploded = true;}
                 }
 
                 for (Explosion explosion : explosions) {
@@ -563,7 +563,9 @@ public class Master implements Screen {
                     if(timing > 0) {
                         timing--;
                         if (timing == 0) {
-                            if(!bombs.isEmpty()){bombs.get(0).isExploded = true;}
+                            for(int i = 0;i < bombs.size;i++){
+                                bombs.get(i).isExploded = true;
+                            }
                             if(GameState.level == 102){
                                 GameState.level = 16;
                                 Utils.saveGame();
