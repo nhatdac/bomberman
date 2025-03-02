@@ -156,16 +156,7 @@ public class Master implements Screen {
     @Override
     public void show() {
         isFinished = false;
-        if (!(GameState.level == Level.A.getValue()
-            || GameState.level == Level.B.getValue()
-            || GameState.level == Level.C.getValue()
-            || GameState.level == Level.D.getValue()
-            || GameState.level == Level.E.getValue()
-            || GameState.level == Level.F.getValue()
-            || GameState.level == Level.G.getValue()
-            || GameState.level == Level.H.getValue()
-            || GameState.level == Level.I.getValue()
-            || GameState.level == Level.J.getValue())) {
+        if (!isBonusSatge()) {
             timing = 300;
         } else {
             timing = 30;
