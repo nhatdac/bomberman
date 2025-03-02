@@ -17,7 +17,7 @@ public class Utils {
     public static final String LEFT = "left";
     public static final String WALLPASS = "wallpass";
 
-    public static final int MAN_SPEED = 2;
+    public static int MAN_SPEED = 2;
 
     public static final int EMPTY_TYPE = 0;
     public static final int WALL_TYPE = 1;
@@ -70,7 +70,9 @@ public class Utils {
         Map<Integer, Map<Integer, Integer>> enemyConfig = new HashMap<>();
         enemyConfig.put(1, Map.of(ENEMY_TYPE1, 6)); // Level 1 có 6 enemy1, gọi là loại 3, bởi vì số 0, 1, 2 đã dùng cho ô trống, tường, gạch rồi.
         enemyConfig.put(2, Map.of(ENEMY_TYPE1, 3, ENEMY_TYPE2, 3)); // Level 2 có 3 enemy1 và 3 enemy2
-        enemyConfig.put(3, Map.of(ENEMY_TYPE1, 2, ENEMY_TYPE2, 2, ENEMY_TYPE3, 2)); // Level 2 có 3 enemy1 và 3 enemy2
+        enemyConfig.put(3, Map.of(ENEMY_TYPE1, 2, ENEMY_TYPE2, 2, ENEMY_TYPE3, 2));// Level 2 có 3 enemy1 và 3 enemy2
+        enemyConfig.put(4, Map.of(ENEMY_TYPE1, 1, ENEMY_TYPE2, 1, ENEMY_TYPE3, 2 ,ENEMY_TYPE4, 2));
+        enemyConfig.put(5, Map.of(ENEMY_TYPE2, 4, ENEMY_TYPE3, 3 ));
         enemyConfig.put(7, Map.of(ENEMY_TYPE2, 2, ENEMY_TYPE3, 3, ENEMY_TYPE5, 2));
         enemyConfig.put(9, Map.of(ENEMY_TYPE2, 1, ENEMY_TYPE3, 1, ENEMY_TYPE4, 4,ENEMY_TYPE5, 1)); // Level 2 có 3 enemy1 và 3 enemy2
         enemyConfig.put(10, Map.of(ENEMY_TYPE2,1,ENEMY_TYPE3,1,ENEMY_TYPE4,1,ENEMY_TYPE5,3,ENEMY_TYPE6,1));
