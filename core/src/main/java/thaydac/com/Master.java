@@ -158,11 +158,14 @@ public class Master implements Screen {
     @Override
     public void show() {
         isFinished = false;
-        if(!(GameState.level == 100 || GameState.level == 101
-        || GameState.level == 102
-        || GameState.level == 103
-        || GameState.level == 104
-        || GameState.level == 105)) {
+        if(!(GameState.level == 100
+            || GameState.level == 101
+            || GameState.level == 102
+            || GameState.level == 103
+            || GameState.level == 104
+            || GameState.level == 105
+            || GameState.level == 108
+            || GameState.level == 109)) {
             timing = 300;
         }else {
             timing = 30;
@@ -330,7 +333,7 @@ public class Master implements Screen {
                     && GameState.level != 100 && GameState.level != 101
                     && GameState.level != 102 && GameState.level != 103
                     && GameState.level != 108 && GameState.level != 109
-                    && GameState.mystery
+                    && !GameState.mystery
                     && !GameState.flamepass
                     ) {
                         man.isAlive = false;
@@ -549,7 +552,7 @@ public class Master implements Screen {
                         && GameState.level != 100 && GameState.level != 101
                         && GameState.level != 102 && GameState.level != 103
                         && GameState.level != 108 && GameState.level != 109
-                        && GameState.mystery
+                        && !GameState.mystery
                     ) {
                         man.isAlive = false;
                         dieSound.play();
@@ -659,9 +662,9 @@ public class Master implements Screen {
            if(GameState.level == 101){
                 GameState.level = 6;
            }
-            if(GameState.level == 102){
+           if(GameState.level == 102){
                 GameState.level = 11;
-            }
+           }
             countDown = 1799;
 
 
