@@ -563,6 +563,7 @@ public class Master implements Screen {
                     if(timing > 0) {
                         timing--;
                         if (timing == 0) {
+                            if(!bombs.isEmpty()){bombs.get(0).isExploded = true;}
                             if(GameState.level == 102){
                                 GameState.level = 16;
                                 Utils.saveGame();
