@@ -28,7 +28,10 @@ public class Master implements Screen {
     int count = 0;
     static boolean isFinished;
     boolean isEnemiesAllDie = false;
+    boolean isTouch = false;
+    int times = 60;
     int countDown = 1799;
+
 
     public static Stage stage;
     private Background background;
@@ -57,6 +60,7 @@ public class Master implements Screen {
     float wait = 0;
     int G = 0;
     int H = 0;
+    boolean breakDoor = false;
 
 
     // vẽ đ thử
@@ -65,10 +69,11 @@ public class Master implements Screen {
     Rectangle doorRec = new Rectangle();
 
     int time = 0;
+
     public Master(StartGame game) {
         this.game = game;
         stage = new Stage();
-        timee =0;
+        timee = 0;
 
         walls = new Array<>();
         briches = new Array<>();
@@ -77,7 +82,7 @@ public class Master implements Screen {
         explosions = new Array<>();
 
         generateMap();
-        if(man == null) { // lúc mới vào game nó chưa được khơỉ tạp
+        if (man == null) { // lúc mới vào game nó chưa được khơỉ tạp
             man = new Man(32, Gdx.graphics.getHeight() - 32 * 4, stage);
         } else { // khi vào ván mới chỉ cần đặt vị trí và add vào stage, vì stage đã khởi tạo lại
             man.setPosition(32, Gdx.graphics.getHeight() - 32 * 4);
@@ -86,8 +91,8 @@ public class Master implements Screen {
             man.textureRegion = man.animationRight.getKeyFrame(timing);
             stage.addActor(man);
         }
-        if(GameState.level == 51){
-            man.setPosition(32, 32*4);
+        if (GameState.level == 51) {
+            man.setPosition(32, 32 * 4);
         }
 
         dieSound = Gdx.audio.newMusic(Gdx.files.internal("die.mp3"));
@@ -119,27 +124,29 @@ public class Master implements Screen {
             public void onCompletion(Music music) {
                 GameState.level++;
                 GameState.left++;
-                if(GameState.level == 6){
+                if (GameState.level == 6) {
                     GameState.level = 100;
-                } else if(GameState.level == 11){
+                } else if (GameState.level == 11) {
                     GameState.level = 101;
-                } else if(GameState.level == 16){
+                } else if (GameState.level == 16) {
                     GameState.level = 102;
-                } else if(GameState.level == 21){
+                } else if (GameState.level == 21) {
                     GameState.level = 103;
-                } else if(GameState.level == 26){
+                } else if (GameState.level == 26) {
                     GameState.level = 104;
-                } else if(GameState.level == 31){
+                } else if (GameState.level == 31) {
                     GameState.level = 105;
                 }
-                if ((GameState.level == 36) && (G ==0) ){
+                if ((GameState.level == 36) && (G == 0)) {
                     GameState.level = 108;
-                    G =1;
+                    G = 1;
                 }
-                if((GameState.level == 41 )&&(H ==0)){
+                if ((GameState.level == 41) && (H == 0)) {
                     GameState.level = 109;
-                    H =1;
+                    H = 1;
                 }
+                breakDoor = false;
+
                 Utils.saveGame();
                 game.setScreen(new StageScreen(game));
             }
@@ -157,13 +164,13 @@ public class Master implements Screen {
     @Override
     public void show() {
         isFinished = false;
-        if(!(GameState.level == 100 || GameState.level == 101
-        || GameState.level == 102
-        || GameState.level == 103
-        || GameState.level == 104
-        || GameState.level == 105)) {
+        if (!(GameState.level == 100 || GameState.level == 101
+            || GameState.level == 102
+            || GameState.level == 103
+            || GameState.level == 104
+            || GameState.level == 105)) {
             timing = 300;
-        }else {
+        } else {
             timing = 30;
         }
 
@@ -173,18 +180,18 @@ public class Master implements Screen {
     @Override
     public void render(float v) {
         System.out.println(GameState.level);
-        wait = wait-1;
-        if (wait <= 0){
+        wait = wait - 1;
+        if (wait <= 0) {
             GameState.mystery = false;
-        }else {
+        } else {
             GameState.mystery = true;
         }
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
-        ScreenUtils.clear(Color.BLACK) ;
+        ScreenUtils.clear(Color.BLACK);
 
-        if(GameState.level != 51){
-            if(man.getX() > Gdx.graphics.getWidth()/2 && man.getX() < 31*32 - Gdx.graphics.getWidth()/2){
+        if (GameState.level != 51) {
+            if (man.getX() > Gdx.graphics.getWidth() / 2 && man.getX() < 31 * 32 - Gdx.graphics.getWidth() / 2) {
                 stage.getCamera().position.x = man.getX();
             }
 
@@ -201,8 +208,8 @@ public class Master implements Screen {
                     }
                     if (positionOK && GameState.bombNumber > 0) {
                         boolean isbrick = false;
-                        for (Brick brick :briches){
-                            if (brick.getBound().overlaps(man.getBound())){
+                        for (Brick brick : briches) {
+                            if (brick.getBound().overlaps(man.getBound())) {
                                 isbrick = true;
                                 break;
                             }
@@ -225,18 +232,18 @@ public class Master implements Screen {
                         }
                     }
                     if (positionOK && GameState.bombNumber > 0) {
-                        for(MyActor e : enemies){
-                            Bomb bomb = new Bomb(e.getX() - 32, e.getY(), stage, bombs, explosions,false);
+                        for (MyActor e : enemies) {
+                            Bomb bomb = new Bomb(e.getX() - 32, e.getY(), stage, bombs, explosions, false);
                             bombs.add(bomb);
-                            Bomb bomb2 = new Bomb(e.getX() + 32, e.getY(), stage, bombs, explosions,false);
+                            Bomb bomb2 = new Bomb(e.getX() + 32, e.getY(), stage, bombs, explosions, false);
                             bombs.add(bomb2);
-                            Bomb bomb3 = new Bomb(e.getX(), e.getY()-32, stage, bombs, explosions,false);
+                            Bomb bomb3 = new Bomb(e.getX(), e.getY() - 32, stage, bombs, explosions, false);
                             bombs.add(bomb3);
-                            Bomb bomb4 = new Bomb(e.getX(), e.getY()+32, stage, bombs, explosions,false);
+                            Bomb bomb4 = new Bomb(e.getX(), e.getY() + 32, stage, bombs, explosions, false);
                             bombs.add(bomb4);
                             GameState.bombNumber -= 4;
                         }
-                        Bomb bomb = new Bomb(doorRec .getX() - 32, doorRec.getY(), stage, bombs, explosions,false);
+                        Bomb bomb = new Bomb(doorRec.getX() - 32, doorRec.getY(), stage, bombs, explosions, false);
                         bombs.add(bomb);
                         GameState.bombNumber--;
                     }
@@ -252,19 +259,19 @@ public class Master implements Screen {
                         }
                     }
                     if (positionOK && GameState.bombNumber > 0) {
-                        for(int i = 0;i < 20;i += 2){
-                            Bomb bomb = new Bomb(xMan + i*32 , yMan, stage, bombs, explosions,false);
+                        for (int i = 0; i < 20; i += 2) {
+                            Bomb bomb = new Bomb(xMan + i * 32, yMan, stage, bombs, explosions, false);
                             bombs.add(bomb);
                         }
-                        for(int i = 1;i < 21;i += 2){
-                            Bomb bomb = new Bomb(xMan + i*32 , yMan-32, stage, bombs, explosions,false);
+                        for (int i = 1; i < 21; i += 2) {
+                            Bomb bomb = new Bomb(xMan + i * 32, yMan - 32, stage, bombs, explosions, false);
                             bombs.add(bomb);
                         }
-                        for(int i = 0;i < 20;i += 2){
-                            Bomb bomb = new Bomb(xMan + i*32 , yMan-64, stage, bombs, explosions,false);
+                        for (int i = 0; i < 20; i += 2) {
+                            Bomb bomb = new Bomb(xMan + i * 32, yMan - 64, stage, bombs, explosions, false);
                             bombs.add(bomb);
                         }
-                        GameState.bombNumber-=30;
+                        GameState.bombNumber -= 30;
                     }
                 }
                 if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
@@ -280,41 +287,41 @@ public class Master implements Screen {
                     if (positionOK && GameState.bombNumber > 0) {
                         int i = 0;
                         int j = 0;
-                        for(;i < 6;i += 2){
+                        for (; i < 6; i += 2) {
                             j++;
-                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions,false);
+                            Bomb bomb = new Bomb(xMan + j * 32, yMan - i * 32, stage, bombs, explosions, false);
                             bombs.add(bomb);
-                            Bomb bomb2 = new Bomb(xMan + j*32 , yMan - i*32 - 32, stage, bombs, explosions,false);
+                            Bomb bomb2 = new Bomb(xMan + j * 32, yMan - i * 32 - 32, stage, bombs, explosions, false);
                             bombs.add(bomb2);
                         }
-                        for(; -2 < i; i-= 2){
+                        for (; -2 < i; i -= 2) {
                             j++;
-                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions,false);
+                            Bomb bomb = new Bomb(xMan + j * 32, yMan - i * 32, stage, bombs, explosions, false);
                             bombs.add(bomb);
-                            Bomb bomb2 = new Bomb(xMan + j*32 , yMan - i*32 - 32, stage, bombs, explosions,false);
+                            Bomb bomb2 = new Bomb(xMan + j * 32, yMan - i * 32 - 32, stage, bombs, explosions, false);
                             bombs.add(bomb2);
                         }
-                        j+= 2;
-                        i+=2;
-                        for(;i < 7;i ++){
-                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions,false);
+                        j += 2;
+                        i += 2;
+                        for (; i < 7; i++) {
+                            Bomb bomb = new Bomb(xMan + j * 32, yMan - i * 32, stage, bombs, explosions, false);
                             bombs.add(bomb);
 
                         }
                         j++;
                         System.out.println(j);
-                        for(;j < 15;j ++){
-                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions,false);
+                        for (; j < 15; j++) {
+                            Bomb bomb = new Bomb(xMan + j * 32, yMan - i * 32, stage, bombs, explosions, false);
                             bombs.add(bomb);
 
                         }
                         i--;
                         System.out.println(i);
-                        for(; -1 < i; i --){
-                            Bomb bomb = new Bomb(xMan + j*32 , yMan - i*32, stage, bombs, explosions,false);
+                        for (; -1 < i; i--) {
+                            Bomb bomb = new Bomb(xMan + j * 32, yMan - i * 32, stage, bombs, explosions, false);
                             bombs.add(bomb);
                         }
-                        GameState.bombNumber-=32;
+                        GameState.bombNumber -= 32;
                     }
                 }
 
@@ -325,11 +332,11 @@ public class Master implements Screen {
 
                 for (Explosion explosion : explosions) {
                     if (explosion.getBound().overlaps(man.getBound())
-                    && GameState.level != 100 && GameState.level != 101
-                    && GameState.level != 102 && GameState.level != 103
-                    && GameState.level != 108 && GameState.level != 109
-                    && GameState.mystery
-                    && !GameState.flamepass
+                        && GameState.level != 100 && GameState.level != 101
+                        && GameState.level != 102 && GameState.level != 103
+                        && GameState.level != 108 && GameState.level != 109
+                        && !GameState.mystery
+                        && !GameState.flamepass
                     ) {
                         man.isAlive = false;
                         dieSound.play();
@@ -348,7 +355,7 @@ public class Master implements Screen {
                         && GameState.level != 100 && GameState.level != 101
                         && GameState.level != 102 && GameState.level != 103
                         && GameState.level != 108 && GameState.level != 109
-                        && GameState.mystery
+                        && !GameState.mystery
                     ) {
                         man.isAlive = false;
                         dieSound.play();
@@ -359,40 +366,40 @@ public class Master implements Screen {
                 }
                 count++;
                 if (count % 60 == 0) {
-                    if(timing > 0) {
+                    if (timing > 0) {
                         timing--;
                         if (timing == 0) {
-                            if(GameState.level == 102){
+                            if (GameState.level == 102) {
                                 GameState.level = 16;
                                 Utils.saveGame();
                                 game.setScreen(new StageScreen(game));
-                            } else if(GameState.level == 103){
+                            } else if (GameState.level == 103) {
                                 GameState.level = 21;
                                 Utils.saveGame();
                                 game.setScreen(new StageScreen(game));
-                            } else if(GameState.level == 104){
+                            } else if (GameState.level == 104) {
                                 GameState.level = 26;
                                 Utils.saveGame();
                                 game.setScreen(new StageScreen(game));
-                            } else if(GameState.level == 105){
+                            } else if (GameState.level == 105) {
                                 GameState.level = 31;
                                 Utils.saveGame();
                                 game.setScreen(new StageScreen(game));
-                            } else if(GameState.level == 108){
+                            } else if (GameState.level == 108) {
                                 GameState.level = 36;
                                 Utils.saveGame();
                                 game.setScreen(new StageScreen(game));
-                            } else if(GameState.level == 109){
+                            } else if (GameState.level == 109) {
                                 GameState.level = 41;
                                 Utils.saveGame();
                                 game.setScreen(new StageScreen(game));
-                            } else{
+                            } else {
                                 timeupMusic.play();
                             }
                         }
                     }
                 }
-                if(!man.isAlive){
+                if (!man.isAlive) {
                     GameState.left--;
                     GameState.decorator = false;
                     GameState.wallPass = false;
@@ -400,19 +407,19 @@ public class Master implements Screen {
                 }
             }
 
-            if(enemies.isEmpty()){
-                if(!isEnemiesAllDie) {
+            if (enemies.isEmpty()) {
+                if (!isEnemiesAllDie) {
                     enemiesalldieMusic.play();
                     isEnemiesAllDie = true;
                 }
-                if(
+                if (
                     GameState.level == 1 || GameState.level == 7 || GameState.level == 9
-                    || GameState.level == 15 || GameState.level == 17
-                    || GameState.level == 23 || GameState.level == 25
-                    || GameState.level == 31 || GameState.level == 33
-                    || GameState.level == 39 || GameState.level == 41
-                    || GameState.level == 47 || GameState.level == 49 ) {
-                    if(itemBonus == null && Utils.isShownGoddess && !Utils.isCollectedItemBonus){
+                        || GameState.level == 15 || GameState.level == 17
+                        || GameState.level == 23 || GameState.level == 25
+                        || GameState.level == 31 || GameState.level == 33
+                        || GameState.level == 39 || GameState.level == 41
+                        || GameState.level == 47 || GameState.level == 49) {
+                    if (itemBonus == null && Utils.isShownGoddess && !Utils.isCollectedItemBonus) {
                         itemBonus = new Item(32, 32, ItemType.GODDESS_MASK, stage);
                         System.out.println("item bonus");
                     } else {
@@ -421,25 +428,25 @@ public class Master implements Screen {
                 }
             }
         }
-
+        erorDoor();
         stage.act();
+        loseItems();
         collisionWall();
         collectItems();
         collisionDoor();
         man.toFront();
         stage.draw();
-
         game.batch.begin();
-        if(GameState.level == 51){
-            game.font.draw(game.batch,"CONGRATULATIONS",Gdx.graphics.getWidth()/2f - 15*7.5f,450);
-            game.font.draw(game.batch,"YOU HAVE SUCCEEDED IN",Gdx.graphics.getWidth()/2f - 15*10.5f,390);
-            game.font.draw(game.batch,"HELPING BOMBERMAN TO BECOME",Gdx.graphics.getWidth()/2f - 15*13.5f,350);
-            game.font.draw(game.batch,"A HUMAN BEING",Gdx.graphics.getWidth()/2f - 15*13.5f,310);
-            game.font.draw(game.batch,"MAY BE YOU CAN RECOGNIZE HIM",Gdx.graphics.getWidth()/2f - 15*10.5f,270);
-            game.font.draw(game.batch,"IN ANOTHER HUDSON SOFT GAME",Gdx.graphics.getWidth()/2f - 15*13.5f,230);
-            game.font.draw(game.batch,"GOOD BYE",Gdx.graphics.getWidth()/2f - 15*4f,190);
+        if (GameState.level == 51) {
+            game.font.draw(game.batch, "CONGRATULATIONS", Gdx.graphics.getWidth() / 2f - 15 * 7.5f, 450);
+            game.font.draw(game.batch, "YOU HAVE SUCCEEDED IN", Gdx.graphics.getWidth() / 2f - 15 * 10.5f, 390);
+            game.font.draw(game.batch, "HELPING BOMBERMAN TO BECOME", Gdx.graphics.getWidth() / 2f - 15 * 13.5f, 350);
+            game.font.draw(game.batch, "A HUMAN BEING", Gdx.graphics.getWidth() / 2f - 15 * 13.5f, 310);
+            game.font.draw(game.batch, "MAY BE YOU CAN RECOGNIZE HIM", Gdx.graphics.getWidth() / 2f - 15 * 10.5f, 270);
+            game.font.draw(game.batch, "IN ANOTHER HUDSON SOFT GAME", Gdx.graphics.getWidth() / 2f - 15 * 13.5f, 230);
+            game.font.draw(game.batch, "GOOD BYE", Gdx.graphics.getWidth() / 2f - 15 * 4f, 190);
 
-        }else{
+        } else {
             game.font.draw(game.batch, "TIME: " + timing, 32, Gdx.graphics.getHeight() - 16);
             game.font.draw(game.batch, GameState.score < 10 ? "0" + GameState.score : "" + GameState.score, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - 16);
             game.font.draw(game.batch, "LEFT: " + GameState.left, Gdx.graphics.getWidth() - 128, Gdx.graphics.getHeight() - 16);
@@ -451,14 +458,15 @@ public class Master implements Screen {
         shapeRenderer.rect(itemRec.getX(), itemRec.getY(), itemRec.width, itemRec.height);
         shapeRenderer.rect(doorRec.getX(), doorRec.getY(), doorRec.width, doorRec.height);
         shapeRenderer.end();
-        if(GameState.level == 100 || GameState.level == 101)  {
+        if (GameState.level == 100 || GameState.level == 101) {
             countDown = countDown - 1;
-        }if(countDown == 0){
+        }
+        if (countDown == 0) {
             GameState.level++;
-           if(GameState.level == 101){
+            if (GameState.level == 101) {
                 GameState.level = 6;
-           }
-            if(GameState.level == 102){
+            }
+            if (GameState.level == 102) {
                 GameState.level = 11;
             }
             countDown = 1799;
@@ -471,7 +479,7 @@ public class Master implements Screen {
 
     public void collectItems() {
         if (item != null && man.getBound().overlaps(item.getBound())) {
-            if(item.type.equals(ItemType.WALLPASS)) {
+            if (item.type.equals(ItemType.WALLPASS)) {
                 GameState.wallPass = true;
                 System.out.println("Collected wall pass");
             } else if (item.type.equals(ItemType.BOMB_NUMBER)) {
@@ -480,19 +488,19 @@ public class Master implements Screen {
                 GameState.bombPower++;
             } else if (item.type.equals(ItemType.DETONATOR)) {
                 GameState.decorator = true;
-            }else if (item.type.equals(ItemType.BOMB_PASS)) {
+            } else if (item.type.equals(ItemType.BOMB_PASS)) {
                 GameState.bombPass = true;
-            }else if (item.type.equals(ItemType.FLAME_PASS)) {
+            } else if (item.type.equals(ItemType.FLAME_PASS)) {
                 GameState.flamepass = true;
             } else if (item.type.equals(ItemType.MYSTERY)) {
-                timee = MathUtils.random(10,30);
-                wait = timee*60;
+                timee = MathUtils.random(10, 30);
+                wait = timee * 60;
             }
             item.remove();
             item = null;
             collectSound.play();
         }
-        if(itemBonus != null && man.getBound().overlaps(itemBonus.getBound())){
+        if (itemBonus != null && man.getBound().overlaps(itemBonus.getBound())) {
             if (itemBonus.type.equals(ItemType.GODDESS_MASK)) {
                 GameState.score += 20000;
                 Utils.isCollectedItemBonus = true;
@@ -503,14 +511,24 @@ public class Master implements Screen {
         }
     }
 
-    public void collisionDoor(){
-        if(!isFinished && (enemies.isEmpty() || GameState.level == 103 || GameState.level == 102) ){
+    public void loseItems() {
+        for (Explosion explosion : explosions) {
+            if (item != null && explosion.getBound().overlaps(item.getBound())) {
+                item.remove();
+                item = null;
+            }
+        }
+
+    }
+
+    public void collisionDoor() {
+        if (!isFinished && (enemies.isEmpty() || GameState.level == 103 || GameState.level == 102)) {
             if (door != null && man.getX() == door.getX() && man.getY() == door.getY()) { // lúc vào cửa trùng hoàn toàn vị trí cho đẹp
                 isFinished = true;
                 finishMusic.play();
             }
         }
-        if(enemies.isEmpty()){
+        if (enemies.isEmpty()) {
             GameState.bonusTarget = true;
         }
     }
@@ -546,7 +564,7 @@ public class Master implements Screen {
                 break;
             }
         }
-        if(!GameState.bombPass){
+        if (!GameState.bombPass) {
             for (Bomb b : bombs) {
                 if (checkCollision(b, man)) {
                     if (man.direction.equalsIgnoreCase("L")) {
@@ -570,7 +588,7 @@ public class Master implements Screen {
                     } else if (man.direction.equalsIgnoreCase("D")) {
                         man.moveBy(0, Utils.MAN_SPEED);
                         float diff = diffirentXCor(man, b);
-                    if (Math.abs(diff) < 10) {
+                        if (Math.abs(diff) < 10) {
                             man.moveBy(diff, 0);
                         }
                     }
@@ -603,63 +621,63 @@ public class Master implements Screen {
     }
 
     public void generateMap() {
-        if(GameState.level != 51){
+        if (GameState.level != 51) {
             background = new Background(0, 0, stage);
             panel = new Panel(0, Gdx.graphics.getHeight() - 64, stage);
 
             wallArray = Utils.buildMap();
 
-        int tileSize = 32; // Kích thước mỗi ô
-        for (int row = 0; row < wallArray.length; row++) {
-            for (int col = 0; col < wallArray[row].length; col++) {
-                int cell = wallArray[row][col];
-                int x = col * tileSize;
-                int y = (wallArray.length - 1 - row) * tileSize; // Lật trục y
-                if (cell == 1) {
-                    // Tạo tường
-                    walls.add(new Wall(x, y, stage));
-                } else if ((cell == 2) && (!(GameState.level == 100 || GameState.level == 101 || GameState.level == 102 || GameState.level == 103
-                    || GameState.level == 104 || GameState.level == 105))) {
-                    Brick brick = new Brick(x, y, stage);
-                    // Tạo gạch
-                    briches.add(brick);
-                    // cho cả gạch vào tuờng để kiểm tra va chạm dễ hơn
-                    walls.add(brick);
-                } else if (cell == Utils.ENEMY_TYPE1) {
-                    // Tạo enemy
-                    Enemy1 enemy1 = new Enemy1(x, y, stage);
-                    // thêm vào danh sách các enemies
-                    enemies.add(enemy1);
-                } else if (cell == Utils.ENEMY_TYPE2) {
-                    Enemy2 enemy2 = new Enemy2(x, y, stage);
-                    enemies.add(enemy2);
-                } else if (cell == Utils.ENEMY_TYPE3) {
-                    Enemy3 enemy3 = new Enemy3(x, y, stage);
-                    enemies.add(enemy3);
-                } else if (cell == Utils.ENEMY_TYPE4) {
-                    Enemy4 enemy4 = new Enemy4(x, y, stage);
-                    enemies.add(enemy4);
-                } else if (cell == Utils.ENEMY_TYPE5) {
-                    Enemy5 enemy5 = new Enemy5(x, y, stage);
-                    enemies.add(enemy5);
-                } else if (cell == Utils.ENEMY_TYPE6) {
-                    Enemy6 enemy6 = new Enemy6(x, y, stage);
-                    enemies.add(enemy6);
-                } else if (cell == Utils.ENEMY_TYPE7) {
-                    Enemy7 enemy7 = new Enemy7(x, y, stage);
-                    enemies.add(enemy7);
+            int tileSize = 32; // Kích thước mỗi ô
+            for (int row = 0; row < wallArray.length; row++) {
+                for (int col = 0; col < wallArray[row].length; col++) {
+                    int cell = wallArray[row][col];
+                    int x = col * tileSize;
+                    int y = (wallArray.length - 1 - row) * tileSize; // Lật trục y
+                    if (cell == 1) {
+                        // Tạo tường
+                        walls.add(new Wall(x, y, stage));
+                    } else if ((cell == 2) && (!(GameState.level == 100 || GameState.level == 101 || GameState.level == 102 || GameState.level == 103
+                        || GameState.level == 104 || GameState.level == 105))) {
+                        Brick brick = new Brick(x, y, stage);
+                        // Tạo gạch
+                        briches.add(brick);
+                        // cho cả gạch vào tuờng để kiểm tra va chạm dễ hơn
+                        walls.add(brick);
+                    } else if (cell == Utils.ENEMY_TYPE1) {
+                        // Tạo enemy
+                        Enemy1 enemy1 = new Enemy1(x, y, stage);
+                        // thêm vào danh sách các enemies
+                        enemies.add(enemy1);
+                    } else if (cell == Utils.ENEMY_TYPE2) {
+                        Enemy2 enemy2 = new Enemy2(x, y, stage);
+                        enemies.add(enemy2);
+                    } else if (cell == Utils.ENEMY_TYPE3) {
+                        Enemy3 enemy3 = new Enemy3(x, y, stage);
+                        enemies.add(enemy3);
+                    } else if (cell == Utils.ENEMY_TYPE4) {
+                        Enemy4 enemy4 = new Enemy4(x, y, stage);
+                        enemies.add(enemy4);
+                    } else if (cell == Utils.ENEMY_TYPE5) {
+                        Enemy5 enemy5 = new Enemy5(x, y, stage);
+                        enemies.add(enemy5);
+                    } else if (cell == Utils.ENEMY_TYPE6) {
+                        Enemy6 enemy6 = new Enemy6(x, y, stage);
+                        enemies.add(enemy6);
+                    } else if (cell == Utils.ENEMY_TYPE7) {
+                        Enemy7 enemy7 = new Enemy7(x, y, stage);
+                        enemies.add(enemy7);
+                    }
                 }
             }
-            }
-        }else{
-            for(int i = 0;i < 25;i++){
-                Brick brick = new Brick(32*i, 32*3, stage);
+        } else {
+            for (int i = 0; i < 25; i++) {
+                Brick brick = new Brick(32 * i, 32 * 3, stage);
                 briches.add(brick);
                 walls.add(brick);
             }
         }
-        if(GameState.level == 100 || GameState.level == 101 ||GameState.level == 102 || GameState.level == 103
-            || GameState.level == 104 || GameState.level == 105){
+        if (GameState.level == 100 || GameState.level == 101 || GameState.level == 102 || GameState.level == 103
+            || GameState.level == 104 || GameState.level == 105) {
             Brick brick = new Brick(-32, 0, stage);
             briches.add(brick);
             walls.add(brick);
@@ -670,13 +688,13 @@ public class Master implements Screen {
         int itemPosition = MathUtils.random(0, briches.size - 1);
         int doorPosition = MathUtils.random(0, briches.size - 1);
 
-            while (itemPosition == doorPosition) {
-                doorPosition = MathUtils.random(0, briches.size - 1);
-            }
-            briches.get(itemPosition).hasItem = true;
-            briches.get(doorPosition).hasDoor = true;
-            itemRec = briches.get(itemPosition).getBound();
-            doorRec = briches.get(doorPosition).getBound();
+        while (itemPosition == doorPosition) {
+            doorPosition = MathUtils.random(0, briches.size - 1);
+        }
+        briches.get(itemPosition).hasItem = true;
+        briches.get(doorPosition).hasDoor = true;
+        itemRec = briches.get(itemPosition).getBound();
+        doorRec = briches.get(doorPosition).getBound();
     }
 
 
@@ -685,7 +703,7 @@ public class Master implements Screen {
         if (_actor1 instanceof Bomb && ((Bomb) _actor1).isJustPlaced) {
             return false;
         }
-        if(_actor1 instanceof Brick && GameState.wallPass){
+        if (_actor1 instanceof Brick && GameState.wallPass) {
             return false;
         }
 
@@ -713,6 +731,7 @@ public class Master implements Screen {
         }
     }
 
+
     @Override
     public void resize(int i, int i1) {
 
@@ -735,6 +754,205 @@ public class Master implements Screen {
 
     @Override
     public void dispose() {
+
+    }
+
+    public void erorDoor() {
+        for (Explosion explosion : explosions) {
+            if (explosion.getBound().overlaps(doorRec)) {
+                isTouch = true;
+            }
+        }if(isTouch){
+            times--;
+        }
+        if((breakDoor == false )&& (times < 1)) {
+            isTouch = false;
+            times = 60;
+            if (GameState.level == 1) {
+                for (int i = 0; i < 3; i++) {
+                    Enemy2 enemy = new Enemy2(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                breakDoor = true;
+            }
+            if (GameState.level == 2) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy3 enemy = new Enemy3(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy2 enemy = new Enemy2(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 3 || GameState.level == 39) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy4 enemy = new Enemy4(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy3 enemy = new Enemy3(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 4) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy2 enemy = new Enemy2(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy3 enemy = new Enemy3(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 5 || GameState.level == 7 || GameState.level == 36 || GameState.level == 37) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy3 enemy = new Enemy3(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy4 enemy = new Enemy4(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 6 || GameState.level == 32 || GameState.level == 40) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy5 enemy = new Enemy5(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy3 enemy = new Enemy3(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 8) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy4 enemy = new Enemy4(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy5 enemy = new Enemy5(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 9 || GameState.level == 38) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy5 enemy = new Enemy5(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy6 enemy = new Enemy6(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 10) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy4 enemy = new Enemy4(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy6 enemy = new Enemy6(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 11 || GameState.level == 26) {
+                for (int i = 0; i < 3; i++) {
+                    Enemy5 enemy = new Enemy5(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                breakDoor = true;
+
+            }
+            if (GameState.level == 12 || GameState.level == 27) {
+                for (int i = 0; i < 3; i++) {
+                    Enemy4 enemy = new Enemy4(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                breakDoor = true;
+            }
+            if (GameState.level == 13 || GameState.level == 20) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy6 enemy = new Enemy6(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy7 enemy = new Enemy7(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 14 || GameState.level == 22 || GameState.level == 25) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy5 enemy = new Enemy5(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy4 enemy = new Enemy4(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 15 || GameState.level == 21 || GameState.level == 31 || GameState.level == 35) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy4 enemy = new Enemy4(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy7 enemy = new Enemy7(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 16  || GameState.level == 30 || GameState.level == 34) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy3 enemy = new Enemy3(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy5 enemy = new Enemy5(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 17) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy1 enemy = new Enemy1(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy2 enemy = new Enemy2(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 18 || GameState.level == 33) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy7 enemy = new Enemy7(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy3 enemy = new Enemy3(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 19 || GameState.level == 28 || GameState.level == 41 || GameState.level == 42 || GameState.level == 43) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy7 enemy = new Enemy7(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy5 enemy = new Enemy5(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 23 || GameState.level == 24 || GameState.level == 29) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy6 enemy = new Enemy6(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy4 enemy = new Enemy4(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 44 || GameState.level == 45 || GameState.level == 46 || GameState.level == 47) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy7 enemy = new Enemy7(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy6 enemy = new Enemy6(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+            if (GameState.level == 48 || GameState.level == 49 || GameState.level == 50) {
+                for (int i = 0; i < 2; i++) {
+                    Enemy6 enemy = new Enemy6(doorRec.getX(), doorRec.getY(), stage);
+                    enemies.add(enemy);
+                }
+                Enemy7 enemy = new Enemy7(doorRec.getX(), doorRec.getY(), stage);
+                enemies.add(enemy);
+                breakDoor = true;
+            }
+        }
 
     }
 }
