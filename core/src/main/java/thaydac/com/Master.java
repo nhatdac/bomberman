@@ -132,12 +132,10 @@ public class Master implements Screen {
                     GameState.level = 104;
                 } else if(GameState.level == 31){
                     GameState.level = 105;
-                }
-                if ((GameState.level == 36) && (G ==0) ){
+                }else if ((GameState.level == 36) && (G ==0) ){
                     GameState.level = 108;
                     G =1;
-                }
-                if((GameState.level == 41 )&&(H ==0)){
+                }else if((GameState.level == 41 )&&(H ==0)){
                     GameState.level = 109;
                     H =1;
                 }
@@ -158,12 +156,15 @@ public class Master implements Screen {
     @Override
     public void show() {
         isFinished = false;
-        if(!(GameState.level == 100 || GameState.level == 101
-        || GameState.level == 102
-        || GameState.level == 103
-        || GameState.level == 104
-        || GameState.level == 105)) {
-            timing = 3;
+        if(!(GameState.level == 100
+            || GameState.level == 101
+            || GameState.level == 102
+            || GameState.level == 103
+            || GameState.level == 104
+            || GameState.level == 105
+            || GameState.level == 108
+            || GameState.level == 109)) {
+            timing = 300;
         }else {
             timing = 30;
         }
@@ -330,7 +331,7 @@ public class Master implements Screen {
                     && GameState.level != 100 && GameState.level != 101
                     && GameState.level != 102 && GameState.level != 103
                     && GameState.level != 108 && GameState.level != 109
-                    && GameState.mystery
+                    && !GameState.mystery
                     && !GameState.flamepass
                     ) {
                         man.isAlive = false;
@@ -549,11 +550,12 @@ public class Master implements Screen {
                         && GameState.level != 100 && GameState.level != 101
                         && GameState.level != 102 && GameState.level != 103
                         && GameState.level != 108 && GameState.level != 109
-                        && GameState.mystery
+                        && !GameState.mystery
                     ) {
                         man.isAlive = false;
                         dieSound.play();
                         GameState.wallPass = false;
+                        Utils.MAN_SPEED = 2;
                         Utils.saveGame();
                         break;
                     }
@@ -662,9 +664,9 @@ public class Master implements Screen {
            if(GameState.level == 101){
                 GameState.level = 6;
            }
-            if(GameState.level == 102){
+           if(GameState.level == 102){
                 GameState.level = 11;
-            }
+           }
             countDown = 1799;
 
 
@@ -686,6 +688,8 @@ public class Master implements Screen {
                 GameState.decorator = true;
             }else if (item.type.equals(ItemType.BOMB_PASS)) {
                 GameState.bombPass = true;
+            }else if (item.type.equals(ItemType.SPEED)) {
+                Utils.MAN_SPEED = 4;
             }else if (item.type.equals(ItemType.FLAME_PASS)) {
                 GameState.flamepass = true;
             } else if (item.type.equals(ItemType.MYSTERY)) {
@@ -823,7 +827,8 @@ public class Master implements Screen {
                     // Tạo tường
                     walls.add(new Wall(x, y, stage));
                 } else if ((cell == 2) && (!(GameState.level == 100 || GameState.level == 101 || GameState.level == 102 || GameState.level == 103
-                    || GameState.level == 104 || GameState.level == 105))) {
+                    || GameState.level == 104 || GameState.level == 105 || GameState.level == 106 || GameState.level == 108
+                ))) {
                     Brick brick = new Brick(x, y, stage);
                     // Tạo gạch
                     briches.add(brick);
@@ -852,6 +857,9 @@ public class Master implements Screen {
                 } else if (cell == Utils.ENEMY_TYPE7) {
                     Enemy7 enemy7 = new Enemy7(x, y, stage);
                     enemies.add(enemy7);
+                }else if (cell == Utils.ENEMY_TYPE_FAST) {
+                    EnemyFast enemyFast = new EnemyFast(x, y, stage);
+                    enemies.add(enemyFast);
                 }
             }
             }
@@ -863,7 +871,7 @@ public class Master implements Screen {
             }
         }
         if(GameState.level == 100 || GameState.level == 101 ||GameState.level == 102 || GameState.level == 103
-            || GameState.level == 104 || GameState.level == 105){
+            || GameState.level == 104 || GameState.level == 105 || GameState.level == 108 || GameState.level == 109){
             Brick brick = new Brick(-32, 0, stage);
             briches.add(brick);
             walls.add(brick);
