@@ -823,7 +823,11 @@ public class Master implements Screen {
                     // Tạo tường
                     walls.add(new Wall(x, y, stage));
                 } else if ((cell == 2) && (!(GameState.level == 100 || GameState.level == 101 || GameState.level == 102 || GameState.level == 103
-                    || GameState.level == 104 || GameState.level == 105))) {
+                    || GameState.level == 104 || GameState.level == 105 || GameState.level == 106 || GameState.level == 108
+
+
+
+                ))) {
                     Brick brick = new Brick(x, y, stage);
                     // Tạo gạch
                     briches.add(brick);
@@ -852,6 +856,9 @@ public class Master implements Screen {
                 } else if (cell == Utils.ENEMY_TYPE7) {
                     Enemy7 enemy7 = new Enemy7(x, y, stage);
                     enemies.add(enemy7);
+                }else if (cell == Utils.ENEMY_TYPE_FAST) {
+                    EnemyFast enemyFast = new EnemyFast(x, y, stage);
+                    enemies.add(enemyFast);
                 }
             }
             }
@@ -871,7 +878,7 @@ public class Master implements Screen {
             briches.add(brick2);
             walls.add(brick2);
         }
-        int itemPosition = MathUtils.random(0, briches.size - 1 );
+        int itemPosition = MathUtils.random(0, briches.size - 1);
         int doorPosition = MathUtils.random(0, briches.size - 1);
 
             while (itemPosition == doorPosition) {
