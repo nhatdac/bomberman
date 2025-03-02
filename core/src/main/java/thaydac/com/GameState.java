@@ -1,10 +1,10 @@
 package thaydac.com;
 
 public class GameState {
-    public static int level = 6;
+    public static int level = 1;
     public static int score = 0;
-    public static int bombNumber = 10;
-    public static int bombPower = 10;
+    public static int bombNumber = 1;
+    public static int bombPower = 1;
     public static int left = 3;
     public static boolean enemyInDoor = true;
     public static boolean decorator = false;

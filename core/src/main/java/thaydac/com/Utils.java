@@ -17,7 +17,7 @@ public class Utils {
     public static final String LEFT = "left";
     public static final String WALLPASS = "wallpass";
 
-    public static final int MAN_SPEED = 2;
+    public static int MAN_SPEED = 2;
 
     public static final int EMPTY_TYPE = 0;
     public static final int WALL_TYPE = 1;
@@ -70,7 +70,9 @@ public class Utils {
         Map<Integer, Map<Integer, Integer>> enemyConfig = new HashMap<>();
         enemyConfig.put(1, Map.of(ENEMY_TYPE1, 6)); // Level 1 có 6 enemy1, gọi là loại 3, bởi vì số 0, 1, 2 đã dùng cho ô trống, tường, gạch rồi.
         enemyConfig.put(2, Map.of(ENEMY_TYPE1, 3, ENEMY_TYPE2, 3)); // Level 2 có 3 enemy1 và 3 enemy2
-        enemyConfig.put(3, Map.of(ENEMY_TYPE1, 2, ENEMY_TYPE2, 2, ENEMY_TYPE3, 2)); // Level 2 có 3 enemy1 và 3 enemy2
+        enemyConfig.put(3, Map.of(ENEMY_TYPE1, 2, ENEMY_TYPE2, 2, ENEMY_TYPE3, 2));// Level 2 có 3 enemy1 và 3 enemy2
+        enemyConfig.put(4, Map.of(ENEMY_TYPE1, 1, ENEMY_TYPE2, 1, ENEMY_TYPE3, 2 ,ENEMY_TYPE4, 2));
+        enemyConfig.put(5, Map.of(ENEMY_TYPE2, 4, ENEMY_TYPE3, 3 ));
         enemyConfig.put(6, Map.of(ENEMY_TYPE2, 2, ENEMY_TYPE3, 3, ENEMY_TYPE4,2 )); // Level 2 có 3 enemy1 và 3 enemy2
         enemyConfig.put(7, Map.of(ENEMY_TYPE2, 2, ENEMY_TYPE3, 3, ENEMY_TYPE5, 2));
         enemyConfig.put(8, Map.of(ENEMY_TYPE2, 1, ENEMY_TYPE3, 2,ENEMY_TYPE4,4)); // Level 2 có 3 enemy1 và 3 enemy2
@@ -110,24 +112,12 @@ public class Utils {
         enemyConfig.put(42, Map.of(ENEMY_TYPE4, 1, ENEMY_TYPE5, 3,  ENEMY_TYPE6,1,ENEMY_TYPE7, 5));
         enemyConfig.put(43, Map.of(ENEMY_TYPE4, 1, ENEMY_TYPE5, 2,  ENEMY_TYPE6,1,ENEMY_TYPE7, 6));
         enemyConfig.put(44, Map.of(ENEMY_TYPE4, 1, ENEMY_TYPE5, 2,  ENEMY_TYPE6,1,ENEMY_TYPE7, 6));
-        enemyConfig.put(100,Map.of(ENEMY_TYPE1,125));
-        enemyConfig.put(101,Map.of(ENEMY_TYPE2, 125));
-        enemyConfig.put(102, Map.of(ENEMY_TYPE3,200));
-        enemyConfig.put(103, Map.of(ENEMY_TYPE4,200));
-        enemyConfig.put(104,Map.of(ENEMY_TYPE6,100));
-        enemyConfig.put(105,Map.of(ENEMY_TYPE5,100));
         enemyConfig.put(45, Map.of(ENEMY_TYPE5, 2, ENEMY_TYPE6, 2, ENEMY_TYPE7, 6));
         enemyConfig.put(46, Map.of(ENEMY_TYPE5, 2, ENEMY_TYPE6, 2, ENEMY_TYPE7, 6));
         enemyConfig.put(47, Map.of(ENEMY_TYPE5, 2, ENEMY_TYPE6, 2, ENEMY_TYPE7, 6));
         enemyConfig.put(48, Map.of(ENEMY_TYPE5, 2, ENEMY_TYPE6, 1, ENEMY_TYPE7, 6,ENEMY_TYPE_FAST, 1));
         enemyConfig.put(49, Map.of(ENEMY_TYPE5, 1, ENEMY_TYPE6, 2, ENEMY_TYPE7, 6,ENEMY_TYPE_FAST, 1));
         enemyConfig.put(50, Map.of(ENEMY_TYPE5, 1, ENEMY_TYPE6, 2, ENEMY_TYPE7, 5,ENEMY_TYPE_FAST, 2));
-
-
-
-
-
-
 
         enemyConfig.put(100,Map.of(ENEMY_TYPE1,500));
         enemyConfig.put(101,Map.of(ENEMY_TYPE2, 500));
@@ -137,8 +127,8 @@ public class Utils {
         enemyConfig.put(105,Map.of(ENEMY_TYPE5,500));
         // ... thêm các level tiếp theo...
 
-        enemyConfig.put(108, Map.of(ENEMY_TYPE_FAST, 2000));
-        enemyConfig.put(109, Map.of(ENEMY_TYPE_FAST, 2000));
+        enemyConfig.put(108, Map.of(ENEMY_TYPE_FAST, 500));
+        enemyConfig.put(109, Map.of(ENEMY_TYPE_FAST, 500));
         List<int[]> emptyPositions = new ArrayList<>();
 
         // Tìm tất cả vị trí trống

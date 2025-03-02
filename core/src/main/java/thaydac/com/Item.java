@@ -37,7 +37,9 @@ public class Item extends MyActor{
             tRegion.setRegion(16 * 6, 0, 16, 16);
         }else if(this.type.equals(ItemType.MYSTERY)){
             tRegion.setRegion(16 * 7, 0, 16, 16);
-        }
+        }else if(this.type.equals(ItemType.SPEED)){
+            tRegion.setRegion(16 * 2, 0, 16, 16);
+    }
 
         textureRegion = tRegion;
         setSize(32, 32);

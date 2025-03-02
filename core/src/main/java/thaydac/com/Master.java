@@ -557,6 +557,7 @@ public class Master implements Screen {
                         man.isAlive = false;
                         dieSound.play();
                         GameState.wallPass = false;
+                        Utils.MAN_SPEED = 2;
                         Utils.saveGame();
                         break;
                     }
@@ -686,6 +687,8 @@ public class Master implements Screen {
                 GameState.decorator = true;
             }else if (item.type.equals(ItemType.BOMB_PASS)) {
                 GameState.bombPass = true;
+            }else if (item.type.equals(ItemType.SPEED)) {
+                Utils.MAN_SPEED = 4;
             }else if (item.type.equals(ItemType.FLAME_PASS)) {
                 GameState.flamepass = true;
             } else if (item.type.equals(ItemType.MYSTERY)) {
