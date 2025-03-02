@@ -11,9 +11,6 @@ public enum EnemySpeed {
     FAST(4f);
 
     private final float value;
-    public static float ran(float s){
-        return MathUtils.random(-1, 1) * s;
-    }
 
     EnemySpeed(float value){
         this.value = value;

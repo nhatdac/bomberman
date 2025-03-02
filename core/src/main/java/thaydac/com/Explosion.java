@@ -26,7 +26,6 @@ public class Explosion extends MyActor {
         textureRegion = animation.getKeyFrame(time);
 
         if (animation.isAnimationFinished(time)) {
-            System.out.println("Ex : " + getBound());
             remove(); // Xóa hiệu ứng nổ khi kết thúc
             explosions.removeValue(this, true);
         }

@@ -23,21 +23,27 @@ public class StageScreen implements Screen {
             Utils.saveGame();
         }
         GameState.enemyInDoor = true;
-        if ((GameState.level == 100) || (GameState.level == 101)) {
-            layout.setText(game.font, "SURPRISE");
-        } else if(GameState.level == 103){
-            layout.setText(game.font,"STAGE D");
-        } else if(GameState.level == 102){
+        if ((GameState.level == Level.A.getValue())) {
+            layout.setText(game.font, "STAGE A");
+        } else if(GameState.level == Level.B.getValue()){
+            layout.setText(game.font,"STAGE B");
+        } else if(GameState.level == Level.C.getValue()){
             layout.setText(game.font,"STAGE C");
-        } else if(GameState.level == 104){
+        } else if(GameState.level == Level.D.getValue()){
+            layout.setText(game.font,"STAGE D");
+        } else if(GameState.level == Level.E.getValue()){
             layout.setText(game.font,"STAGE E");
-        } else if(GameState.level == 105){
+        } else if(GameState.level == Level.F.getValue()){
             layout.setText(game.font,"STAGE F");
-        } else if(GameState.level == 108){
+        } else if(GameState.level == Level.G.getValue()){
             layout.setText(game.font,"STAGE G");
-        } else if(GameState.level == 109){
+        } else if(GameState.level == Level.H.getValue()){
             layout.setText(game.font,"STAGE H");
-        } else if (GameState.level == 51){
+        } else if(GameState.level == Level.I.getValue()){
+            layout.setText(game.font,"STAGE I");
+        } else if(GameState.level == Level.J.getValue()){
+            layout.setText(game.font,"STAGE J");
+        } else if (GameState.level == Level.WIN.getValue()){
 
         } else{
             layout.setText(game.font,"STAGE " + GameState.level);

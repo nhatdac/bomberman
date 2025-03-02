@@ -2,8 +2,6 @@ package thaydac.com;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
-import thaydac.com.enemies.EnemyActor;
 
 import java.util.*;
 
@@ -19,8 +17,6 @@ public class Utils {
 
     public static int MAN_SPEED = 2;
 
-    public static final int EMPTY_TYPE = 0;
-    public static final int WALL_TYPE = 1;
     public static final int BRICK_TYPE = 2;
 
     public static final int ENEMY_TYPE1 = 3;
@@ -33,7 +29,6 @@ public class Utils {
     public static final int ENEMY_TYPE_FAST = 10;
 
     public static boolean isShownGoddess = false;
-    public static boolean isShownBonusTarget = false;
     public static boolean isCollectedItemBonus = false;
 
     private static List<Vector2> boundaryPositions = new ArrayList<>();
@@ -119,16 +114,16 @@ public class Utils {
         enemyConfig.put(49, Map.of(ENEMY_TYPE5, 1, ENEMY_TYPE6, 2, ENEMY_TYPE7, 6,ENEMY_TYPE_FAST, 1));
         enemyConfig.put(50, Map.of(ENEMY_TYPE5, 1, ENEMY_TYPE6, 2, ENEMY_TYPE7, 5,ENEMY_TYPE_FAST, 2));
 
-        enemyConfig.put(100,Map.of(ENEMY_TYPE1,500));
-        enemyConfig.put(101,Map.of(ENEMY_TYPE2, 500));
-        enemyConfig.put(102, Map.of(ENEMY_TYPE3,500));
-        enemyConfig.put(103, Map.of(ENEMY_TYPE4,500));
-        enemyConfig.put(104,Map.of(ENEMY_TYPE6,500));
-        enemyConfig.put(105,Map.of(ENEMY_TYPE5,500));
-        // ... thêm các level tiếp theo...
-
-        enemyConfig.put(108, Map.of(ENEMY_TYPE_FAST, 500));
-        enemyConfig.put(109, Map.of(ENEMY_TYPE_FAST, 500));
+        enemyConfig.put(Level.A.getValue(),Map.of(ENEMY_TYPE1,500));
+        enemyConfig.put(Level.B.getValue(),Map.of(ENEMY_TYPE2, 500));
+        enemyConfig.put(Level.C.getValue(), Map.of(ENEMY_TYPE3,500));
+        enemyConfig.put(Level.D.getValue(), Map.of(ENEMY_TYPE4,500));
+        enemyConfig.put(Level.E.getValue(),Map.of(ENEMY_TYPE6,500));
+        enemyConfig.put(Level.F.getValue(),Map.of(ENEMY_TYPE5,500));
+        enemyConfig.put(Level.G.getValue(),Map.of(ENEMY_TYPE6,500));
+        enemyConfig.put(Level.H.getValue(),Map.of(ENEMY_TYPE5,500));
+        enemyConfig.put(Level.I.getValue(), Map.of(ENEMY_TYPE_FAST, 500));
+        enemyConfig.put(Level.J.getValue(), Map.of(ENEMY_TYPE_FAST, 500));
         List<int[]> emptyPositions = new ArrayList<>();
 
         // Tìm tất cả vị trí trống

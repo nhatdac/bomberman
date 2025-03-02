@@ -84,7 +84,7 @@ public class Man extends MyActor {
     public void act(float delta) {
         super.act(delta);
         if(!Master.isFinished) {
-            if (isAlive && GameState.level != 51) {
+            if (isAlive && GameState.level != Level.WIN.getValue()) {
                 if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                     direction = "L";
                     moveBy(-Utils.MAN_SPEED, 0);
