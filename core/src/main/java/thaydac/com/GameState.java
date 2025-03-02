@@ -6,6 +6,7 @@ public class GameState {
     public static int bombNumber = 10000;
     public static int bombPower = 15;
     public static int left = 3;
+    public static boolean enemyInDoor = true;
     public static boolean decorator = false;
     public static boolean goddessMask = false;
     public static boolean bonusTarget = false;

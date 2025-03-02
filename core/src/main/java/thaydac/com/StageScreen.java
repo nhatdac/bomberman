@@ -22,6 +22,7 @@ public class StageScreen implements Screen {
             GameState.reset();
             Utils.saveGame();
         }
+        GameState.enemyInDoor = true;
         if ((GameState.level == 100) || (GameState.level == 101)) {
             layout.setText(game.font, "SURPRISE");
         } else if(GameState.level == 103){
