@@ -14,7 +14,6 @@ public class Enemy7 extends EnemyActor{
         setAnimation(texture, 11, 1, 0.3f);
         type = Utils.ENEMY_TYPE7;
         smart = EnemySmart.HIGH;
-        brickPass = true;
         speed = EnemySpeed.FAST;
         speedX = speed.getValue();
     }

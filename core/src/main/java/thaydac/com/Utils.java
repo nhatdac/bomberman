@@ -109,8 +109,8 @@ public class Utils {
         enemyConfig.put(105,Map.of(ENEMY_TYPE5,100));
         // ... thêm các level tiếp theo...
 
-        enemyConfig.put(108, Map.of(ENEMY_TYPE1, 20000));
-        enemyConfig.put(109, Map.of(ENEMY_TYPE1, 20000));
+        enemyConfig.put(108, Map.of(ENEMY_TYPE5, 20000));
+        enemyConfig.put(109, Map.of(ENEMY_TYPE5, 20000));
         List<int[]> emptyPositions = new ArrayList<>();
 
         // Tìm tất cả vị trí trống
