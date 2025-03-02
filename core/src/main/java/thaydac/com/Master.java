@@ -322,7 +322,7 @@ public class Master implements Screen {
 
                 if (Gdx.input.isKeyJustPressed(Input.Keys.B) && GameState.decorator) {
                     // kích nổ qủa đầu tiên
-                    bombs.get(0).isExploded = true;
+                    if(!bombs.isEmpty()){bombs.get(0).isExploded = true;}g
                 }
 
                 for (Explosion explosion : explosions) {
