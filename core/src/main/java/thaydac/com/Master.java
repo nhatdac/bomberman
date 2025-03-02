@@ -860,7 +860,7 @@ public class Master implements Screen {
             }
         }
         if(GameState.level == 100 || GameState.level == 101 ||GameState.level == 102 || GameState.level == 103
-            || GameState.level == 104 || GameState.level == 105){
+            || GameState.level == 104 || GameState.level == 105|| GameState.level == 108){
             Brick brick = new Brick(-32, 0, stage);
             briches.add(brick);
             walls.add(brick);
