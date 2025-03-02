@@ -132,12 +132,10 @@ public class Master implements Screen {
                     GameState.level = 104;
                 } else if(GameState.level == 31){
                     GameState.level = 105;
-                }else
-                if ((GameState.level == 36) && (G ==0) ){
+                }else if ((GameState.level == 36) && (G ==0) ){
                     GameState.level = 108;
                     G =1;
-                }else
-                if((GameState.level == 41 )&&(H ==0)){
+                }else if((GameState.level == 41 )&&(H ==0)){
                     GameState.level = 109;
                     H =1;
                 }
@@ -325,7 +323,7 @@ public class Master implements Screen {
 
                 if (Gdx.input.isKeyJustPressed(Input.Keys.B) && GameState.decorator) {
                     // kích nổ qủa đầu tiên
-                    bombs.get(0).isExploded = true;
+                    if(!bombs.isEmpty()){bombs.get(0).isExploded = true;}
                 }
 
                 for (Explosion explosion : explosions) {
@@ -567,6 +565,9 @@ public class Master implements Screen {
                     if(timing > 0) {
                         timing--;
                         if (timing == 0) {
+                            for(int i = 0;i < bombs.size;i++){
+                                bombs.get(i).isExploded = true;
+                            }
                             if(GameState.level == 102){
                                 GameState.level = 16;
                                 Utils.saveGame();
@@ -827,9 +828,6 @@ public class Master implements Screen {
                     walls.add(new Wall(x, y, stage));
                 } else if ((cell == 2) && (!(GameState.level == 100 || GameState.level == 101 || GameState.level == 102 || GameState.level == 103
                     || GameState.level == 104 || GameState.level == 105 || GameState.level == 106 || GameState.level == 108
-
-
-
                 ))) {
                     Brick brick = new Brick(x, y, stage);
                     // Tạo gạch
