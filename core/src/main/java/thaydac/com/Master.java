@@ -131,11 +131,11 @@ public class Master implements Screen {
                     GameState.level = 104;
                 } else if(GameState.level == 31){
                     GameState.level = 105;
-                }
+                }else
                 if ((GameState.level == 36) && (G ==0) ){
                     GameState.level = 108;
                     G =1;
-                }
+                }else
                 if((GameState.level == 41 )&&(H ==0)){
                     GameState.level = 109;
                     H =1;
@@ -318,7 +318,7 @@ public class Master implements Screen {
                     }
                 }
 
-                if (Gdx.input.isKeyJustPressed(Input.Keys.B) && GameState.decorator) {
+                if ( Gdx.input.isKeyJustPressed(Input.Keys.B) && GameState.decorator) {
                     // kích nổ qủa đầu tiên
                     bombs.get(0).isExploded = true;
                 }
@@ -648,7 +648,10 @@ public class Master implements Screen {
                 } else if (cell == Utils.ENEMY_TYPE7) {
                     Enemy7 enemy7 = new Enemy7(x, y, stage);
                     enemies.add(enemy7);
-                }
+                } else if (cell == Utils.ENEMY_TYPE_FAST) {
+                EnemyFast enemyFast = new EnemyFast(x, y, stage);
+                enemies.add(enemyFast);
+            }
             }
             }
         }else{
@@ -659,7 +662,7 @@ public class Master implements Screen {
             }
         }
         if(GameState.level == 100 || GameState.level == 101 ||GameState.level == 102 || GameState.level == 103
-            || GameState.level == 104 || GameState.level == 105){
+            || GameState.level == 104 || GameState.level == 105|| GameState.level == 109){
             Brick brick = new Brick(-32, 0, stage);
             briches.add(brick);
             walls.add(brick);
