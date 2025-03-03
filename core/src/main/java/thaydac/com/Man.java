@@ -19,7 +19,7 @@ public class Man extends MyActor {
     Animation<TextureRegion> animationWin;
 
     float time;
-    String direction = "R";
+    Direction direction = Direction.RIGHT;
 
     Sound walking1;
     Sound walking2;
@@ -86,25 +86,25 @@ public class Man extends MyActor {
         if(!Master.isFinished) {
             if (isAlive && GameState.level != Level.WIN.getValue()) {
                 if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                    direction = "L";
+                    direction = Direction.LEFT;
                     moveBy(-Utils.MAN_SPEED, 0);
                     time += delta;
                     textureRegion = animationLeft.getKeyFrame(time);
                     playSoundWalking(1, delta);
                 } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-                    direction = "R";
+                    direction = Direction.RIGHT;
                     moveBy(Utils.MAN_SPEED, 0);
                     time += delta;
                     textureRegion = animationRight.getKeyFrame(time);
                     playSoundWalking(1, delta);
                 } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                    direction = "D";
+                    direction = Direction.DOWN;
                     moveBy(0, -Utils.MAN_SPEED);
                     time += delta;
                     textureRegion = animationDown.getKeyFrame(time);
                     playSoundWalking(2, delta);
                 } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                    direction = "U";
+                    direction = Direction.UP;
                     moveBy(0, Utils.MAN_SPEED);
                     time += delta;
                     textureRegion = animationUp.getKeyFrame(time);
@@ -116,20 +116,20 @@ public class Man extends MyActor {
             }else{
                 time += delta;
                 textureRegion = animationWin.getKeyFrame(time);
-                if(direction.equals("U") || direction.equals("D")){
-                    direction = "R";
+                if(direction.equals(Direction.DOWN) || direction.equals(Direction.UP)){
+                    direction = Direction.RIGHT;
                 }
                 if(getX() == 32){
-                    direction = "R";
+                    direction = Direction.RIGHT;
                 }
                 if(getX() == Gdx.graphics.getWidth() - 32){
-                    direction = "L";
+                    direction = Direction.LEFT;
                 }
-                if(direction.equals("R")){
+                if(direction.equals(Direction.RIGHT)){
                     moveBy(2,0);
                     setScaleX(1);
                 }
-                if(direction.equals("L")){
+                if(direction.equals(Direction.LEFT)){
                     moveBy(-2,0);
                     setScaleX(-1);
                 }

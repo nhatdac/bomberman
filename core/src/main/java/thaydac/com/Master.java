@@ -174,128 +174,23 @@ public class Master implements Screen {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                     int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
                     int yMan = Math.round(man.getY() / 32) * 32;
-                    boolean positionOK = true;
-                    for (Bomb b : bombs) {
-                        if (b.getX() == xMan && b.getY() == yMan) {
-                            positionOK = false;
-                            break;
-                        }
-                    }
-                    if (positionOK && GameState.bombNumber > 0) {
-                        boolean isbrick = false;
-                        for (Brick brick : briches) {
-                            if (brick.getBound().overlaps(man.getBound())) {
-                                isbrick = true;
-                                break;
-                            }
-                        }
-                        if (!isbrick) {
-                            Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions, true);
-                            bombs.add(bomb);
-                            GameState.bombNumber--;
-                        }
-                    }
-                }
-                if (Gdx.input.isKeyPressed(Input.Keys.B) && Gdx.input.isKeyPressed(Input.Keys.A) && Gdx.input.isKeyJustPressed(Input.Keys.V)) {//BAV = BuiAnhVu
-                    int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
-                    int yMan = Math.round(man.getY() / 32) * 32;
-                    boolean positionOK = true;
-                    for (Bomb b : bombs) {
-                        if (b.getX() == xMan && b.getY() == yMan) {
-                            positionOK = false;
-                            break;
-                        }
-                    }
-                    if (positionOK && GameState.bombNumber > 0) {
-                        for (MyActor e : enemies) {
-                            Bomb bomb = new Bomb(e.getX() - 32, e.getY(), stage, bombs, explosions, false);
-                            bombs.add(bomb);
-                            Bomb bomb2 = new Bomb(e.getX() + 32, e.getY(), stage, bombs, explosions, false);
-                            bombs.add(bomb2);
-                            Bomb bomb3 = new Bomb(e.getX(), e.getY() - 32, stage, bombs, explosions, false);
-                            bombs.add(bomb3);
-                            Bomb bomb4 = new Bomb(e.getX(), e.getY() + 32, stage, bombs, explosions, false);
-                            bombs.add(bomb4);
-                            GameState.bombNumber -= 4;
-                        }
-                        Bomb bomb = new Bomb(doorRec.getX() - 32, doorRec.getY(), stage, bombs, explosions, false);
+
+                    if (isPositionFree(xMan, yMan) && GameState.bombNumber > 0) {
+                        Bomb bomb = new Bomb(xMan, yMan, stage, bombs, explosions, true);
                         bombs.add(bomb);
+                        walls.add(bomb);
                         GameState.bombNumber--;
                     }
                 }
-                if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
-                    int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
-                    int yMan = Math.round(man.getY() / 32) * 32;
-                    boolean positionOK = true;
-                    for (Bomb b : bombs) {
-                        if (b.getX() == xMan && b.getY() == yMan) {
-                            positionOK = false;
-                            break;
-                        }
-                    }
-                    if (positionOK && GameState.bombNumber > 0) {
-                        for (int i = 0; i < 20; i += 2) {
-                            Bomb bomb = new Bomb(xMan + i * 32, yMan, stage, bombs, explosions, false);
-                            bombs.add(bomb);
-                        }
-                        for (int i = 1; i < 21; i += 2) {
-                            Bomb bomb = new Bomb(xMan + i * 32, yMan - 32, stage, bombs, explosions, false);
-                            bombs.add(bomb);
-                        }
-                        for (int i = 0; i < 20; i += 2) {
-                            Bomb bomb = new Bomb(xMan + i * 32, yMan - 64, stage, bombs, explosions, false);
-                            bombs.add(bomb);
-                        }
-                        GameState.bombNumber -= 30;
-                    }
+                if (Gdx.input.isKeyPressed(Input.Keys.B) && Gdx.input.isKeyPressed(Input.Keys.A) && Gdx.input.isKeyJustPressed(Input.Keys.V)) {//BAV = BuiAnhVu
+                    skillBAV();
                 }
+                if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+                    skillN();
+                }
+
                 if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
-                    int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
-                    int yMan = Math.round(man.getY() / 32) * 32;
-                    boolean positionOK = true;
-                    for (Bomb b : bombs) {
-                        if (b.getX() == xMan && b.getY() == yMan) {
-                            positionOK = false;
-                            break;
-                        }
-                    }
-                    if (positionOK && GameState.bombNumber > 0) {
-                        int i = 0;
-                        int j = 0;
-                        for (; i < 6; i += 2) {
-                            j++;
-                            Bomb bomb = new Bomb(xMan + j * 32, yMan - i * 32, stage, bombs, explosions, false);
-                            bombs.add(bomb);
-                            Bomb bomb2 = new Bomb(xMan + j * 32, yMan - i * 32 - 32, stage, bombs, explosions, false);
-                            bombs.add(bomb2);
-                        }
-                        for (; -2 < i; i -= 2) {
-                            j++;
-                            Bomb bomb = new Bomb(xMan + j * 32, yMan - i * 32, stage, bombs, explosions, false);
-                            bombs.add(bomb);
-                            Bomb bomb2 = new Bomb(xMan + j * 32, yMan - i * 32 - 32, stage, bombs, explosions, false);
-                            bombs.add(bomb2);
-                        }
-                        j += 2;
-                        i += 2;
-                        for (; i < 7; i++) {
-                            Bomb bomb = new Bomb(xMan + j * 32, yMan - i * 32, stage, bombs, explosions, false);
-                            bombs.add(bomb);
-
-                        }
-                        j++;
-                        for (; j < 15; j++) {
-                            Bomb bomb = new Bomb(xMan + j * 32, yMan - i * 32, stage, bombs, explosions, false);
-                            bombs.add(bomb);
-
-                        }
-                        i--;
-                        for (; -1 < i; i--) {
-                            Bomb bomb = new Bomb(xMan + j * 32, yMan - i * 32, stage, bombs, explosions, false);
-                            bombs.add(bomb);
-                        }
-                        GameState.bombNumber -= 32;
-                    }
+                    skillM();
                 }
 
                 if (Gdx.input.isKeyJustPressed(Input.Keys.B) && GameState.decorator) {
@@ -472,25 +367,25 @@ public class Master implements Screen {
     public void collisionWall() {
         for (MyActor wall : walls) {
             if (checkCollision(wall, man)) {
-                if (man.direction.equalsIgnoreCase("L")) {
+                if (man.direction.equals(Direction.LEFT)) {
                     man.moveBy(Utils.MAN_SPEED, 0);
                     float diff = diffirentYCor(man, wall);
                     if (Math.abs(diff) < 10) {
                         man.moveBy(0, diff);
                     }
-                } else if (man.direction.equalsIgnoreCase("R")) {
+                } else if (man.direction.equals(Direction.RIGHT)) {
                     man.moveBy(-Utils.MAN_SPEED, 0);
                     float diff = diffirentYCor(man, wall);
                     if (Math.abs(diff) < 10) {
                         man.moveBy(0, diff);
                     }
-                } else if (man.direction.equalsIgnoreCase("U")) {
+                } else if (man.direction.equals(Direction.UP)) {
                     man.moveBy(0, -Utils.MAN_SPEED);
                     float diff = diffirentXCor(man, wall);
                     if (Math.abs(diff) < 10) {
                         man.moveBy(diff, 0);
                     }
-                } else if (man.direction.equalsIgnoreCase("D")) {
+                } else if (man.direction.equals(Direction.DOWN)) {
                     man.moveBy(0, Utils.MAN_SPEED);
                     float diff = diffirentXCor(man, wall);
                     if (Math.abs(diff) < 10) {
@@ -498,38 +393,6 @@ public class Master implements Screen {
                     }
                 }
                 break;
-            }
-        }
-        if (!GameState.bombPass) {
-            for (Bomb b : bombs) {
-                if (checkCollision(b, man)) {
-                    if (man.direction.equalsIgnoreCase("L")) {
-                        man.moveBy(Utils.MAN_SPEED, 0);
-                        float diff = diffirentYCor(man, b);
-                        if (Math.abs(diff) < 10) {
-                            man.moveBy(0, diff);
-                        }
-                    } else if (man.direction.equalsIgnoreCase("R")) {
-                        man.moveBy(-Utils.MAN_SPEED, 0);
-                        float diff = diffirentYCor(man, b);
-                        if (Math.abs(diff) < 10) {
-                            man.moveBy(0, diff);
-                        }
-                    } else if (man.direction.equalsIgnoreCase("U")) {
-                        man.moveBy(0, -Utils.MAN_SPEED);
-                        float diff = diffirentXCor(man, b);
-                        if (Math.abs(diff) < 10) {
-                            man.moveBy(diff, 0);
-                        }
-                    } else if (man.direction.equalsIgnoreCase("D")) {
-                        man.moveBy(0, Utils.MAN_SPEED);
-                        float diff = diffirentXCor(man, b);
-                        if (Math.abs(diff) < 10) {
-                            man.moveBy(diff, 0);
-                        }
-                    }
-                    break;
-                }
             }
         }
     }
@@ -640,7 +503,7 @@ public class Master implements Screen {
 
     // _actor1: wall, _actor2: man
     boolean checkCollision(MyActor _actor1, MyActor _actor2) {
-        if (_actor1 instanceof Bomb && ((Bomb) _actor1).isJustPlaced) {
+        if (_actor1 instanceof Bomb && (GameState.bombPass || ((Bomb) _actor1).isJustPlaced)) {
             return false;
         }
         if (_actor1 instanceof Brick && GameState.wallPass) {
@@ -735,6 +598,105 @@ public class Master implements Screen {
         }
     }
 
+    // Kiểm tra vị trí có bom chưa
+    private boolean isPositionFree(int x, int y) {
+        for (Bomb b : bombs) {
+            if (b.getX() == x && b.getY() == y) {
+                return false;
+            }
+        }
+        if(GameState.wallPass){
+            for (Brick b : briches) {
+                if (b.getX() == x && b.getY() == y) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void skillBAV(){
+        for (MyActor e : enemies) {
+            Bomb bomb = new Bomb(e.getX() - 32, e.getY(), stage, bombs, explosions, false);
+            bombs.add(bomb);
+            Bomb bomb2 = new Bomb(e.getX() + 32, e.getY(), stage, bombs, explosions, false);
+            bombs.add(bomb2);
+            Bomb bomb3 = new Bomb(e.getX(), e.getY() - 32, stage, bombs, explosions, false);
+            bombs.add(bomb3);
+            Bomb bomb4 = new Bomb(e.getX(), e.getY() + 32, stage, bombs, explosions, false);
+            bombs.add(bomb4);
+            GameState.bombNumber -= 4;
+        }
+        Bomb bomb = new Bomb(doorRec.getX() - 32, doorRec.getY(), stage, bombs, explosions, false);
+        bombs.add(bomb);
+        GameState.bombNumber--;
+    }
+
+    private void skillN(){
+        int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
+        int yMan = Math.round(man.getY() / 32) * 32;
+
+        for (int i = 0; i < 20; i += 2) {
+            Bomb bomb = new Bomb(xMan + i * 32, yMan, stage, bombs, explosions, false);
+            bombs.add(bomb);
+            GameState.bombNumber--;
+        }
+        for (int i = 1; i < 21; i += 2) {
+            Bomb bomb = new Bomb(xMan + i * 32, yMan - 32, stage, bombs, explosions, false);
+            bombs.add(bomb);
+            GameState.bombNumber--;
+        }
+        for (int i = 0; i < 20; i += 2) {
+            Bomb bomb = new Bomb(xMan + i * 32, yMan - 64, stage, bombs, explosions, false);
+            bombs.add(bomb);
+            GameState.bombNumber--;
+        }
+    }
+
+    private void skillM(){
+        int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
+        int yMan = Math.round(man.getY() / 32) * 32;
+
+        int i = 0;
+        int j = 0;
+        for (; i < 6; i += 2) {
+            j++;
+            Bomb bomb = new Bomb(xMan + j * 32, yMan - i * 32, stage, bombs, explosions, false);
+            bombs.add(bomb);
+            GameState.bombNumber--;
+            Bomb bomb2 = new Bomb(xMan + j * 32, yMan - i * 32 - 32, stage, bombs, explosions, false);
+            bombs.add(bomb2);
+            GameState.bombNumber--;
+        }
+        for (; -2 < i; i -= 2) {
+            j++;
+            Bomb bomb = new Bomb(xMan + j * 32, yMan - i * 32, stage, bombs, explosions, false);
+            bombs.add(bomb);
+            GameState.bombNumber--;
+            Bomb bomb2 = new Bomb(xMan + j * 32, yMan - i * 32 - 32, stage, bombs, explosions, false);
+            bombs.add(bomb2);
+            GameState.bombNumber--;
+        }
+        j += 2;
+        i += 2;
+        for (; i < 7; i++) {
+            Bomb bomb = new Bomb(xMan + j * 32, yMan - i * 32, stage, bombs, explosions, false);
+            bombs.add(bomb);
+            GameState.bombNumber--;
+        }
+        j++;
+        for (; j < 15; j++) {
+            Bomb bomb = new Bomb(xMan + j * 32, yMan - i * 32, stage, bombs, explosions, false);
+            bombs.add(bomb);
+            GameState.bombNumber--;
+        }
+        i--;
+        for (; -1 < i; i--) {
+            Bomb bomb = new Bomb(xMan + j * 32, yMan - i * 32, stage, bombs, explosions, false);
+            bombs.add(bomb);
+            GameState.bombNumber--;
+        }
+    }
 
     @Override
     public void resize(int i, int i1) {

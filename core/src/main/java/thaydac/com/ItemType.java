@@ -14,6 +14,5 @@ public enum ItemType {
     DEZENIMAN_SAN,
     FLAME_PASS,
     MYSTERY,
-    Bomb_pass,
     SPEED
 }
