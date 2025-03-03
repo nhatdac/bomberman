@@ -7,10 +7,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -18,9 +14,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.Timer;
 import thaydac.com.enemies.*;
 
-import java.util.Random;
+import java.util.*;
 
 public class Master implements Screen {
     StartGame game;
@@ -52,21 +49,18 @@ public class Master implements Screen {
     Music timeupMusic;
     Music enemiesalldieMusic;
     Sound collectSound;
-    int timee;
-    float wait = 0;
+    Music winMusic;
+    float mysteryTime = 0;
     float waitSpawnEnemy = 61;
 
-    // vẽ đ thử
+    // vẽ để thử
     ShapeRenderer shapeRenderer = new ShapeRenderer();
     Rectangle itemRec = new Rectangle();
     Rectangle doorRec = new Rectangle();
 
-    int time = 0;
-
     public Master(StartGame game) {
         this.game = game;
         stage = new Stage();
-        timee = 0;
 
         walls = new Array<>();
         briches = new Array<>();
@@ -95,20 +89,12 @@ public class Master implements Screen {
         timeupMusic = Gdx.audio.newMusic(Gdx.files.internal("timeup.mp3"));
         enemiesalldieMusic = Gdx.audio.newMusic(Gdx.files.internal("enemiesalldie.mp3"));
         collectSound = Gdx.audio.newSound(Gdx.files.internal("collect.mp3"));
-
-        backgroundMusic.play();
+        winMusic = Gdx.audio.newMusic(Gdx.files.internal("win.mp3"));
 
         dieSound.setOnCompletionListener(new Music.OnCompletionListener() {
             @Override
             public void onCompletion(Music music) {
                 dieMusic.play();
-            }
-        });
-
-        dieMusic.setOnCompletionListener(new Music.OnCompletionListener() {
-            @Override
-            public void onCompletion(Music music) {
-                game.setScreen(new StageScreen(game));
             }
         });
 
@@ -161,16 +147,19 @@ public class Master implements Screen {
         } else {
             timing = 30;
         }
+        if(GameState.level == Level.WIN.getValue()){
+            winMusic.play();
+        } else {
+            backgroundMusic.play();
+        }
     }
 
     @Override
     public void render(float v) {
-        wait = wait - 1;
+        mysteryTime = mysteryTime - 1;
         waitSpawnEnemy += 1;
-        if (wait <= 0) {
+        if (mysteryTime <= 0) {
             GameState.mystery = false;
-        } else {
-            GameState.mystery = true;
         }
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
@@ -322,17 +311,10 @@ public class Master implements Screen {
                         && !GameState.mystery
                         && !GameState.flamepass
                     ) {
-                        man.isAlive = false;
-                        dieSound.play();
-                        GameState.wallPass = false;
-                        Utils.saveGame();
+                        replay();
                         break;
                     }
-                    for (Bomb b : bombs) {
-                        if (explosion.getBound().overlaps(b.getBound())) {
-                            b.isExploded = true;
-                        }
-                    }
+
                     if (item != null && explosion.getBound().overlaps(item.getBound())) {
                         item.remove();
                     }
@@ -342,319 +324,14 @@ public class Master implements Screen {
                     }
                 }
                 if (waitSpawnEnemy == 60) {
-                    switch (GameState.level) {
-                        case 1 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy2 enemy2 = new Enemy2(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 2 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy2 enemy2 = new Enemy2(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                            Enemy3 e = new Enemy3(door.getX(), door.getY(), stage);
-                            enemies.add(e);
-                        }
-                        case 3 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy3 enemy2 = new Enemy3(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                            Enemy2 e = new Enemy2(door.getX(), door.getY(), stage);
-                            enemies.add(e);
-                        }
-                        case 4 -> {
-                        }
-                        case 5 -> {
-                        }
-                        case 6 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy3 enemy2 = new Enemy3(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 7 -> {
-                        }
-                        case 8 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy4 enemy2 = new Enemy4(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 9 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy5 enemy2 = new Enemy5(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 10 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy4 enemy2 = new Enemy4(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 11 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy5 enemy2 = new Enemy5(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 12 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy3 enemy2 = new Enemy3(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 13 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy6 enemy2 = new Enemy6(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 14 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy2 enemy2 = new Enemy2(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 15 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy4 enemy2 = new Enemy4(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 16 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy2 enemy2 = new Enemy2(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 17 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy3 enemy2 = new Enemy3(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 18 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy3 enemy2 = new Enemy3(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 19 -> {
-                            for (int i = 0; i < 2; i++) {
-                                Enemy6 enemy2 = new Enemy6(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                            Enemy5 enemy2 = new Enemy5(door.getX(), door.getY(), stage);
-                            enemies.add(enemy2);
-                        }
-                        case 20 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy5 enemy2 = new Enemy5(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 21 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy3 enemy2 = new Enemy3(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 22 -> {
-                            for (int i = 0; i < 2; i++) {
-                                Enemy3 enemy2 = new Enemy3(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                            Enemy4 enemy2 = new Enemy4(door.getX(), door.getY(), stage);
-                            enemies.add(enemy2);
-                        }
-                        case 23 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy5 enemy2 = new Enemy5(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 24 -> {
-                            for (int i = 0; i < 2; i++) {
-                                Enemy2 enemy2 = new Enemy2(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                            Enemy3 enemy2 = new Enemy3(door.getX(), door.getY(), stage);
-                            enemies.add(enemy2);
-                        }
-                        case 25 -> {
-                            Enemy2 enemy2 = new Enemy2(door.getX(), door.getY(), stage);
-                            enemies.add(enemy2);
-                            Enemy3 enemy3 = new Enemy3(door.getX(), door.getY(), stage);
-                            enemies.add(enemy3);
-                            Enemy4 enemy4 = new Enemy4(door.getX(), door.getY(), stage);
-                            enemies.add(enemy4);
-                        }
-                        case 26 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy5 enemy2 = new Enemy5(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 27 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy3 enemy2 = new Enemy3(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 28 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy6 enemy2 = new Enemy6(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 29 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy3 enemy2 = new Enemy3(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 30 -> {
-                            for (int i = 0; i < 2; i++) {
-                                Enemy2 enemy2 = new Enemy2(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                            Enemy3 enemy2 = new Enemy3(door.getX(), door.getY(), stage);
-                            enemies.add(enemy2);
-                        }
-                        case 31 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy4 enemy2 = new Enemy4(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 32 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy3 enemy2 = new Enemy3(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 33 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy4 enemy2 = new Enemy4(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 34 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy5 enemy2 = new Enemy5(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 35 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy5 enemy2 = new Enemy5(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 36 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy5 enemy2 = new Enemy5(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 37 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy5 enemy2 = new Enemy5(door.getX(), door.getY(), stage);
-                                enemies.add(enemy2);
-                            }
-                        }
-                        case 38 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy7 enemy = new Enemy7(door.getX(), door.getY(), stage);
-                                enemies.add(enemy);
-                            }
-                        }
-                        case 39 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy7 enemy = new Enemy7(door.getX(), door.getY(), stage);
-                                enemies.add(enemy);
-                            }
-                        }
-                        case 40 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy7 enemy = new Enemy7(door.getX(), door.getY(), stage);
-                                enemies.add(enemy);
-                            }
-                        }
-                        case 41 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy7 enemy = new Enemy7(door.getX(), door.getY(), stage);
-                                enemies.add(enemy);
-                            }
-                        }
-                        case 42 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy7 enemy = new Enemy7(door.getX(), door.getY(), stage);
-                                enemies.add(enemy);
-                            }
-                        }
-                        case 43 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy7 enemy = new Enemy7(door.getX(), door.getY(), stage);
-                                enemies.add(enemy);
-                            }
-                        }
-                        case 44 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy7 enemy = new Enemy7(door.getX(), door.getY(), stage);
-                                enemies.add(enemy);
-                            }
-                        }
-                        case 45 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy7 enemy = new Enemy7(door.getX(), door.getY(), stage);
-                                enemies.add(enemy);
-                            }
-                        }
-                        case 46 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy7 enemy = new Enemy7(door.getX(), door.getY(), stage);
-                                enemies.add(enemy);
-                            }
-                        }
-                        case 47 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy7 enemy = new Enemy7(door.getX(), door.getY(), stage);
-                                enemies.add(enemy);
-                            }
-                        }
-                        case 48 -> {
-                            for (int i = 0; i < 3; i++) {
-                                Enemy7 enemy = new Enemy7(door.getX(), door.getY(), stage);
-                                enemies.add(enemy);
-                            }
-                        }
-                        case 49 -> {
-                            for (int i = 0; i < 2; i++) {
-                                Enemy7 enemy = new Enemy7(door.getX(), door.getY(), stage);
-                                enemies.add(enemy);
-                            }
-                            EnemyFast enemy = new EnemyFast(door.getX(), door.getY(), stage);
-                            enemies.add(enemy);
-                        }
-
-
-                    }
+                    spawnEnemyInDoor();
                 }
                 for (MyActor enemy : enemies) {
                     if (enemy.getBound().overlaps(man.getBound())
                         && !isBonusSatge()
                         && !GameState.mystery
                     ) {
-                        man.isAlive = false;
-                        dieSound.play();
-                        GameState.wallPass = false;
-                        Utils.MAN_SPEED = 2;
-                        Utils.saveGame();
+                        replay();
                         break;
                     }
                 }
@@ -666,57 +343,29 @@ public class Master implements Screen {
                             for (int i = 0; i < bombs.size; i++) {
                                 bombs.get(i).isExploded = true;
                             }
-                            if (GameState.level == Level.A.getValue()) {
-                                GameState.level = 6;
-                                Utils.saveGame();
-                                game.setScreen(new StageScreen(game));
-                            } else if (GameState.level == Level.B.getValue()) {
-                                GameState.level = 11;
-                                Utils.saveGame();
-                                game.setScreen(new StageScreen(game));
-                            } else if (GameState.level == Level.C.getValue()) {
-                                GameState.level = 16;
-                                Utils.saveGame();
-                                game.setScreen(new StageScreen(game));
-                            } else if (GameState.level == Level.D.getValue()) {
-                                GameState.level = 21;
-                                Utils.saveGame();
-                                game.setScreen(new StageScreen(game));
-                            } else if (GameState.level == Level.E.getValue()) {
-                                GameState.level = 26;
-                                Utils.saveGame();
-                                game.setScreen(new StageScreen(game));
-                            } else if (GameState.level == Level.F.getValue()) {
-                                GameState.level = 31;
-                                Utils.saveGame();
-                                game.setScreen(new StageScreen(game));
-                            } else if (GameState.level == Level.G.getValue()) {
-                                GameState.level = 36;
-                                Utils.saveGame();
-                                game.setScreen(new StageScreen(game));
-                            } else if (GameState.level == Level.H.getValue()) {
-                                GameState.level = 40;
-                                Utils.saveGame();
-                                game.setScreen(new StageScreen(game));
-                            } else if (GameState.level == Level.I.getValue()) {
-                                GameState.level = 45;
-                                Utils.saveGame();
-                                game.setScreen(new StageScreen(game));
-                            } else if (GameState.level == Level.J.getValue()) {
-                                GameState.level = 50;
-                                Utils.saveGame();
-                                game.setScreen(new StageScreen(game));
-                            } else {
+                            // Ánh xạ giá trị level cũ sang level mới
+                            Map<Integer, Integer> levelMap = Map.of(
+                                Level.A.getValue(), 6,
+                                Level.B.getValue(), 11,
+                                Level.C.getValue(), 16,
+                                Level.D.getValue(), 21,
+                                Level.E.getValue(), 26,
+                                Level.F.getValue(), 31,
+                                Level.G.getValue(), 36,
+                                Level.H.getValue(), 40,
+                                Level.I.getValue(), 45,
+                                Level.J.getValue(), 50
+                            );
+
+                            if (!levelMap.containsKey(GameState.level)) {
                                 timeupMusic.play();
+                            } else {
+                                GameState.level = levelMap.getOrDefault(GameState.level, GameState.level);
+                                Utils.saveGame();
+                                game.setScreen(new StageScreen(game));
                             }
                         }
                     }
-                }
-                if (!man.isAlive) {
-                    GameState.left--;
-                    GameState.decorator = false;
-                    GameState.wallPass = false;
-                    man.time = 0;
                 }
             }
 
@@ -725,8 +374,7 @@ public class Master implements Screen {
                     enemiesalldieMusic.play();
                     isEnemiesAllDie = true;
                 }
-                if (
-                    GameState.level == 1 || GameState.level == 7 || GameState.level == 9
+                if (GameState.level == 1 || GameState.level == 7 || GameState.level == 9
                         || GameState.level == 15 || GameState.level == 17
                         || GameState.level == 23 || GameState.level == 25
                         || GameState.level == 31 || GameState.level == 33
@@ -791,8 +439,8 @@ public class Master implements Screen {
             } else if (item.type.equals(ItemType.FLAME_PASS)) {
                 GameState.flamepass = true;
             } else if (item.type.equals(ItemType.MYSTERY)) {
-                timee = MathUtils.random(10, 30);
-                wait = timee * 60;
+                GameState.mystery = true;
+                mysteryTime = MathUtils.random(10, 30) * 60;
             }
             item.remove();
             item = null;
@@ -984,6 +632,10 @@ public class Master implements Screen {
         briches.get(doorPosition).hasDoor = true;
         itemRec = briches.get(itemPosition).getBound();
         doorRec = briches.get(doorPosition).getBound();
+        // Vào mỗi màn chơi thì item, door null để không bị nhầm lẫn
+        item = null;
+        itemBonus = null;
+        door = null;
     }
 
     // _actor1: wall, _actor2: man
@@ -1031,6 +683,58 @@ public class Master implements Screen {
             || GameState.level == Level.I.getValue()
             || GameState.level == Level.J.getValue();
     }
+
+    public void replay(){
+        man.isAlive = false;
+        man.time = 0;
+        dieSound.play();
+        GameState.left--;
+        GameState.decorator = false;
+        GameState.wallPass = false;
+        GameState.mystery = false;
+        GameState.flamepass = false;
+        GameState.bombPass = false;
+        Utils.MAN_SPEED = 2;
+        Utils.saveGame();
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                game.setScreen(new StageScreen(game));
+            }
+        }, 4);
+    }
+
+    public void spawnEnemyInDoor() {
+        int nextLevel = GameState.level + 1;
+        int countEnemy = 0;
+        Map<Integer, Integer> levelEnemies = Utils.enemyConfig.getOrDefault(nextLevel, new HashMap<>());
+
+        // Chuyển `entrySet()` thành danh sách và sắp xếp giảm dần theo key
+        List<Map.Entry<Integer, Integer>> sortedEntries = new ArrayList<>(levelEnemies.entrySet());
+        sortedEntries.sort((e1, e2) -> Integer.compare(e2.getKey(), e1.getKey())); // Sắp xếp giảm dần
+
+        for (Map.Entry<Integer, Integer> entry : sortedEntries) {
+            if (countEnemy > 3) break;
+            int enemyType = entry.getKey();
+            int count = entry.getValue();
+
+            while (countEnemy < 4 && count > 0) {
+                switch (enemyType) {
+                    case Utils.ENEMY_TYPE1 -> enemies.add(new Enemy1(door.getX(), door.getY(), stage));
+                    case Utils.ENEMY_TYPE2 -> enemies.add(new Enemy2(door.getX(), door.getY(), stage));
+                    case Utils.ENEMY_TYPE3 -> enemies.add(new Enemy3(door.getX(), door.getY(), stage));
+                    case Utils.ENEMY_TYPE4 -> enemies.add(new Enemy4(door.getX(), door.getY(), stage));
+                    case Utils.ENEMY_TYPE5 -> enemies.add(new Enemy5(door.getX(), door.getY(), stage));
+                    case Utils.ENEMY_TYPE6 -> enemies.add(new Enemy6(door.getX(), door.getY(), stage));
+                    case Utils.ENEMY_TYPE7 -> enemies.add(new Enemy7(door.getX(), door.getY(), stage));
+                    case Utils.ENEMY_TYPE_FAST -> enemies.add(new EnemyFast(door.getX(), door.getY(), stage));
+                }
+                count--;
+                countEnemy++;
+            }
+        }
+    }
+
 
     @Override
     public void resize(int i, int i1) {

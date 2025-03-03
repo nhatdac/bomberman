@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.Map;
+
 public class StageScreen implements Screen {
     StartGame game;
     public static GlyphLayout layout = new GlyphLayout() ;
@@ -23,31 +25,29 @@ public class StageScreen implements Screen {
             Utils.saveGame();
         }
         GameState.enemyInDoor = true;
-        if ((GameState.level == Level.A.getValue())) {
-            layout.setText(game.font, "STAGE A");
-        } else if(GameState.level == Level.B.getValue()){
-            layout.setText(game.font,"STAGE B");
-        } else if(GameState.level == Level.C.getValue()){
-            layout.setText(game.font,"STAGE C");
-        } else if(GameState.level == Level.D.getValue()){
-            layout.setText(game.font,"STAGE D");
-        } else if(GameState.level == Level.E.getValue()){
-            layout.setText(game.font,"STAGE E");
-        } else if(GameState.level == Level.F.getValue()){
-            layout.setText(game.font,"STAGE F");
-        } else if(GameState.level == Level.G.getValue()){
-            layout.setText(game.font,"STAGE G");
-        } else if(GameState.level == Level.H.getValue()){
-            layout.setText(game.font,"STAGE H");
-        } else if(GameState.level == Level.I.getValue()){
-            layout.setText(game.font,"STAGE I");
-        } else if(GameState.level == Level.J.getValue()){
-            layout.setText(game.font,"STAGE J");
-        } else if (GameState.level == Level.WIN.getValue()){
 
-        } else{
-            layout.setText(game.font,"STAGE " + GameState.level);
+        // Ánh xạ level với chữ tương ứng
+        Map<Integer, String> stageMap = Map.of(
+            Level.A.getValue(), "STAGE A",
+            Level.B.getValue(), "STAGE B",
+            Level.C.getValue(), "STAGE C",
+            Level.D.getValue(), "STAGE D",
+            Level.E.getValue(), "STAGE E",
+            Level.F.getValue(), "STAGE F",
+            Level.G.getValue(), "STAGE G",
+            Level.H.getValue(), "STAGE H",
+            Level.I.getValue(), "STAGE I",
+            Level.J.getValue(), "STAGE J"
+        );
+        // Nếu là Level.WIN thì không hiển thị gì
+        if (GameState.level == Level.WIN.getValue()) {
+            layout.setText(game.font, "WONDERFUL");
+        } else {
+            // Lấy giá trị tương ứng hoặc dùng "STAGE X" nếu không có trong map
+            String stageText = stageMap.getOrDefault(GameState.level, "STAGE " + GameState.level);
+            layout.setText(game.font, stageText);
         }
+
         stageMusic.play();
         stageMusic.setOnCompletionListener(new Music.OnCompletionListener() {
             @Override

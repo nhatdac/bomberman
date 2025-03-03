@@ -170,7 +170,7 @@ public class Bomb extends MyActor {
                     Brick brick = (Brick) obstacle;
                     brick.isFire = true;
                 }
-                if(obstacle instanceof Bomb){
+                if(obstacle instanceof Bomb){ // nếu là bomb thì kích nổ luôn
                     Bomb bomb = (Bomb) obstacle;
                     bomb.isExploded = true;
                 }
@@ -179,26 +179,4 @@ public class Bomb extends MyActor {
         }
         return false;
     }
-
-
-//    private void createExplosions() {
-//        float explosionSize = 32; // Kích thước hiệu ứng nổ
-//        Stage stage = getStage();
-//
-//        // Nổ trên
-//        Explosion explosionUp = new Explosion(getX(), getY() + explosionSize, stage, explosionUpAnimation);
-//        stage.addActor(explosionUp);
-//
-//        // Nổ dưới
-//        Explosion explosionDown = new Explosion(getX(), getY() - explosionSize, stage, explosionDownAnimation);
-//        stage.addActor(explosionDown);
-//
-//        // Nổ trái
-//        Explosion explosionLeft = new Explosion(getX() - explosionSize, getY(), stage, explosionLeftAnimation);
-//        stage.addActor(explosionLeft);
-//
-//        // Nổ phải
-//        Explosion explosionRight = new Explosion(getX() + explosionSize, getY(), stage, explosionRightAnimation);
-//        stage.addActor(explosionRight);
-//    }
 }
