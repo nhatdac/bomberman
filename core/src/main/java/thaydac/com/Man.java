@@ -126,11 +126,11 @@ public class Man extends MyActor {
                     direction = Direction.LEFT;
                 }
                 if(direction.equals(Direction.RIGHT)){
-                    moveBy(2,0);
+                    moveBy(0.5f,0);
                     setScaleX(1);
                 }
                 if(direction.equals(Direction.LEFT)){
-                    moveBy(-2,0);
+                    moveBy(-0.5f,0);
                     setScaleX(-1);
                 }
 

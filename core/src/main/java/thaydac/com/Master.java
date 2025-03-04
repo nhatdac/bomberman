@@ -71,15 +71,6 @@ public class Master implements Screen {
         generateMap();
         if (man == null) { // lúc mới vào game nó chưa được khơỉ tạp
             man = new Man(32, Gdx.graphics.getHeight() - 32 * 4, stage);
-        } else { // khi vào ván mới chỉ cần đặt vị trí và add vào stage, vì stage đã khởi tạo lại
-            man.setPosition(32, Gdx.graphics.getHeight() - 32 * 4);
-            man.time = 0;
-            man.isAlive = true;
-            man.textureRegion = man.animationRight.getKeyFrame(timing);
-            stage.addActor(man);
-        }
-        if (GameState.level == Level.WIN.getValue()) {
-            man.setPosition(32, 32 * 4);
         }
 
         dieSound = Gdx.audio.newMusic(Gdx.files.internal("die.mp3"));
@@ -141,6 +132,17 @@ public class Master implements Screen {
 
     @Override
     public void show() {
+        man.setPosition(32, Gdx.graphics.getHeight() - 32 * 4);
+        man.isAlive = true;
+        man.time = 0;
+        man.textureRegion = man.animationRight.getKeyFrame(timing);
+        // cần add lai vi stage da khoi tao lai
+        stage.addActor(man);
+
+        if (GameState.level == Level.WIN.getValue()) {
+            man.setPosition(32, 32 * 4);
+        }
+
         isFinished = false;
         if (!isBonusSatge()) {
             timing = 300;
@@ -473,6 +475,7 @@ public class Master implements Screen {
         } else {
             for (int i = 0; i < 25; i++) {
                 Brick brick = new Brick(32 * i, 32 * 3, stage);
+                brick.setColor(Color.PINK);
                 briches.add(brick);
                 walls.add(brick);
             }
