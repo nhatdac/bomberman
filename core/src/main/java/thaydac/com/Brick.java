@@ -5,37 +5,60 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public class Brick extends MyActor{
+import java.util.HashMap;
+import java.util.Map;
 
-    Animation<TextureRegion> animation;
-    float time;
-    boolean isFire = false;
-    boolean hasItem = false;
-    boolean hasDoor = false;
+public class Brick extends MyActor {
 
-    Brick(float x, float y, Stage s) {
+    private static final Texture texture = new Texture("brich.png");
+    private static final Map<Integer, ItemType> levelItemMap = new HashMap<>();
+
+    static {
+        // Khởi tạo map chỉ một lần
+        int[] bombPowerLevels = {1, 7, 11, 12, 27, 38};
+        int[] bombNumberLevels = {2, 6, 15, 17, 19, 23, 28, 32};
+        int[] detonatorLevels = {3, 8, 13, 20, 22, 24, 29, 33, 37, 41, 44, 48};
+        int[] speedLevels = {4};
+        int[] bombPassLevels = {5, 9, 14, 18, 21, 25, 35, 43, 47};
+        int[] wallPassLevels = {10, 16, 39, 42, 46};
+        int[] mysteryLevels = {26, 34, 40, 45, 50};
+        int[] flamePassLevels = {30, 36, 49};
+
+        for (int lvl : bombPowerLevels) levelItemMap.put(lvl, ItemType.BOMB_POWER);
+        for (int lvl : bombNumberLevels) levelItemMap.put(lvl, ItemType.BOMB_NUMBER);
+        for (int lvl : detonatorLevels) levelItemMap.put(lvl, ItemType.DETONATOR);
+        for (int lvl : speedLevels) levelItemMap.put(lvl, ItemType.SPEED);
+        for (int lvl : bombPassLevels) levelItemMap.put(lvl, ItemType.BOMB_PASS);
+        for (int lvl : wallPassLevels) levelItemMap.put(lvl, ItemType.WALLPASS);
+        for (int lvl : mysteryLevels) levelItemMap.put(lvl, ItemType.MYSTERY);
+        for (int lvl : flamePassLevels) levelItemMap.put(lvl, ItemType.FLAME_PASS);
+    }
+
+    private final Animation<TextureRegion> animation;
+    private float time;
+    private boolean isFire = false;
+    private boolean hasItem = false;
+    private boolean hasDoor = false;
+
+    public Brick(float x, float y, Stage s) {
         super(x, y, s);
 
-        int cot = 7;
-        int hang = 1;
+        int columns = 7;
+        int rows = 1;
 
-        Texture texture = new Texture("brich.png");
-        TextureRegion[][] frameBuff = TextureRegion.split(texture, texture.getWidth()/cot, texture.getHeight()/hang);
+        TextureRegion[][] frameBuff = TextureRegion.split(texture, texture.getWidth() / columns, texture.getHeight() / rows);
+        TextureRegion[] frames = new TextureRegion[columns * rows];
 
-        TextureRegion[] frames = new TextureRegion[cot*hang];
         int index = 0;
-        for (int i = 0; i < hang; i++) {
-            for (int j = 0; j < cot; j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 frames[index++] = frameBuff[i][j];
             }
         }
 
-        animation = new Animation<TextureRegion>(0.1f, frames);
-
+        animation = new Animation<>(0.1f, frames);
         animation.setPlayMode(Animation.PlayMode.NORMAL);
-
         setSize(32, 32);
-
         time = 0;
         textureRegion = animation.getKeyFrame(time);
     }
@@ -43,108 +66,39 @@ public class Brick extends MyActor{
     @Override
     public void act(float delta) {
         super.act(delta);
-        if(isFire){
+
+        if (isFire) {
             time += delta;
             textureRegion = animation.getKeyFrame(time);
         }
-        if(animation.isAnimationFinished(time)){
-            isFire = false;
-            if(hasItem){
-                if(GameState.level == 1 || GameState.level == 7 || GameState.level == 11 || GameState.level == 12 || GameState.level == 31){
-                    Master.item = new Item(getX(), getY(), ItemType.BOMB_POWER, getStage());
-                } else if((GameState.level == 6)||(GameState.level == 2)||(GameState.level == 15)){
-                    Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
-                } else if((GameState.level == 8)||(GameState.level == 3)|| (GameState.level == 13)){
-                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
-                }else if(GameState.level == 4){
-                    Master.item = new Item(getX(), getY(), ItemType.SPEED, getStage());
-                }else if(GameState.level == 5){
-                    Master.item = new Item(getX(), getY(), ItemType.BOMB_PASS, getStage());
-                }else if((GameState.level == 9)||(GameState.level == 14)){
-                    Master.item = new Item(getX(), getY(), ItemType.BOMB_PASS, getStage());
-                }else if((GameState.level == 10)||(GameState.level == 16)){
-                    Master.item = new Item(getX(), getY(), ItemType.WALLPASS, getStage());
-                } else if(GameState.level == 17){
-                    Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
-                }else if(GameState.level == 18){
-                    Master.item = new Item(getX(), getY(), ItemType.BOMB_PASS, getStage());
-                }else if(GameState.level == 19){
-                    Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
-                }else if(GameState.level == 20){
-                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
-                }else if(GameState.level == 21){
-                    Master.item = new Item(getX(), getY(), ItemType.BOMB_PASS, getStage());
-                }else if(GameState.level == 22){
-                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
-                } else if(GameState.level == 23){
-                    Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
-                } else if(GameState.level == 24){
-                    Master.item = new Item(getX(),getY(),ItemType.DETONATOR, getStage());
-                } else if(GameState.level == 25){
-                    Master.item = new Item(getX(),getY(),ItemType.BOMB_PASS,getStage());
-                } else if(GameState.level == 26){
-                    Master.item = new Item(getX(),getY(),ItemType.MYSTERY, getStage());
-                } else if(GameState.level == 27){
-                    Master.item = new Item(getX(),getY(),ItemType.BOMB_POWER, getStage());
-                } else if(GameState.level == 28){
-                    Master.item = new Item(getX(),getY(),ItemType.BOMB_NUMBER, getStage());
-                } else if(GameState.level == 29){
-                    Master.item = new Item(getX(),getY(),ItemType.DETONATOR, getStage());
-                } else if(GameState.level == 30){
-                    Master.item = new Item(getX(),getY(),ItemType.FLAME_PASS, getStage());
-                } else if(GameState.level == 32){
-                    Master.item = new Item(getX(), getY(), ItemType.BOMB_NUMBER, getStage());
-                }else if(GameState.level == 33){
-                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
-                }else if(GameState.level == 34){
-                    Master.item = new Item(getX(), getY(), ItemType.MYSTERY, getStage());
-                }else if(GameState.level == 35){
-                    Master.item = new Item(getX(), getY(), ItemType.BOMB_PASS, getStage());
-                }else if(GameState.level == 36){
-                    Master.item = new Item(getX(), getY(), ItemType.FLAME_PASS, getStage());
-                }else if(GameState.level == 37){
-                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
-                }else if(GameState.level == 38){
-                    Master.item = new Item(getX(), getY(), ItemType.BOMB_POWER, getStage());
 
-                } else if(GameState.level == 39){
-                    Master.item = new Item(getX(), getY(), ItemType.WALLPASS, getStage());
+        if (animation.isAnimationFinished(time)) {
+            setFire(false);
 
-                } else if(GameState.level == 40){
-                    Master.item = new Item(getX(), getY(), ItemType.MYSTERY, getStage());
-
-                } else if(GameState.level == 41){
-                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
-
-                } else if(GameState.level == 42){
-                    Master.item = new Item(getX(), getY(), ItemType.WALLPASS, getStage());
-
-                } else if(GameState.level == 43){
-                    Master.item = new Item(getX(), getY(), ItemType.BOMB_PASS, getStage());
-
-                } else if(GameState.level == 44){
-                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
-                }else if(GameState.level == 45){
-                    Master.item = new Item(getX(), getY(), ItemType.MYSTERY, getStage());
-                }else if(GameState.level == 46){
-                    Master.item = new Item(getX(), getY(), ItemType.WALLPASS, getStage());
-                }else if(GameState.level == 47){
-                    Master.item = new Item(getX(), getY(), ItemType.BOMB_PASS, getStage());
-                }else if(GameState.level == 48){
-                    Master.item = new Item(getX(), getY(), ItemType.DETONATOR, getStage());
-                }else if(GameState.level == 49){
-                    Master.item = new Item(getX(), getY(), ItemType.FLAME_PASS, getStage());
-                }else if(GameState.level == 50){
-                    Master.item = new Item(getX(), getY(), ItemType.MYSTERY, getStage());
+            if (hasItem) {
+                ItemType itemType = levelItemMap.get(GameState.level);
+                if (itemType != null) {
+                    Master.item = new Item(getX(), getY(), itemType, getStage());
                 }
-
-
-            } else if(hasDoor){
+            } else if (hasDoor) {
                 Master.door = new Door(getX(), getY(), getStage());
             }
+
             remove();
             Master.walls.removeValue(this, true);
             Master.briches.removeValue(this, true);
         }
+    }
+
+    public void setFire(boolean fire) {
+        this.isFire = fire;
+    }
+
+    public void setHasItem(boolean hasItem) {
+        this.hasItem = hasItem;
+    }
+
+    public void setHasDoor(boolean hasDoor) {
+        this.hasDoor = hasDoor;
     }
 }

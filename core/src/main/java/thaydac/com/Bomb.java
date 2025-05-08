@@ -20,8 +20,7 @@ public class Bomb extends MyActor {
     Animation<TextureRegion> horizontalBodyAnimation;
 
     float time;
-    boolean isFire = false;
-    boolean isExploded = false;
+    private boolean isExploded = false;
 
     Sound setSound;
     Sound explodeSound;
@@ -97,7 +96,7 @@ public class Bomb extends MyActor {
         time += delta;
 
         if (!isExploded && !GameState.decorator && time >= 3) {
-            isExploded = true;
+            setExploded(true);
         }
 
         if (isExploded) {
@@ -115,7 +114,7 @@ public class Bomb extends MyActor {
 
     private void createExplosions() {
         Stage stage = getStage();
-        float size = 32; // Kích thước 1 ô
+        float cellSize = 32;
         int power = GameState.bombPower;
 
         Explosion explosionCenter = new Explosion(getX(), getY(), stage, explosionAnimation, explosions);
@@ -123,7 +122,7 @@ public class Bomb extends MyActor {
 
         // Nổ trên
         for (int i = 1; i <= power; i++) {
-            float yOffset = getY() + size * i;
+            float yOffset = getY() + cellSize * i;
             if (isBlocked(getX(), yOffset)) break; // Dừng nếu bị chặn
             Explosion explosion = new Explosion(getX(), yOffset, stage, i == power ? explosionUpAnimation : verticalBodyAnimation, explosions);
             explosions.add(explosion);
@@ -131,7 +130,7 @@ public class Bomb extends MyActor {
 
         // Nổ dưới
         for (int i = 1; i <= power; i++) {
-            float yOffset = getY() - size * i;
+            float yOffset = getY() - cellSize * i;
             if (isBlocked(getX(), yOffset)) break; // Dừng nếu bị chặn
             Explosion explosion = new Explosion(getX(), yOffset, stage, i == power ? explosionDownAnimation : verticalBodyAnimation, explosions);
             explosions.add(explosion);
@@ -139,7 +138,7 @@ public class Bomb extends MyActor {
 
         // Nổ trái
         for (int i = 1; i <= power; i++) {
-            float xOffset = getX() - size * i;
+            float xOffset = getX() - cellSize * i;
             if (isBlocked(xOffset, getY())) break; // Dừng nếu bị chặn
             Explosion explosion = new Explosion(xOffset, getY(), stage, i == power ? explosionLeftAnimation : horizontalBodyAnimation, explosions);
             explosions.add(explosion);
@@ -147,7 +146,7 @@ public class Bomb extends MyActor {
 
         // Nổ phải
         for (int i = 1; i <= power; i++) {
-            float xOffset = getX() + size * i;
+            float xOffset = getX() + cellSize * i;
             if (isBlocked(xOffset, getY())) break; // Dừng nếu bị chặn
             Explosion explosion = new Explosion(xOffset, getY(), stage, i == power ? explosionRightAnimation : horizontalBodyAnimation, explosions);
             explosions.add(explosion);
@@ -166,17 +165,21 @@ public class Bomb extends MyActor {
         Array<MyActor> obstacles = getObstacles(); // Lấy danh sách vật cản
         for (MyActor obstacle : obstacles) {
             if (obstacle.getX() == x && obstacle.getY() == y) {
-                if(obstacle instanceof Brick){
-                    Brick brick = (Brick) obstacle;
-                    brick.isFire = true;
+                if(obstacle instanceof Brick brick){
+                    brick.setFire(true);
                 }
-                if(obstacle instanceof Bomb){ // nếu là bomb thì kích nổ luôn
-                    Bomb bomb = (Bomb) obstacle;
-                    bomb.isExploded = true;
+                if(obstacle instanceof Bomb bomb){ // nếu là bomb thì kích nổ luôn
+                    bomb.setExploded(true);
                 }
                 return true; // Có vật cản tại vị trí này
             }
         }
         return false;
+    }
+    public void setExploded(boolean exploded){
+        this.isExploded = exploded;
+    }
+    public boolean getExploded(){
+        return isExploded;
     }
 }

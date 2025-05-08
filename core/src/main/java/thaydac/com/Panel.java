@@ -9,8 +9,7 @@ public class Panel extends MyActor{
     Panel(float x, float y, Stage s) {
         super(x, y, s);
         // lấy khoảng giữa của viên đá để làm phần panel
-        TextureRegion tRegion = new TextureRegion(new Texture("wall.png"), 5, 5, 5, 5);
-        textureRegion = tRegion;
+        textureRegion = new TextureRegion(new Texture("wall.png"), 5, 5, 5, 5);
         setSize(31*32, 64);
     }
 }

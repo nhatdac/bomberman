@@ -133,8 +133,8 @@ public class Master implements Screen {
     @Override
     public void show() {
         man.setPosition(32, Gdx.graphics.getHeight() - 32 * 4);
-        man.isAlive = true;
-        man.time = 0;
+        man.setAlive(true);
+        man.setTime(0);
         man.textureRegion = man.animationRight.getKeyFrame(timing);
         // cần add lai vi stage da khoi tao lai
         stage.addActor(man);
@@ -172,7 +172,7 @@ public class Master implements Screen {
                 stage.getCamera().position.x = man.getX();
             }
 
-            if (man.isAlive) {
+            if (man.getAlive()) {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                     int xMan = Math.round(man.getX() / 32) * 32; // làm tròn tọa độ x để chuẩn bị đặt bom cho chuẩn
                     int yMan = Math.round(man.getY() / 32) * 32;
@@ -198,7 +198,7 @@ public class Master implements Screen {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.B) && GameState.decorator) {
                     // kích nổ qủa đầu tiên
                     if (!bombs.isEmpty()) {
-                        bombs.get(0).isExploded = true;
+                        bombs.get(0).setExploded(true);;
                     }
                 }
 
@@ -238,7 +238,7 @@ public class Master implements Screen {
                         timing--;
                         if (timing == 0) {
                             for (int i = 0; i < bombs.size; i++) {
-                                bombs.get(i).isExploded = true;
+                                bombs.get(i).setExploded(true);
                             }
                             // Ánh xạ giá trị level cũ sang level mới
                             Map<Integer, Integer> levelMap = Map.of(
@@ -311,11 +311,11 @@ public class Master implements Screen {
         }
         game.batch.end();
 
-        //shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        //shapeRenderer.setColor(Color.RED);
-        //shapeRenderer.rect(itemRec.getX(), itemRec.getY(), itemRec.width, itemRec.height);
-        //shapeRenderer.rect(doorRec.getX(), doorRec.getY(), doorRec.width, doorRec.height);
-        //shapeRenderer.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.rect(itemRec.getX(), itemRec.getY(), itemRec.width, itemRec.height);
+        shapeRenderer.rect(doorRec.getX(), doorRec.getY(), doorRec.width, doorRec.height);
+        shapeRenderer.end();
     }
 
     public void collectItems() {
@@ -369,25 +369,25 @@ public class Master implements Screen {
     public void collisionWall() {
         for (MyActor wall : walls) {
             if (checkCollision(wall, man)) {
-                if (man.direction.equals(Direction.LEFT)) {
+                if (man.getDirection().equals(Direction.LEFT)) {
                     man.moveBy(Utils.MAN_SPEED, 0);
                     float diff = diffirentYCor(man, wall);
                     if (Math.abs(diff) < 10) {
                         man.moveBy(0, diff);
                     }
-                } else if (man.direction.equals(Direction.RIGHT)) {
+                } else if (man.getDirection().equals(Direction.RIGHT)) {
                     man.moveBy(-Utils.MAN_SPEED, 0);
                     float diff = diffirentYCor(man, wall);
                     if (Math.abs(diff) < 10) {
                         man.moveBy(0, diff);
                     }
-                } else if (man.direction.equals(Direction.UP)) {
+                } else if (man.getDirection().equals(Direction.UP)) {
                     man.moveBy(0, -Utils.MAN_SPEED);
                     float diff = diffirentXCor(man, wall);
                     if (Math.abs(diff) < 10) {
                         man.moveBy(diff, 0);
                     }
-                } else if (man.direction.equals(Direction.DOWN)) {
+                } else if (man.getDirection().equals(Direction.DOWN)) {
                     man.moveBy(0, Utils.MAN_SPEED);
                     float diff = diffirentXCor(man, wall);
                     if (Math.abs(diff) < 10) {
@@ -494,8 +494,8 @@ public class Master implements Screen {
         while (itemPosition == doorPosition) {
             doorPosition = MathUtils.random(0, briches.size - 1);
         }
-        briches.get(itemPosition).hasItem = true;
-        briches.get(doorPosition).hasDoor = true;
+        briches.get(itemPosition).setHasItem(true);
+        briches.get(doorPosition).setHasDoor(true);
         itemRec = briches.get(itemPosition).getBound();
         doorRec = briches.get(doorPosition).getBound();
         // Vào mỗi màn chơi thì item, door null để không bị nhầm lẫn
@@ -551,8 +551,8 @@ public class Master implements Screen {
     }
 
     public void replay(){
-        man.isAlive = false;
-        man.time = 0;
+        man.setAlive(false);
+        man.setTime(0);
         dieSound.play();
         GameState.left--;
         GameState.decorator = false;
